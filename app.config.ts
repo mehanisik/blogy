@@ -1,29 +1,38 @@
-import { defineConfig } from '@tanstack/react-start/config'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "@tanstack/react-start/config";
+import tsConfigPaths from "vite-tsconfig-paths";
 
-import { wrapVinxiConfigWithSentry } from '@sentry/tanstackstart-react'
-
-const config = defineConfig({
-  tsr: {
-    appDirectory: 'src',
-  },
+export default defineConfig({
   vite: {
     plugins: [
-      // this is the plugin that enables path aliases
-      viteTsConfigPaths({
-        projects: ['./tsconfig.json'],
+      tsConfigPaths({
+        projects: ["./tsconfig.json"],
       }),
       tailwindcss(),
     ],
   },
-})
 
-export default wrapVinxiConfigWithSentry(config, {
-  org: process.env.VITE_SENTRY_ORG,
-  project: process.env.VITE_SENTRY_PROJECT,
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  // Only print logs for uploading source maps in CI
-  // Set to `true` to suppress logs
-  silent: !process.env.CI,
-})
+  // https://react.dev/learn/react-compiler
+  react: {
+    babel: {
+      plugins: [
+        [
+          "babel-plugin-react-compiler",
+          {
+            target: "19",
+          },
+        ],
+      ],
+    },
+  },
+
+  tsr: {
+    // https://github.com/TanStack/router/discussions/2863#discussioncomment-12458714
+    appDirectory: "./src",
+  },
+
+  server: {
+    // https://tanstack.com/start/latest/docs/framework/react/hosting#deployment
+    // preset: "netlify",
+  },
+});

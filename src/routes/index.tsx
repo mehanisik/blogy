@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
 	return (
-		<main className="flex flex-col gap-10 text-gray-800">
+		<main className="flex flex-col gap-10">
 			<HeroSection />
 			<AboutSection />
 			<RecentActivities />

@@ -13,6 +13,8 @@ import TanstackQueryLayout from "../integrations/tanstack-query/layout";
 import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
+import NotFound from "@/components/layout/not-found";
+import ErrorComponent from "@/components/layout/error-component";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -63,6 +65,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			<TanstackQueryLayout />
 		</RootDocument>
 	),
+	errorComponent: ErrorComponent,
+	notFoundComponent: NotFound,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {

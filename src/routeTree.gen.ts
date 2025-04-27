@@ -11,13 +11,25 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PublicationsImport } from './routes/publications'
+import { Route as ProjectsImport } from './routes/projects'
 import { Route as IndexImport } from './routes/index'
-import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
-import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
-import { Route as DemoStartApiRequestImport } from './routes/demo.start.api-request'
-import { Route as DemoSentryTestingImport } from './routes/demo.sentry.testing'
+import { Route as BlogsIndexImport } from './routes/blogs/index'
+import { Route as BlogsBlogIdImport } from './routes/blogs/$blogId'
 
 // Create/Update Routes
+
+const PublicationsRoute = PublicationsImport.update({
+  id: '/publications',
+  path: '/publications',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProjectsRoute = ProjectsImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -25,27 +37,15 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
+const BlogsIndexRoute = BlogsIndexImport.update({
+  id: '/blogs/',
+  path: '/blogs/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoStartServerFuncsRoute = DemoStartServerFuncsImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoStartApiRequestRoute = DemoStartApiRequestImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoSentryTestingRoute = DemoSentryTestingImport.update({
-  id: '/demo/sentry/testing',
-  path: '/demo/sentry/testing',
+const BlogsBlogIdRoute = BlogsBlogIdImport.update({
+  id: '/blogs/$blogId',
+  path: '/blogs/$blogId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,32 +60,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryImport
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsImport
       parentRoute: typeof rootRoute
     }
-    '/demo/sentry/testing': {
-      id: '/demo/sentry/testing'
-      path: '/demo/sentry/testing'
-      fullPath: '/demo/sentry/testing'
-      preLoaderRoute: typeof DemoSentryTestingImport
+    '/publications': {
+      id: '/publications'
+      path: '/publications'
+      fullPath: '/publications'
+      preLoaderRoute: typeof PublicationsImport
       parentRoute: typeof rootRoute
     }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestImport
+    '/blogs/$blogId': {
+      id: '/blogs/$blogId'
+      path: '/blogs/$blogId'
+      fullPath: '/blogs/$blogId'
+      preLoaderRoute: typeof BlogsBlogIdImport
       parentRoute: typeof rootRoute
     }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsImport
+    '/blogs/': {
+      id: '/blogs/'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof BlogsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -95,68 +95,58 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/sentry/testing': typeof DemoSentryTestingRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/projects': typeof ProjectsRoute
+  '/publications': typeof PublicationsRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
+  '/blogs': typeof BlogsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/sentry/testing': typeof DemoSentryTestingRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/projects': typeof ProjectsRoute
+  '/publications': typeof PublicationsRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
+  '/blogs': typeof BlogsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/sentry/testing': typeof DemoSentryTestingRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/projects': typeof ProjectsRoute
+  '/publications': typeof PublicationsRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
+  '/blogs/': typeof BlogsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/demo/tanstack-query'
-    | '/demo/sentry/testing'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+  fullPaths: '/' | '/projects' | '/publications' | '/blogs/$blogId' | '/blogs'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/demo/tanstack-query'
-    | '/demo/sentry/testing'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+  to: '/' | '/projects' | '/publications' | '/blogs/$blogId' | '/blogs'
   id:
     | '__root__'
     | '/'
-    | '/demo/tanstack-query'
-    | '/demo/sentry/testing'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/projects'
+    | '/publications'
+    | '/blogs/$blogId'
+    | '/blogs/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  DemoSentryTestingRoute: typeof DemoSentryTestingRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  ProjectsRoute: typeof ProjectsRoute
+  PublicationsRoute: typeof PublicationsRoute
+  BlogsBlogIdRoute: typeof BlogsBlogIdRoute
+  BlogsIndexRoute: typeof BlogsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  DemoSentryTestingRoute: DemoSentryTestingRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  ProjectsRoute: ProjectsRoute,
+  PublicationsRoute: PublicationsRoute,
+  BlogsBlogIdRoute: BlogsBlogIdRoute,
+  BlogsIndexRoute: BlogsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -170,26 +160,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/demo/tanstack-query",
-        "/demo/sentry/testing",
-        "/demo/start/api-request",
-        "/demo/start/server-funcs"
+        "/projects",
+        "/publications",
+        "/blogs/$blogId",
+        "/blogs/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/demo/tanstack-query": {
-      "filePath": "demo.tanstack-query.tsx"
+    "/projects": {
+      "filePath": "projects.tsx"
     },
-    "/demo/sentry/testing": {
-      "filePath": "demo.sentry.testing.tsx"
+    "/publications": {
+      "filePath": "publications.tsx"
     },
-    "/demo/start/api-request": {
-      "filePath": "demo.start.api-request.tsx"
+    "/blogs/$blogId": {
+      "filePath": "blogs/$blogId.tsx"
     },
-    "/demo/start/server-funcs": {
-      "filePath": "demo.start.server-funcs.tsx"
+    "/blogs/": {
+      "filePath": "blogs/index.tsx"
     }
   }
 }
