@@ -1,39 +1,20 @@
+import { AboutSection } from "@/components/about-section";
+import { HeroSection } from "@/components/hero-section";
+import { RecentActivities } from "@/components/recent-activities";
+import { SocialLinks } from "@/components/social-links";
 import { createFileRoute } from "@tanstack/react-router";
-import logo from "../logo.svg";
 
 export const Route = createFileRoute("/")({
-	component: App,
+	component: HomePage,
 });
 
-function App() {
+function HomePage() {
 	return (
-		<div className="text-center">
-			<header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-				<img
-					src={logo}
-					className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-					alt="logo"
-				/>
-				<p>
-					Edit <code>src/routes/index.tsx</code> and save to reload.
-				</p>
-				<a
-					className="text-[#61dafb] hover:underline"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-				<a
-					className="text-[#61dafb] hover:underline"
-					href="https://tanstack.com"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn TanStack
-				</a>
-			</header>
-		</div>
+		<main className="flex flex-col gap-10 text-gray-800">
+			<HeroSection />
+			<AboutSection />
+			<RecentActivities />
+			<SocialLinks />
+		</main>
 	);
 }

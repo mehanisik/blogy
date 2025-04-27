@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import Header from "../components/Header";
+import Header from "../components/layout/header";
 
 import TanstackQueryLayout from "../integrations/tanstack-query/layout";
 
@@ -29,7 +29,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Modern Web Application",
+			},
+			{
+				name: "description",
+				content:
+					"A modern web application built with TanStack Router and Query",
 			},
 		],
 		links: [
@@ -37,16 +42,24 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				rel: "stylesheet",
 				href: appCss,
 			},
+			{
+				rel: "icon",
+				href: "/favicon.ico",
+			},
 		],
 	}),
 
 	component: () => (
 		<RootDocument>
-			<Header />
-
-			<Outlet />
-			<TanStackRouterDevtools />
-
+			<div className="flex flex-col w-full min-h-screen antialiased pt-8 pb-12 px-4 md:px-0 overflow-hidden">
+				<main className="max-w-2xl mx-auto flex flex-col gap-2.5 w-full">
+					<Header />
+					<div className="flex-grow">
+						<Outlet />
+					</div>
+				</main>
+			</div>
+			{process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
 			<TanstackQueryLayout />
 		</RootDocument>
 	),
@@ -54,7 +67,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" className="h-full">
 			<head>
 				<HeadContent />
 			</head>
