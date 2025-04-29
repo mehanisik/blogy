@@ -1,4 +1,5 @@
 import {
+	ErrorComponent,
 	HeadContent,
 	Outlet,
 	Scripts,
@@ -12,9 +13,8 @@ import TanstackQueryLayout from "../integrations/tanstack-query/layout";
 
 import appCss from "../styles.css?url";
 
-import type { QueryClient } from "@tanstack/react-query";
 import NotFound from "@/components/layout/not-found";
-import ErrorComponent from "@/components/layout/error-component";
+import type { QueryClient } from "@tanstack/react-query";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -64,8 +64,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			{process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
 			<TanstackQueryLayout />
 		</RootDocument>
-	),
-	errorComponent: ErrorComponent,
+	),errorComponent: ({ error }) => {
+		if (error instanceof Error) {
+		  return <div>{error.message}</div>
+		}
+		return <ErrorComponent error={error} />
+	  },
 	notFoundComponent: NotFound,
 });
 
