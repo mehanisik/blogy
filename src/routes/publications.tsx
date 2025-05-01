@@ -1,29 +1,14 @@
-import { getPublications } from "@/services"
+import { fetchPublications } from "@/services"
 import type { Publication } from "@/types/publication"
-import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/publications")({
-  loader: () => ({
-    publicationsQuery: {
-      queryKey: ["publications"],
-      queryFn: getPublications,
-    },
-  }),
+  loader: () =>fetchPublications(),
   component: PublicationsPage,
 })
 
 function PublicationsPage() {
-  const { publicationsQuery } = Route.useLoaderData()
-  const { data: publications = [], isLoading, isError } = useQuery(publicationsQuery)
-
-  if (isLoading) {
-    return <div className="py-8 text-center">Loading publications...</div>
-  }
-
-  if (isError) {
-    return <div className="py-8 text-center">Error loading publications. Please try again later.</div>
-  }
+  const publications= Route.useLoaderData()
 
   return (
     <main className="flex flex-col gap-10">

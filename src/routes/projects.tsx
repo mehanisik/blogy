@@ -1,29 +1,15 @@
-import { getProjects } from "@/services"
+import { fetchProjects } from "@/services"
 import type {Project} from "@/types/project"
-import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/projects")({
-  loader: () => ({
-    projectsQuery: {
-      queryKey: ["projects"],
-      queryFn: getProjects,
-    },
-  }),
+  loader: () => fetchProjects(),
   component: ProjectsPage,
 })
 
 function ProjectsPage() {
-  const { projectsQuery } = Route.useLoaderData()
-  const { data: projects = [], isLoading, isError } = useQuery(projectsQuery)
-
-  if (isLoading) {
-    return <div className="py-8 text-center">Loading projects...</div>
-  }
-
-  if (isError) {
-    return <div className="py-8 text-center">Error loading projects. Please try again later.</div>
-  }
+  const projects= Route.useLoaderData()
+  
 
   return (
     <main className="flex flex-col gap-10">

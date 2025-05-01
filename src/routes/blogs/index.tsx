@@ -1,31 +1,16 @@
-import { getBlogs } from "@/services"
+import { fetchBlogs } from "@/services"
 import type { Blog } from "@/types/blog"
-import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { Link } from "@tanstack/react-router"
 
 
 export const Route = createFileRoute("/blogs/")({
-  loader: () => ({
-    blogsQuery: {
-      queryKey: ["blogs"],
-      queryFn: getBlogs,
-    },
-  }),
+  loader: () => fetchBlogs(),
   component: BlogPage,
 })
-
 function BlogPage() {
-  const { blogsQuery } = Route.useLoaderData()
-  const { data: blogs = [], isLoading, isError } = useQuery(blogsQuery)
+  const blogs = Route.useLoaderData()
 
-  if (isLoading) {
-    return <div className="py-8 text-center">Loading blog posts...</div>
-  }
-
-  if (isError) {
-    return <div className="py-8 text-center">Error loading blog posts. Please try again later.</div>
-  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
