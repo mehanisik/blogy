@@ -3,7 +3,7 @@ import { SOCIAL_LINKS } from "@/constants/social-links.constant";
 export function SocialLinks() {
 	return (
 		<section className="mt-8 mb-4 flex justify-between items-center">
-			<div className="flex flex-wrap gap-x-4 gap-y-2 text-base text-gray-600">
+			<div className="flex flex-wrap gap-x-4 gap-y-2 text-base">
 				{SOCIAL_LINKS.map((link) => (
 					<a
 						key={link.label}

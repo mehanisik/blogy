@@ -4,13 +4,13 @@ import ThemeToggle from "../theme-toggle";
 
 export default function Header() {
 	return (
-		<nav className="max-w-3xl mx-auto  py-4 flex flex-row justify-between items-center">
-			<div className="flex gap-5">
+		<nav className="max-w-3xl mx-auto w-full flex flex-row justify-between items-center py-4 transition-all duration-500 ease-in-out">
+			<div className="flex gap-8">
 				{NAV_ITEMS.map((item) => (
 					<Link
 						key={item.name}
 						to={item.href}
-						className="text-base text-gray-700 hover:text-gray-900"
+						className="text-base hover:scale-105 transition-all duration-300 ease-out"
 						activeProps={{
 							style: {
 								color: "red",
@@ -22,7 +22,9 @@ export default function Header() {
 					</Link>
 				))}
 			</div>
-			<ThemeToggle />
+			<div className="transition-transform duration-300 hover:rotate-6">
+				<ThemeToggle />
+			</div>
 		</nav>
 	);
 }

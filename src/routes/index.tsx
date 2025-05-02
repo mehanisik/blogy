@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section";
 import { RecentActivities } from "@/components/recent-activities";
 import { SocialLinks } from "@/components/social-links";
 import { createFileRoute } from "@tanstack/react-router";
+import Layout from "@/components/layout/layout";
 
 export const Route = createFileRoute("/")({
 	component: HomePage,
@@ -10,11 +11,11 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
 	return (
-		<main className="max-w-3xl mx-auto min-h-screen flex flex-col gap-10">
+		<Layout>
 			<HeroSection />
 			<AboutSection />
 			<RecentActivities />
 			<SocialLinks />
-		</main>
+		</Layout>
 	);
 }

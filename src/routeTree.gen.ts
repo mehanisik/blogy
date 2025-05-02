@@ -11,13 +11,21 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignInImport } from './routes/sign-in'
 import { Route as PublicationsImport } from './routes/publications'
 import { Route as ProjectsImport } from './routes/projects'
 import { Route as IndexImport } from './routes/index'
 import { Route as BlogsIndexImport } from './routes/blogs/index'
 import { Route as BlogsBlogIdImport } from './routes/blogs/$blogId'
+import { Route as AuthedAdminImport } from './routes/_authed/admin'
 
 // Create/Update Routes
+
+const SignInRoute = SignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const PublicationsRoute = PublicationsImport.update({
   id: '/publications',
@@ -49,6 +57,12 @@ const BlogsBlogIdRoute = BlogsBlogIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthedAdminRoute = AuthedAdminImport.update({
+  id: '/_authed/admin',
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -74,6 +88,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicationsImport
       parentRoute: typeof rootRoute
     }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authed/admin': {
+      id: '/_authed/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthedAdminImport
+      parentRoute: typeof rootRoute
+    }
     '/blogs/$blogId': {
       id: '/blogs/$blogId'
       path: '/blogs/$blogId'
@@ -97,6 +125,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/sign-in': typeof SignInRoute
+  '/admin': typeof AuthedAdminRoute
   '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/blogs': typeof BlogsIndexRoute
 }
@@ -105,6 +135,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/sign-in': typeof SignInRoute
+  '/admin': typeof AuthedAdminRoute
   '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/blogs': typeof BlogsIndexRoute
 }
@@ -114,20 +146,38 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/sign-in': typeof SignInRoute
+  '/_authed/admin': typeof AuthedAdminRoute
   '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/blogs/': typeof BlogsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projects' | '/publications' | '/blogs/$blogId' | '/blogs'
+  fullPaths:
+    | '/'
+    | '/projects'
+    | '/publications'
+    | '/sign-in'
+    | '/admin'
+    | '/blogs/$blogId'
+    | '/blogs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projects' | '/publications' | '/blogs/$blogId' | '/blogs'
+  to:
+    | '/'
+    | '/projects'
+    | '/publications'
+    | '/sign-in'
+    | '/admin'
+    | '/blogs/$blogId'
+    | '/blogs'
   id:
     | '__root__'
     | '/'
     | '/projects'
     | '/publications'
+    | '/sign-in'
+    | '/_authed/admin'
     | '/blogs/$blogId'
     | '/blogs/'
   fileRoutesById: FileRoutesById
@@ -137,6 +187,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProjectsRoute: typeof ProjectsRoute
   PublicationsRoute: typeof PublicationsRoute
+  SignInRoute: typeof SignInRoute
+  AuthedAdminRoute: typeof AuthedAdminRoute
   BlogsBlogIdRoute: typeof BlogsBlogIdRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
 }
@@ -145,6 +197,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProjectsRoute: ProjectsRoute,
   PublicationsRoute: PublicationsRoute,
+  SignInRoute: SignInRoute,
+  AuthedAdminRoute: AuthedAdminRoute,
   BlogsBlogIdRoute: BlogsBlogIdRoute,
   BlogsIndexRoute: BlogsIndexRoute,
 }
@@ -162,6 +216,8 @@ export const routeTree = rootRoute
         "/",
         "/projects",
         "/publications",
+        "/sign-in",
+        "/_authed/admin",
         "/blogs/$blogId",
         "/blogs/"
       ]
@@ -174,6 +230,12 @@ export const routeTree = rootRoute
     },
     "/publications": {
       "filePath": "publications.tsx"
+    },
+    "/sign-in": {
+      "filePath": "sign-in.tsx"
+    },
+    "/_authed/admin": {
+      "filePath": "_authed/admin.tsx"
     },
     "/blogs/$blogId": {
       "filePath": "blogs/$blogId.tsx"

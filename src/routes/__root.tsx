@@ -7,43 +7,36 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-
-import appCss from "../styles/app.css?url";
-import { getUser } from "@/services";
-import Header from "@/components/layout/header";
+import { fetchUser } from "@/services";
+import { Meta } from "@/constants/meta-tags.constant";
+import { Links } from "@/constants/root-links.constant";
+import { PendingComponent } from "@/components/layout/pending-component";
+import { ErrorComponent } from "@/components/layout/error-component";
+import { NotFoundComponent } from "@/components/layout/not-found";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
-	user: Awaited<ReturnType<typeof getUser>>;
+	user: Awaited<ReturnType<typeof fetchUser>>;
 }>()({
 	beforeLoad: async ({ context }) => {
 		await context.queryClient.invalidateQueries({ queryKey: ["user"] });
 
 		const user = await context.queryClient.fetchQuery({
 			queryKey: ["user"],
-			queryFn: ({ signal }) => getUser({ signal }),
+			queryFn: ({ signal }) => fetchUser({ signal }),
 			staleTime: 0,
 		});
 		return { user };
 	},
+
 	head: () => ({
-		meta: [
-			{
-				charSet: "utf-8",
-			},
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1",
-			},
-			{
-				title: "TanStack Supabase Router",
-			},
-		],
-		links: [{ rel: "stylesheet", href: appCss }],
+		meta: Meta,
+		links: Links,
 	}),
 	component: RootComponent,
+	pendingComponent: PendingComponent,
+	errorComponent: ErrorComponent,
+	notFoundComponent: NotFoundComponent,
 });
 
 function RootComponent() {
@@ -56,23 +49,18 @@ function RootComponent() {
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
 	return (
-		<html suppressHydrationWarning>
+		<html suppressHydrationWarning lang="en">
 			<head>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="bg-background text-foreground antialiased font-body">
 				<ScriptOnce>
 					{`document.documentElement.classList.toggle(
-            'dark',
-            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            )`}
+			  'dark',
+			  localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+			  )`}
 				</ScriptOnce>
-				<Header />
 				{children}
-
-				<ReactQueryDevtools buttonPosition="bottom-left" />
-				<TanStackRouterDevtools position="bottom-right" />
-
 				<Scripts />
 			</body>
 		</html>
