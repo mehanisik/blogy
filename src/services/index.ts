@@ -8,7 +8,6 @@ import { createServerFn } from "@tanstack/react-start";
 
 export const fetchPublications = createServerFn({ method: "GET" }).handler(
 	async () => {
-		await new Promise((resolve) => setTimeout(resolve, 6000));
 		const { data, error } = await supabase
 			.from("publications")
 			.select("*")
@@ -25,7 +24,6 @@ export const fetchPublications = createServerFn({ method: "GET" }).handler(
 
 export const fetchProjects = createServerFn({ method: "GET" }).handler(
 	async () => {
-		await new Promise((resolve) => setTimeout(resolve, 6000));
 		const { data, error } = await supabase.from("projects").select("*");
 		if (error) {
 			if (error.code == "404") {
@@ -39,7 +37,6 @@ export const fetchProjects = createServerFn({ method: "GET" }).handler(
 
 export const fetchBlogs = createServerFn({ method: "GET" }).handler(
 	async () => {
-		await new Promise((resolve) => setTimeout(resolve, 6000));
 		const { data, error } = await supabase
 			.from("blogs")
 			.select("*")
