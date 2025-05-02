@@ -1,30 +1,47 @@
-import { createRouter as createTanstackRouter } from "@tanstack/react-router";
+import { QueryClient, MutationCache, Mutation } from "@tanstack/react-query";
+import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
-import * as TanstackQuery from "./integrations/tanstack-query/root-provider";
 
-// Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { DefaultCatchBoundary } from "./components/layout/detault-catch-boundry";
+import NotFound from "./components/layout/not-found";
 
-import "./styles.css";
+export function createRouter() {
+	const queryClient = new QueryClient({
+		mutationCache: new MutationCache({
+			onSettled: (
+				_: unknown,
+				__: Error | null,
+				___: unknown,
+				context: unknown,
+				mutation: Mutation<unknown, unknown, unknown, unknown>,
+			) => {
+				const queryKey = mutation.options.mutationKey?.[0];
+				if (queryKey) {
+					queryClient.invalidateQueries({ queryKey: [queryKey] });
+				}
+			},
+		}),
+	});
 
-// Create a new router instance
-export const createRouter = () => {
-	const router = routerWithQueryClient(
-		createTanstackRouter({
+	return routerWithQueryClient(
+		createTanStackRouter({
 			routeTree,
 			context: {
-				...TanstackQuery.getContext(),
+				queryClient,
+				user: null,
 			},
-			scrollRestoration: true,
+			defaultPreload: "intent",
 			defaultPreloadStaleTime: 0,
+			defaultErrorComponent: DefaultCatchBoundary,
+			defaultNotFoundComponent: NotFound,
+			scrollRestoration: true,
+			defaultStructuralSharing: true,
 		}),
-		TanstackQuery.getContext().queryClient,
+		queryClient,
 	);
+}
 
-	return router;
-};
-
-// Register the router instance for type safety
 declare module "@tanstack/react-router" {
 	interface Register {
 		router: ReturnType<typeof createRouter>;

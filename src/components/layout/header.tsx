@@ -1,10 +1,11 @@
 import { NAV_ITEMS } from "@/constants/nav-items.constant";
 import { Link } from "@tanstack/react-router";
+import ThemeToggle from "../theme-toggle";
 
 export default function Header() {
 	return (
-		<header className="py-4">
-			<nav className="flex flex-row space-x-6">
+		<nav className="max-w-3xl mx-auto  py-4 flex flex-row justify-between items-center">
+			<div className="flex gap-5">
 				{NAV_ITEMS.map((item) => (
 					<Link
 						key={item.name}
@@ -20,7 +21,8 @@ export default function Header() {
 						{item.name}
 					</Link>
 				))}
-			</nav>
-		</header>
+			</div>
+			<ThemeToggle />
+		</nav>
 	);
 }

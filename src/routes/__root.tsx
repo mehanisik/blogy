@@ -1,26 +1,33 @@
+import type { QueryClient } from "@tanstack/react-query";
 import {
-	ErrorComponent,
+	createRootRouteWithContext,
 	HeadContent,
 	Outlet,
+	ScriptOnce,
 	Scripts,
-	createRootRouteWithContext,
 } from "@tanstack/react-router";
+
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import Header from "../components/layout/header";
+import appCss from "../styles/app.css?url";
+import { getUser } from "@/services";
+import Header from "@/components/layout/header";
 
-import TanstackQueryLayout from "../integrations/tanstack-query/layout";
-
-import appCss from "../styles.css?url";
-
-import NotFound from "@/components/layout/not-found";
-import type { QueryClient } from "@tanstack/react-query";
-
-interface MyRouterContext {
+export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
-}
+	user: Awaited<ReturnType<typeof getUser>>;
+}>()({
+	beforeLoad: async ({ context }) => {
+		await context.queryClient.invalidateQueries({ queryKey: ["user"] });
 
-export const Route = createRootRouteWithContext<MyRouterContext>()({
+		const user = await context.queryClient.fetchQuery({
+			queryKey: ["user"],
+			queryFn: ({ signal }) => getUser({ signal }),
+			staleTime: 0,
+		});
+		return { user };
+	},
 	head: () => ({
 		meta: [
 			{
@@ -31,56 +38,41 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "Modern Web Application",
-			},
-			{
-				name: "description",
-				content:
-					"A modern web application built with TanStack Router and Query",
+				title: "TanStack Supabase Router",
 			},
 		],
-		links: [
-			{
-				rel: "stylesheet",
-				href: appCss,
-			},
-			{
-				rel: "icon",
-				href: "/favicon.ico",
-			},
-		],
+		links: [{ rel: "stylesheet", href: appCss }],
 	}),
-
-	component: () => (
-		<RootDocument>
-			<div className="flex flex-col w-full min-h-screen antialiased pt-8 pb-12 px-4 md:px-0 overflow-hidden">
-				<main className="max-w-2xl mx-auto flex flex-col gap-2.5 w-full">
-					<Header />
-					<div className="flex-grow">
-						<Outlet />
-					</div>
-				</main>
-			</div>
-			{process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
-			<TanstackQueryLayout />
-		</RootDocument>
-	),errorComponent: ({ error }) => {
-		if (error instanceof Error) {
-		  return <div>{error.message}</div>
-		}
-		return <ErrorComponent error={error} />
-	  },
-	notFoundComponent: NotFound,
+	component: RootComponent,
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootComponent() {
 	return (
-		<html lang="en" className="h-full">
+		<RootDocument>
+			<Outlet />
+		</RootDocument>
+	);
+}
+
+function RootDocument({ children }: { readonly children: React.ReactNode }) {
+	return (
+		<html suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
 			<body>
+				<ScriptOnce>
+					{`document.documentElement.classList.toggle(
+            'dark',
+            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            )`}
+				</ScriptOnce>
+				<Header />
 				{children}
+
+				<ReactQueryDevtools buttonPosition="bottom-left" />
+				<TanStackRouterDevtools position="bottom-right" />
+
 				<Scripts />
 			</body>
 		</html>
