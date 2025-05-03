@@ -1,3 +1,4 @@
+import { ExternalLink, FileText, Github } from "lucide-react";
 import type React from "react";
 
 export interface ListCardProps {
@@ -16,33 +17,39 @@ const ListCard: React.FC<ListCardProps> = ({
 	rightAction,
 }) => {
 	return (
-		<article className="flex items-start justify-between border-b border-gray-200 pb-5 group cursor-pointer hover:rotate-1">
-			<div className="flex-1 min-w-0">
-				<time className="text-sm text-gray-500 dark:text-gray-400">{date}</time>
-				<h2 className="text-2xl font-medium text-gray-900 dark:text-gray-100 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
-					{title}
-				</h2>
-				<p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-					{description}
-				</p>
-				{tags.length > 0 && (
-					<div className="flex flex-wrap gap-2 mt-2">
-						{tags.map((tag) => (
-							<span
-								key={tag}
-								className="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md"
-							>
-								{tag}
-							</span>
-						))}
+		<article className="p-4 sm:p-5  border border-gray-300  dark:border-gray-800 group hover:border-gray-300 dark:hover:border-gray-700 rounded-lg  dark:bg-gray-950 transition-all duration-200 hover:shadow-md dark:hover:shadow-gray-800/50">
+			<div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+				<div className="flex-1 w-full">
+					{date && (
+						<time className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
+							{date}
+						</time>
+					)}
+					<h2 className="font-semibold text-gray-900 dark:text-gray-100 mt-1 text-base sm:text-lg transition-colors duration-200">
+						{title}
+					</h2>
+					<p className="leading-relaxed text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base transition-colors duration-200">
+						{description}
+					</p>
+					{tags.length > 0 && (
+						<div className="flex flex-wrap gap-2 mt-3">
+							{tags.map((tag) => (
+								<span
+									key={tag}
+									className="text-xs font-medium border border-gray-200 dark:border-gray-700 py-1 px-2.5 rounded-md text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-200"
+								>
+									{tag}
+								</span>
+							))}
+						</div>
+					)}
+				</div>
+				{rightAction && (
+					<div className="flex-shrink-0 flex items-center min-h-[40px] w-full sm:w-auto justify-end sm:justify-start">
+						{rightAction}
 					</div>
 				)}
 			</div>
-			{rightAction && (
-				<div className="ml-6 h-full flex-shrink-0 flex items-center justify-center">
-					{rightAction}
-				</div>
-			)}
 		</article>
 	);
 };

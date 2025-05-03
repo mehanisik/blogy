@@ -1,13 +1,13 @@
 import supabase from "@/db";
 import type {
-	Project,
-	Publication,
 	Blog,
 	BlogInsert,
 	BlogUpdate,
+	Project,
+	Publication,
 } from "@/types/database.types";
 import type { UserData } from "@/types/user-data";
-import { notFound } from "@tanstack/react-router";
+import { notFound, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
 export const fetchPublications = createServerFn({ method: "GET" }).handler(
@@ -17,7 +17,7 @@ export const fetchPublications = createServerFn({ method: "GET" }).handler(
 			.select("*")
 			.order("date", { ascending: false });
 		if (error) {
-			if (error.code == "404") {
+			if (error.code === "404") {
 				throw notFound();
 			}
 			throw Error;
@@ -30,7 +30,7 @@ export const fetchProjects = createServerFn({ method: "GET" }).handler(
 	async () => {
 		const { data, error } = await supabase.from("projects").select("*");
 		if (error) {
-			if (error.code == "404") {
+			if (error.code === "404") {
 				throw notFound();
 			}
 			throw Error;
@@ -48,7 +48,7 @@ export const fetchBlogs = createServerFn({ method: "GET" }).handler(
 			.order("date", { ascending: false });
 
 		if (error) {
-			if (error.code == "404") {
+			if (error.code === "404") {
 				throw notFound();
 			}
 			throw Error;
@@ -66,7 +66,7 @@ export const fetchBlogById = createServerFn({ method: "GET" })
 			.eq("id", blogId)
 			.single();
 		if (error) {
-			if (error.code == "404") {
+			if (error.code === "404") {
 				throw notFound();
 			}
 			throw Error;
@@ -75,6 +75,7 @@ export const fetchBlogById = createServerFn({ method: "GET" })
 	});
 
 export const fetchUser = createServerFn({ method: "GET" })
+	// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
 	.validator((d: unknown) => d as void)
 	.handler(async () => {
 		const {
@@ -113,24 +114,23 @@ export const checkAuth = createServerFn({ method: "GET" }).handler(async () => {
 	}
 });
 
-export const signIn = createServerFn()
-	.validator((d: unknown) => d as { email: string; password: string })
-	.handler(async ({ data }) => {
-		const { error } = await supabase.auth.signInWithPassword({
-			email: data.email,
-			password: data.password,
-		});
+export const signinFn = createServerFn()
+  .validator((d) => d as { email: string; password: string })
+  .handler(async ({ data }) => {
+    const { email, password } = data;
 
-		if (error) {
-			return {
-				error: true,
-				message: error.message,
-			};
-		}
 
-		return { success: true };
-	});
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
+    if (signInError) {
+		throw new Error
+    }
+
+	return {succes:true}
+  });
 export const createBlog = createServerFn()
 	.validator((blog: BlogInsert) => blog)
 	.handler(async ({ data: blog }) => {

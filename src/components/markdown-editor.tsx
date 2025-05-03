@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import type { Components } from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface MarkdownEditorProps {
 	value: string;
@@ -23,7 +23,7 @@ export function MarkdownEditor({
 			if (match) {
 				return (
 					<SyntaxHighlighter
-						style={vscDarkPlus as any}
+						style={vscDarkPlus}
 						language={match[1]}
 						PreTag="div"
 						className="rounded-lg my-4"
@@ -70,6 +70,7 @@ export function MarkdownEditor({
 		<div className={`flex flex-col gap-4 ${className}`}>
 			<div className="flex justify-end">
 				<button
+					type="button"
 					onClick={() => setPreview(!preview)}
 					className="px-3 py-1 text-sm border rounded"
 				>
@@ -77,14 +78,12 @@ export function MarkdownEditor({
 				</button>
 			</div>
 			{preview ? (
-				<div className="prose max-w-none p-4 border rounded ">
-					<ReactMarkdown components={components}>{value}</ReactMarkdown>
-				</div>
+				<ReactMarkdown components={components}>{value}</ReactMarkdown>
 			) : (
 				<textarea
 					value={value}
 					onChange={(e) => onChange(e.target.value)}
-					className="w-full h-full min-h-[400px] p-4 border rounded font-mono text-sm  "
+					className="w-full h-full min-h-[400px] p-4 border dark:bg-zinc-900 rounded font-mono text-sm dark:text-white "
 					placeholder="Write your markdown here..."
 				/>
 			)}

@@ -1,18 +1,18 @@
 import type { QueryClient } from "@tanstack/react-query";
 import {
-	createRootRouteWithContext,
 	HeadContent,
 	Outlet,
 	ScriptOnce,
 	Scripts,
+	createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import { fetchUser } from "@/services";
-import { Meta } from "@/constants/meta-tags.constant";
-import { Links } from "@/constants/root-links.constant";
-import { PendingComponent } from "@/components/layout/pending-component";
 import { ErrorComponent } from "@/components/layout/error-component";
 import { NotFoundComponent } from "@/components/layout/not-found";
+import { PendingComponent } from "@/components/layout/pending-component";
+import { Meta } from "@/constants/meta-tags.constant";
+import { Links } from "@/constants/root-links.constant";
+import { fetchUser } from "@/services";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -53,7 +53,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="bg-background text-foreground antialiased font-body">
+			<body className=" dark:bg-black bg-white  text-foreground antialiased font-body">
 				<ScriptOnce>
 					{`document.documentElement.classList.toggle(
 			  'dark',
