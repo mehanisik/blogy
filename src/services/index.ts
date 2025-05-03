@@ -115,22 +115,32 @@ export const checkAuth = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const signinFn = createServerFn()
-  .validator((d) => d as { email: string; password: string })
-  .handler(async ({ data }) => {
-    const { email, password } = data;
+	.validator((d) => d as { email: string; password: string })
+	.handler(async ({ data }) => {
+		const { email, password } = data;
 
+		if (!email || !password) {
+			return {
+				error: true,
+				message: "Please enter both email and password",
+			};
+		}
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+		const { error: signInError } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
 
-    if (signInError) {
-		throw new Error
-    }
+		if (signInError) {
+			return {
+				error: true,
+				message: signInError.message,
+			};
+		}
 
-	return {succes:true}
-  });
+		return { succes: true };
+	});
+
 export const createBlog = createServerFn()
 	.validator((blog: BlogInsert) => blog)
 	.handler(async ({ data: blog }) => {
