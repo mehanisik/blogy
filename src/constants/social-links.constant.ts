@@ -4,15 +4,11 @@ export const SOCIAL_LINKS = [
 		href: "mailto:mehanisik@outlook.com",
 	},
 	{
-		label: "twitter",
-		href: "https://twitter.com/example",
-	},
-	{
 		label: "github",
 		href: "https://github.com/mhanifiisik",
 	},
 	{
 		label: "linkedin",
-		href: "https://linkedin.com/in/mehmetisik",
+		href: "https://linkedin.com/in/mehanisik",
 	},
 ] as const;

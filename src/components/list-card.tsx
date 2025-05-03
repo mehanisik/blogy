@@ -1,57 +1,79 @@
-import { ExternalLink, FileText, Github } from "lucide-react";
-import type React from "react";
+import { useNavigate } from "@tanstack/react-router";
 
-export interface ListCardProps {
+interface ListCardProps {
 	title: string;
-	date: string;
-	description: string;
+	date?: string;
+	description?: string;
 	tags?: string[];
-	rightAction?: React.ReactNode;
+	type: "project" | "blog" | "publication";
+	link: string;
+	blogId?: number;
 }
 
-const ListCard: React.FC<ListCardProps> = ({
+export function ListCard({
 	title,
 	date,
 	description,
 	tags = [],
-	rightAction,
-}) => {
+	type,
+	link,
+	blogId,
+}: ListCardProps) {
+	const navigate = useNavigate();
+
+	const handleBlogClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault();
+		if (type === "blog" && blogId) {
+			navigate({ to: `/blogs/${blogId}` });
+		}
+	};
+
+	const isBlog = type === "blog" && blogId;
+	const isExternal = type === "project" || type === "publication";
+	const href = isBlog ? `/blogs/${blogId}` : link;
+
 	return (
-		<article className="p-4 sm:p-5  border border-gray-300  dark:border-gray-800 group hover:border-gray-300 dark:hover:border-gray-700 rounded-lg  dark:bg-gray-950 transition-all duration-200 hover:shadow-md dark:hover:shadow-gray-800/50">
-			<div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-				<div className="flex-1 w-full">
-					{date && (
-						<time className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
-							{date}
-						</time>
-					)}
-					<h2 className="font-semibold text-gray-900 dark:text-gray-100 mt-1 text-base sm:text-lg transition-colors duration-200">
-						{title}
-					</h2>
-					<p className="leading-relaxed text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base transition-colors duration-200">
-						{description}
-					</p>
-					{tags.length > 0 && (
-						<div className="flex flex-wrap gap-2 mt-3">
-							{tags.map((tag) => (
-								<span
-									key={tag}
-									className="text-xs font-medium border border-gray-200 dark:border-gray-700 py-1 px-2.5 rounded-md text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-200"
-								>
-									{tag}
-								</span>
-							))}
-						</div>
-					)}
-				</div>
-				{rightAction && (
-					<div className="flex-shrink-0 flex items-center min-h-[40px] w-full sm:w-auto justify-end sm:justify-start">
-						{rightAction}
-					</div>
+		<article className="p-4 sm:p-5 border-b border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-950 dark:border-gray-800 bg-transparent transition-colors duration-200">
+			<a
+				href={href}
+				target={isExternal ? "_blank" : undefined}
+				rel={isExternal ? "noopener noreferrer" : undefined}
+				onClick={isBlog ? handleBlogClick : undefined}
+				className="block w-full text-left focus:outline-none  rounded-lg transition-colors"
+				aria-label={title}
+			>
+				{date && (
+					<time className="block text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2">
+						{date}
+					</time>
 				)}
-			</div>
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+					<div className="flex-1 min-w-0">
+						<h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1 transition-colors">
+							{title}
+						</h2>
+						{description && (
+							<p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2 transition-colors">
+								{description}
+							</p>
+						)}
+						{tags.length > 0 && (
+							<div className="flex flex-wrap gap-2 mt-3">
+								{tags.map((tag) => (
+									<span
+										key={tag}
+										className="inline-block rounded bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm text-gray-700 dark:text-gray-300 px-3 py-1 font-medium transition-colors"
+									>
+										{tag}
+									</span>
+								))}
+							</div>
+						)}
+					</div>
+				</div>
+			</a>
 		</article>
 	);
-};
+}
 
 export default ListCard;

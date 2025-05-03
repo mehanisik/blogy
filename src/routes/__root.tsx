@@ -7,9 +7,7 @@ import {
 	createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import { ErrorComponent } from "@/components/layout/error-component";
 import { NotFoundComponent } from "@/components/layout/not-found";
-import { PendingComponent } from "@/components/layout/pending-component";
 import { Meta } from "@/constants/meta-tags.constant";
 import { Links } from "@/constants/root-links.constant";
 import { fetchUser } from "@/services";
@@ -34,8 +32,6 @@ export const Route = createRootRouteWithContext<{
 		links: Links,
 	}),
 	component: RootComponent,
-	pendingComponent: PendingComponent,
-	errorComponent: ErrorComponent,
 	notFoundComponent: NotFoundComponent,
 });
 
@@ -51,6 +47,8 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 	return (
 		<html suppressHydrationWarning lang="en">
 			<head>
+				<link rel="icon" href="/favicon.ico" />
+				<link rel="manifest" href="/site.webmanifest" />
 				<HeadContent />
 			</head>
 			<body className=" dark:bg-black bg-white  text-foreground antialiased font-body">

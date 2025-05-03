@@ -1,4 +1,4 @@
-import PageLayout from "@/components/layout/page-layout";
+import { PageLayout } from "@/components/layout/page-layout";
 import { MarkdownEditor } from "@/components/markdown-editor";
 import {
 	checkAuth,
@@ -103,12 +103,12 @@ function RouteComponent() {
 	};
 
 	return (
-		<PageLayout title="Admin Panel">
+		<PageLayout title="Admin Panel" description="Admin Panel">
 			{!isEditing ? (
 				<>
 					<div className="flex justify-between items-center mb-6">
 						<h1 className="text-xl font-medium text-gray-900 dark:text-gray-100">
-							Blog Posts
+							Admin Panel
 						</h1>
 						<div className="flex gap-2">
 							<button

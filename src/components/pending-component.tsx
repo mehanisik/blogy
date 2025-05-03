@@ -1,5 +1,5 @@
-import PageLayout from "@/components/layout/page-layout";
 import SkeletonCard from "@/components/skeleton-card";
+import { PageLayout } from "./layout/page-layout";
 
 interface PendingComponentProps {
 	title: string;
@@ -8,15 +8,19 @@ interface PendingComponentProps {
 }
 
 export function PendingComponent({
-	title,
 	count = 3,
 	className = "grid gap-8",
 }: PendingComponentProps) {
 	return (
-		<PageLayout title={title}>
+		<PageLayout title="Loading..." description="Loading...">
 			<div className={className}>
-				{Array.from({ length: count }).map((_, index) => (
-					<SkeletonCard key={index} />
+				{Array.from({ length: count }).map((_, i) => (
+					<SkeletonCard
+						key={`skeleton-${
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							i
+						}`}
+					/>
 				))}
 			</div>
 		</PageLayout>

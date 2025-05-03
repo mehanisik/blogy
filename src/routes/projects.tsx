@@ -1,9 +1,8 @@
-import PageLayout from "@/components/layout/page-layout";
+import { PageLayout } from "@/components/layout/page-layout";
 import ListCard from "@/components/list-card";
 import { PendingComponent } from "@/components/pending-component";
 import { fetchProjects } from "@/services";
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, Github } from "lucide-react";
 
 export const Route = createFileRoute("/projects")({
 	loader: () => fetchProjects(),
@@ -13,9 +12,28 @@ export const Route = createFileRoute("/projects")({
 
 function Projects() {
 	const projects = Route.useLoaderData();
-
 	return (
-		<PageLayout title="Projects">
+		<PageLayout
+			title="Projects"
+			description="Explore our portfolio of innovative projects and technical solutions. Discover our work in software development, web applications, and more."
+			keywords={[
+				"projects",
+				"portfolio",
+				"software development",
+				"frontend",
+				"full stack",
+				"react",
+				"nextjs",
+				"web applications",
+				"technical solutions",
+				"coding projects",
+				"development work",
+				"open source",
+				"software engineering",
+				"computer science",
+				"projects",
+			]}
+		>
 			<div className="grid gap-8">
 				{projects.map((project) => (
 					<ListCard
@@ -24,30 +42,8 @@ function Projects() {
 						date={""}
 						description={project.description}
 						tags={project.technologies}
-						rightAction={
-							<div className="flex gap-2">
-								{project.github && (
-									<a
-										href={project.github}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="p-2 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors"
-									>
-										<Github className="h-4 w-4" />
-									</a>
-								)}
-								{project.demo && (
-									<a
-										href={project.demo}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="p-2 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors"
-									>
-										<ExternalLink className="h-4 w-4" />
-									</a>
-								)}
-							</div>
-						}
+						type="project"
+						link={project.github || project.demo || ""}
 					/>
 				))}
 			</div>

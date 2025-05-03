@@ -65,7 +65,7 @@ export type Database = {
 					date: string;
 					doi: string | null;
 					id: number;
-					journal: string;
+					journal: string[];
 					pdf: string | null;
 					title: string;
 				};
@@ -75,7 +75,7 @@ export type Database = {
 					date: string;
 					doi?: string | null;
 					id?: never;
-					journal: string;
+					journal: string[];
 					pdf?: string | null;
 					title: string;
 				};
@@ -85,7 +85,7 @@ export type Database = {
 					date?: string;
 					doi?: string | null;
 					id?: never;
-					journal?: string;
+					journal?: string[];
 					pdf?: string | null;
 					title?: string;
 				};

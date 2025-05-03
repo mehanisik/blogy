@@ -1,23 +1,28 @@
 export function AboutSection() {
 	return (
 		<section className="mt-10">
-			<h2 className="text-2xl font-medium md:text-3xl mb-2 dark:text-white ">
+			<h2 className="text-xl font-medium md:text-2xl mb-2 dark:text-white ">
 				About Me
 			</h2>
 			<div className="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-white">
 				<p>
-					I'm a full-stack software engineer passionate about building scalable,
-					user-centric web applications with clean, maintainable code.
+					I am recent grad of masters in computer science and I am passionate
+					about building web applications with following the software
+					development principles and best practices.
 				</p>
 				<p>
-					I recently completed my Master's in Computer Systems and Networks at
-					Warsaw University of Technology, with 2+ years of experience in
-					professional development roles.
+					I usualy work with in React ecosystem to build projects. I am
+					interested to try the newest technologies , libraries and tools.
 				</p>
 				<p>
-					I love working with modern front-end technologies, architecting
-					resilient systems, and continuously learning to deliver the best user
-					experiences possible.
+					I am a quick learner and I am always looking for new challenges. I
+					believe that the best way to learn is to do and build something and
+					crafting new ideas
+				</p>
+				<p>
+					Outside of coding, you’ll probably find me playing chess, reading blog
+					posts from other devs, or just geeking out over design patterns and
+					clean code.Additionally i like to watch Primeagean live streams .
 				</p>
 			</div>
 		</section>
