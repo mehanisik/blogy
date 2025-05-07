@@ -18,38 +18,11 @@ function BlogPage() {
 		<PageLayout
 			title="Blog Posts"
 			description="Explore my collection of blog posts related to software engineering, programming, and my personal experiences as a software engineer. Stay updated with my latest thoughts and ideas."
-			keywords={[
-				"blog posts",
-				"articles",
-				"writing",
-				"insights",
-				"thoughts",
-				"ideas",
-				"content",
-				"blogging",
-				"software engineering",
-				"Data Structures and Algorithms",
-				"Distributed Systems",
-				"programming",
-				"software engineer",
-				"software development",
-				"web development",
-				"full stack development",
-				"frontend development",
-				"backend development",
-				"personal website",
-				"portfolio",
-				"software engineer portfolio",
-				"software engineer personal website",
-				"software engineer blog",
-				"software engineer projects",
-				"software engineer publications",
-			]}
 		>
 			<main>
 				<h1 className="sr-only">Blog Posts</h1>
 				<article className="flex flex-col gap-5" aria-label="Blog posts list">
-					{blogs.length === 0 && (
+					{blogs?.length === 0 && (
 						<section
 							className="flex flex-col gap-2"
 							aria-label="No posts message"
@@ -63,7 +36,7 @@ function BlogPage() {
 						</section>
 					)}
 					{blogs
-						.filter((blog) => blog.published)
+						?.filter((blog) => blog.published)
 						.map((blog) => (
 							<section
 								key={blog.id}
@@ -78,10 +51,6 @@ function BlogPage() {
 										month: "long",
 										day: "numeric",
 									})}
-									description={
-										blog.content.substring(0, 150) +
-										(blog.content.length > 150 ? "..." : "")
-									}
 									tags={blog.tags || []}
 									type="blog"
 									link=""

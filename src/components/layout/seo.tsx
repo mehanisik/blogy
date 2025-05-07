@@ -1,9 +1,7 @@
 interface SEOProps {
 	title: string;
 	description: string;
-	keywords?: string[];
 	image?: string;
-	url?: string;
 	type?: "website" | "article" | "profile";
 	author?: string;
 	publishedTime?: string;
@@ -15,9 +13,7 @@ interface SEOProps {
 export const SEO = ({
 	title,
 	description,
-	keywords = [],
-	image,
-	url,
+	image = "/logo.svg",
 	type = "website",
 	author,
 	publishedTime,
@@ -25,16 +21,29 @@ export const SEO = ({
 	canonicalUrl,
 	noIndex = false,
 }: SEOProps) => {
-	const siteTitle = `${title} | Blogy`;
-	const siteImage = image || "/logo.svg";
-	const siteUrl =
-		url || (typeof window !== "undefined" ? window.location.href : "");
+	const fullTitle = `${title} | mehanisik`;
+
+	const structuredData = {
+		"@context": "https://schema.org",
+		"@type": type === "article" ? "Article" : "WebSite",
+		name: fullTitle,
+		description,
+		...(type === "article" && {
+			headline: title,
+			mainEntityOfPage: canonicalUrl,
+			author: author && {
+				"@type": "Person",
+				name: author,
+			},
+			datePublished: publishedTime,
+			dateModified: modifiedTime,
+		}),
+	};
 
 	return (
 		<>
-			<title>{siteTitle}</title>
+			<title>{fullTitle}</title>
 			<meta name="description" content={description} />
-			<meta name="keywords" content={keywords.join(", ")} />
 			{author && <meta name="author" content={author} />}
 			<meta
 				name="robots"
@@ -43,12 +52,12 @@ export const SEO = ({
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
-			<meta property="og:title" content={siteTitle} />
+			<meta property="og:title" content={fullTitle} />
 			<meta property="og:description" content={description} />
 			<meta property="og:type" content={type} />
-			{siteUrl && <meta property="og:url" content={siteUrl} />}
-			<meta property="og:image" content={siteImage} />
-			<meta property="og:site_name" content="Blogy" />
+			<meta property="og:url" content={canonicalUrl} />
+			<meta property="og:image" content={image} />
+			<meta property="og:site_name" content="mehanisik" />
 			{type === "article" && (
 				<>
 					{author && <meta property="article:author" content={author} />}
@@ -62,28 +71,12 @@ export const SEO = ({
 			)}
 
 			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:title" content={siteTitle} />
+			<meta name="twitter:title" content={fullTitle} />
 			<meta name="twitter:description" content={description} />
-			<meta name="twitter:image" content={siteImage} />
+			<meta name="twitter:image" content={image} />
 
 			<script type="application/ld+json">
-				{JSON.stringify({
-					"@context": "https://schema.org",
-					"@type": type === "article" ? "Article" : "WebSite",
-					name: siteTitle,
-					description: description,
-					url: siteUrl,
-					...(type === "article" && {
-						author: author
-							? {
-									"@type": "Person",
-									name: author,
-								}
-							: undefined,
-						datePublished: publishedTime,
-						dateModified: modifiedTime,
-					}),
-				})}
+				{JSON.stringify(structuredData)}
 			</script>
 		</>
 	);

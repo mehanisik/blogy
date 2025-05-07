@@ -5,46 +5,20 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/blogs/$blogId")({
 	loader: async ({ params: { blogId } }) => {
-		try {
-			const post = await fetchBlogById({ data: Number(blogId) });
-			if (!post) {
-				throw new Error("Blog not found");
-			}
-			return post;
-		} catch (error) {
-			return null;
+		if (!blogId) {
+			throw new Error("Blog ID is required");
 		}
+		const post = await fetchBlogById({ data: Number(blogId) });
+		if (!post) {
+			throw new Error("Blog not found");
+		}
+		return { post };
 	},
 	component: BlogPostPage,
 });
 
 function BlogPostPage() {
-	const post = Route.useLoaderData();
-
-	if (!post) {
-		return (
-			<PageLayout
-				title="Blog Not Found"
-				description="The blog post you're looking for doesn't exist or has been removed."
-			>
-				<main className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-					<h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Blog Not Found
-					</h1>
-					<p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-						The blog post you're looking for doesn't exist or has been removed.
-					</p>
-					<Link
-						to="/blogs"
-						className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
-					>
-						Back to All Blogs
-					</Link>
-				</main>
-			</PageLayout>
-		);
-	}
-
+	const { post } = Route.useLoaderData();
 	const formatDate = (dateString?: string) => {
 		if (dateString) {
 			const date = new Date(dateString);
@@ -66,7 +40,6 @@ function BlogPostPage() {
 		<PageLayout
 			title={post?.title || "Blog Post"}
 			description={getDescription()}
-			keywords={post?.tags || []}
 		>
 			<main>
 				<nav aria-label="Breadcrumb">

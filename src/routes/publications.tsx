@@ -17,23 +17,9 @@ function Publications() {
 		<PageLayout
 			title="Publications"
 			description="Explore my collection of academic publications and research papers as a software engineer. Discover insights and findings from my research and writing."
-			keywords={[
-				"publications",
-				"research papers",
-				"academic papers",
-				"journal articles",
-				"research findings",
-				"academic research",
-				"software engineering",
-				"computer science",
-				"artificial intelligence",
-				"machine learning",
-				"data science",
-				"research papers",
-			]}
 		>
 			<div className="grid gap-8">
-				{publications.map((publication) => (
+				{publications?.map((publication) => (
 					<ListCard
 						key={publication.id}
 						title={publication.title}

@@ -6,90 +6,90 @@ import type {
 	Project,
 	Publication,
 } from "@/types/database.types";
-import type { UserData } from "@/types/user-data";
 import { notFound, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const handleSupabaseError = (error: any) => {
+	if (error.code === "PGRST116" || error.code === "404") {
+		throw notFound();
+	}
+
+	if (error.code === "401" || error.status === 401) {
+		return redirect({
+			to: "/sign-in",
+			search: {
+				redirect: "/admin",
+			},
+		});
+	}
+
+	throw new Error(`Database error: ${error.message || "Unknown error"}`);
+};
+
 export const fetchPublications = createServerFn({ method: "GET" }).handler(
 	async () => {
-		const { data, error } = await supabase
-			.from("publications")
-			.select("*")
-			.order("date", { ascending: false });
-		if (error) {
-			if (error.code === "404") {
-				throw notFound();
-			}
-			throw Error;
+		try {
+			const { data } = await supabase
+				.from("publications")
+				.select("*")
+				.order("date", { ascending: false });
+
+			return data as Publication[];
+		} catch (err) {
+			handleSupabaseError(err);
 		}
-		return data as Publication[];
 	},
 );
 
 export const fetchProjects = createServerFn({ method: "GET" }).handler(
 	async () => {
-		const { data, error } = await supabase.from("projects").select("*");
-		if (error) {
-			if (error.code === "404") {
-				throw notFound();
-			}
-			throw Error;
+		try {
+			const { data } = await supabase.from("projects").select("*");
+
+			return data as Project[];
+		} catch (err) {
+			handleSupabaseError(err);
 		}
-		return data as Project[];
 	},
 );
 
 export const fetchBlogs = createServerFn({ method: "GET" }).handler(
 	async () => {
-		const { data, error } = await supabase
-			.from("blogs")
-			.select("*")
-			.eq("published", true)
-			.order("date", { ascending: false });
+		try {
+			const { data } = await supabase
+				.from("blogs")
+				.select("*")
+				.eq("published", true)
+				.order("date", { ascending: false });
 
-		if (error) {
-			if (error.code === "404") {
-				throw notFound();
-			}
-			throw Error;
+			return data as Blog[];
+		} catch (err) {
+			handleSupabaseError(err);
 		}
-		return data as Blog[];
 	},
 );
 
 export const fetchBlogById = createServerFn({ method: "GET" })
-	.validator((d: number) => d)
+	.validator((id) => {
+		const numId = Number(id);
+		if (Number.isNaN(numId)) {
+			throw new Error("Blog ID must be a valid number");
+		}
+		return numId;
+	})
 	.handler(async ({ data: blogId }) => {
-		const { data, error } = await supabase
-			.from("blogs")
-			.select("*")
-			.eq("id", blogId)
-			.single();
-		if (error) {
-			if (error.code === "404") {
-				throw notFound();
-			}
-			throw Error;
-		}
-		return data as Blog;
-	});
+		try {
+			const { data } = await supabase
+				.from("blogs")
+				.select("*")
+				.eq("id", blogId)
+				.single();
 
-export const fetchUser = createServerFn({ method: "GET" })
-	// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
-	.validator((d: unknown) => d as void)
-	.handler(async () => {
-		const {
-			data: { user },
-			error,
-		} = await supabase.auth.getUser();
-		if (error) {
-			console.warn("Auth error:", error);
-			return null;
+			return data as Blog;
+		} catch (err) {
+			handleSupabaseError(err);
 		}
-		if (!user) return null;
-
-		const { id, email, user_metadata, app_metadata } = user;
-		return { id, email, user_metadata, app_metadata } as UserData;
 	});
 
 export const checkAuth = createServerFn({ method: "GET" }).handler(async () => {
@@ -99,7 +99,12 @@ export const checkAuth = createServerFn({ method: "GET" }).handler(async () => {
 			error,
 		} = await supabase.auth.getUser();
 
-		if (error || !user) {
+		if (error) {
+			console.warn("Auth check error:", error);
+			return { authenticated: false };
+		}
+
+		if (!user) {
 			return { authenticated: false };
 		}
 
@@ -109,7 +114,7 @@ export const checkAuth = createServerFn({ method: "GET" }).handler(async () => {
 			user: { id, email, user_metadata, app_metadata },
 		};
 	} catch (error) {
-		console.error(error);
+		console.error("Error checking authentication:", error);
 		return { authenticated: false };
 	}
 });
@@ -142,58 +147,114 @@ export const signinFn = createServerFn()
 	});
 
 export const createBlog = createServerFn()
-	.validator((blog: BlogInsert) => blog)
-	.handler(async ({ data: blog }) => {
-		const { data: result, error } = await supabase
-			.from("blogs")
-			.insert([blog])
-			.select()
-			.single();
+	.validator((blog: unknown) => {
+		if (!blog || typeof blog !== "object") {
+			throw new Error("Invalid blog data");
+		}
 
-		if (error) throw error;
-		return result as Blog;
+		return blog as BlogInsert;
+	})
+	.handler(async ({ data: blog }) => {
+		try {
+			const { data: result } = await supabase
+				.from("blogs")
+				.insert([blog])
+				.select()
+				.single();
+
+			return result as Blog;
+		} catch (err) {
+			handleSupabaseError(err);
+		}
 	});
 
 export const updateBlog = createServerFn()
-	.validator((input: { id: number; blog: BlogUpdate }) => input)
-	.handler(async ({ data: { id, blog } }) => {
-		const { data: result, error } = await supabase
-			.from("blogs")
-			.update(blog)
-			.eq("id", id)
-			.select()
-			.single();
+	.validator((input: unknown) => {
+		if (!input || typeof input !== "object") {
+			throw new Error("Invalid input data");
+		}
 
-		if (error) throw error;
-		return result as Blog;
+		const typedInput = input as { id?: number; blog?: BlogUpdate };
+
+		if (typedInput.id === undefined || typeof typedInput.id !== "number") {
+			throw new Error("Blog ID is required and must be a number");
+		}
+
+		if (!typedInput.blog || typeof typedInput.blog !== "object") {
+			throw new Error("Blog update data is required");
+		}
+
+		return { id: typedInput.id, blog: typedInput.blog as BlogUpdate };
+	})
+	.handler(async ({ data: { id, blog } }) => {
+		try {
+			const { data: result } = await supabase
+				.from("blogs")
+				.update(blog)
+				.eq("id", id)
+				.select()
+				.single();
+
+			return result as Blog;
+		} catch (err) {
+			handleSupabaseError(err);
+		}
 	});
 
 export const deleteBlog = createServerFn()
-	.validator((id: number) => id)
+	.validator((id: unknown) => {
+		const numId = Number(id);
+		if (Number.isNaN(numId)) {
+			throw new Error("Blog ID must be a valid number");
+		}
+		return numId;
+	})
 	.handler(async ({ data: id }) => {
-		const { error } = await supabase.from("blogs").delete().eq("id", id);
+		try {
+			await supabase.from("blogs").delete().eq("id", id);
 
-		if (error) throw error;
-		return { success: true };
+			return { success: true };
+		} catch (err) {
+			handleSupabaseError(err);
+		}
 	});
 
 export const fetchBlog = createServerFn()
-	.validator((id: number) => id)
+	.validator((id: unknown) => {
+		const numId = Number(id);
+		if (Number.isNaN(numId)) {
+			throw new Error("Blog ID must be a valid number");
+		}
+		return numId;
+	})
 	.handler(async ({ data: id }) => {
-		const { data: result, error } = await supabase
-			.from("blogs")
-			.select("*")
-			.eq("id", id)
-			.single();
+		try {
+			const { data: result } = await supabase
+				.from("blogs")
+				.select("*")
+				.eq("id", id)
+				.single();
 
-		if (error) throw error;
-		return result as Blog;
+			return result as Blog;
+		} catch (err) {
+			handleSupabaseError(err);
+		}
 	});
 
 export const signOut = createServerFn({ method: "POST" }).handler(async () => {
-	const { error } = await supabase.auth.signOut();
-	if (error) {
-		return { error: true, message: error.message };
+	try {
+		const { error } = await supabase.auth.signOut();
+
+		if (error) {
+			return {
+				success: false,
+				error: true,
+				message: error.message,
+			};
+		}
+
+		return { success: true };
+	} catch (err) {
+		handleSupabaseError(err);
 	}
-	return { success: true };
 });

@@ -1,7 +1,7 @@
 export function AboutSection() {
 	return (
-		<section className="mt-10">
-			<h2 className="text-xl font-medium md:text-2xl mb-2 dark:text-white ">
+		<section>
+			<h2 className="text-xl font-medium md:text-2xl dark:text-white ">
 				About Me
 			</h2>
 			<div className="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-white">

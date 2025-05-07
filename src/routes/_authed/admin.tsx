@@ -131,7 +131,7 @@ function RouteComponent() {
 					</div>
 
 					<div className="space-y-2">
-						{blogs.length === 0 ? (
+						{blogs?.length === 0 ? (
 							<div className="text-center py-12 text-gray-500 dark:text-gray-400">
 								<p className="mb-4">No blog posts yet</p>
 								<button
@@ -144,7 +144,7 @@ function RouteComponent() {
 								</button>
 							</div>
 						) : (
-							blogs.map((blog: Blog) => (
+							blogs?.map((blog: Blog) => (
 								<div
 									key={blog.id}
 									className="border border-gray-200 dark:border-gray-800 rounded-md p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"

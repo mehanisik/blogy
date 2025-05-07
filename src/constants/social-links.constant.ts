@@ -5,10 +5,14 @@ export const SOCIAL_LINKS = [
 	},
 	{
 		label: "github",
-		href: "https://github.com/mhanifiisik",
+		href: "https://github.com/mehanisik",
 	},
 	{
 		label: "linkedin",
 		href: "https://linkedin.com/in/mehanisik",
+	},
+	{
+		label: "source",
+		href: "https://github.com/mehanisik/blogy",
 	},
 ] as const;

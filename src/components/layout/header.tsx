@@ -1,9 +1,11 @@
 import { NAV_ITEMS } from "@/constants/nav-items.constant";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
 import ThemeToggle from "../theme-toggle";
 
 export default function Header() {
+	const router = useRouter();
+
 	return (
 		<header className="w-full transition-colors duration-200">
 			<nav className="flex flex-row justify-between items-center py-4 transition-all duration-500 ease-in-out">
@@ -17,7 +19,9 @@ export default function Header() {
 								className: "text-red-500 dark:text-red-400 font-bold",
 							}}
 							aria-current={
-								item.href === window.location.pathname ? "page" : undefined
+								item.href === router.state.location.pathname
+									? "page"
+									: undefined
 							}
 						>
 							{item.name}

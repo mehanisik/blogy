@@ -19,9 +19,10 @@ export function Markdown({ content }: MarkdownProps) {
 						PreTag="div"
 						className="rounded-lg my-4"
 						customStyle={{
-							backgroundColor: "rgb(30, 30, 30)",
+							backgroundColor: "#1e1e1e",
 							padding: "1rem",
 							borderRadius: "0.5rem",
+							border: "1px solid #444",
 						}}
 					>
 						{String(children).replace(/\n$/, "")}

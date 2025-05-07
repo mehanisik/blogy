@@ -53,5 +53,8 @@
   },
   "search.exclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "cSpell.words": [
+    "supabase"
+  ]
 }

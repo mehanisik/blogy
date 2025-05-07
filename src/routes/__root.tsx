@@ -1,32 +1,16 @@
-import type { QueryClient } from "@tanstack/react-query";
 import {
 	HeadContent,
 	Outlet,
 	ScriptOnce,
 	Scripts,
-	createRootRouteWithContext,
+	createRootRoute,
 } from "@tanstack/react-router";
 
 import { NotFoundComponent } from "@/components/layout/not-found";
 import { Meta } from "@/constants/meta-tags.constant";
 import { Links } from "@/constants/root-links.constant";
-import { fetchUser } from "@/services";
 
-export const Route = createRootRouteWithContext<{
-	queryClient: QueryClient;
-	user: Awaited<ReturnType<typeof fetchUser>>;
-}>()({
-	beforeLoad: async ({ context }) => {
-		await context.queryClient.invalidateQueries({ queryKey: ["user"] });
-
-		const user = await context.queryClient.fetchQuery({
-			queryKey: ["user"],
-			queryFn: ({ signal }) => fetchUser({ signal }),
-			staleTime: 0,
-		});
-		return { user };
-	},
-
+export const Route = createRootRoute({
 	head: () => ({
 		meta: Meta,
 		links: Links,
@@ -51,7 +35,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 				<link rel="manifest" href="/site.webmanifest" />
 				<HeadContent />
 			</head>
-			<body className=" dark:bg-black bg-white  text-foreground antialiased font-body">
+			<body className=" dark:bg-[#1c1c1c] bg-[#fcfcfc]  text-foreground antialiased font-body">
 				<ScriptOnce>
 					{`document.documentElement.classList.toggle(
 			  'dark',

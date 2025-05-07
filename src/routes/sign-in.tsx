@@ -1,15 +1,17 @@
-import { signinFn } from "@/services";
+import { checkAuth, signinFn } from "@/services";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/sign-in")({
-	component: SignIn,
-	beforeLoad: async ({ context }) => {
-		if (context.user) {
+	loader: async () => {
+		const result = await checkAuth();
+
+		if (result.authenticated) {
 			throw redirect({
 				to: "/admin",
 			});
 		}
 	},
+	component: SignIn,
 	validateSearch: (search: Record<string, unknown>) => {
 		return {
 			redirect: search.redirect as string | undefined,
@@ -23,7 +25,7 @@ function SignIn() {
 	return (
 		<section className="max-w-3xl mx-auto min-h-screen flex items-center justify-center">
 			<div className="flex flex-col gap-4 w-full">
-				<div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-card-foreground shadow-sm mx-auto w-full max-w-md transition-colors">
+				<div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-[#fcfcfc] dark:bg-[#1c1c1c] text-neutral-900 dark:text-neutral-100 shadow-sm mx-auto w-full max-w-md transition-colors">
 					<div className="flex flex-col space-y-1.5 p-6 items-center">
 						<h3 className="font-semibold tracking-tight text-xl text-gray-900 dark:text-gray-100">
 							Log in with your email
@@ -56,7 +58,7 @@ function SignIn() {
 									<input
 										type="email"
 										name="email"
-										className="flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-colors [&:-webkit-autofill]:bg-white dark:[&:-webkit-autofill]:bg-gray-900 [&:-webkit-autofill]:!text-gray-900 dark:[&:-webkit-autofill]:!text-gray-100"
+										className="flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-700  bg-transparent px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-colors [&:-webkit-autofill]:bg-white dark:[&:-webkit-autofill]:bg-gray-900 [&:-webkit-autofill]:!text-gray-900 dark:[&:-webkit-autofill]:!text-gray-100"
 										placeholder="m@example.com"
 										required
 										autoComplete="email"
@@ -74,7 +76,7 @@ function SignIn() {
 									<input
 										type="password"
 										name="password"
-										className="flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-colors [&:-webkit-autofill]:bg-white dark:[&:-webkit-autofill]:bg-gray-900 [&:-webkit-autofill]:!text-gray-900 dark:[&:-webkit-autofill]:!text-gray-100"
+										className="flex h-10 w-full bg-gray-100 rounded-md border border-gray-200 dark:border-gray-700 bg-transparent  px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-colors [&:-webkit-autofill]:bg-white dark:[&:-webkit-autofill]:bg-gray-900 [&:-webkit-autofill]:!text-gray-900 dark:[&:-webkit-autofill]:!text-gray-100"
 										placeholder="Enter your password"
 										required
 										autoComplete="current-password"
@@ -82,7 +84,7 @@ function SignIn() {
 								</div>
 								<button
 									type="submit"
-									className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 hover:bg-gray-900/90 dark:hover:bg-gray-100/90 h-10 px-4 py-2 w-full"
+									className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 dark:bg-[#313131] text-white dark:text-white hover:bg-gray-900/90  h-10 px-4 py-2 w-full"
 								>
 									Log in
 								</button>
