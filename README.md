@@ -62,3 +62,4 @@ npm run format
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Supabase](https://supabase.com//) 
 - [Biome](https://biomejs.dev/) 
+- [UMAMI](https://umami.is/)

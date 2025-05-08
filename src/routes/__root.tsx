@@ -33,11 +33,10 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 			<head>
 				<link rel="icon" href="/favicon.ico" />
 				<link rel="manifest" href="/site.webmanifest" />
-				11{" "}
 				<script
 					defer
-					src={import.meta.env.UMAMI_WEBSITE_URL}
-					data-website-id={import.meta.env.UMAMI_WEBSITE_ID}
+					src={import.meta.env.VITE_UMAMI_WEBSITE_URL}
+					data-website-id={import.meta.env.VITE_UMAMI_WEBSITE_ID}
 				/>
 				<HeadContent />
 			</head>
