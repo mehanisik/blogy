@@ -1,7 +1,6 @@
 {
   "name": "blogy",
   "type": "module",
-  "homepage": "https://mehanisik.github.io/blogy",
   "scripts": {
     "dev": "vinxi dev",
     "start": "vinxi start",

@@ -5,7 +5,6 @@ export function createRouter() {
 	const router = createTanStackRouter({
 		routeTree,
 		scrollRestoration: true,
-		basepath: "/blogy",
 	});
 
 	return router;

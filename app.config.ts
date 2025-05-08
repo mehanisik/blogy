@@ -10,7 +10,6 @@ export default defineConfig({
       }),
       tailwindcss(),
     ],
-    base: '/blogy/',
   },
 
   // https://react.dev/learn/react-compiler
