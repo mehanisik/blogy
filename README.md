@@ -1,65 +1,123 @@
 # Blogy
 
-A minimal portfolio website built with React, TanStack Router, and Tailwind CSS, using Supabase for the backend. This project serves as my personal website.
+<div align="center">
+  <img src="public/android-chrome-512x512.png" alt="Blogy Logo" width="100"/>
+  
+  [![React](https://img.shields.io/badge/React-19.0.0-black)](https://react.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-black)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0.6-black)](https://tailwindcss.com/)
+  [![License](https://img.shields.io/badge/License-MIT-black)](LICENSE)
+  [![Netlify](https://img.shields.io/badge/Deployed-Netlify-black)](https://www.netlify.com/)
+</div>
 
-It is a space where I document what I learn as a developer, including my knowledge, experiences, study materials, and topics that catch my interest. I write about front-end development, JavaScript, TypeScript, and other subjects related to software development that I find useful or worth sharing 🤠.
+<div align="center">
+  <img src="public/website.gif" alt="Blogy Demo" width="800"/>
+</div>
+
+## Overview
+
+A simple, minimalist portfolio and blog website built with React, TanStack Router, and Tailwind CSS. This platform serves as a space for sharing knowledge, experiences, and insights about software development.
+
+
+## Technology Stack
+
+The website is built using a modern technology stack:
+- React 19 with React Compiler
+- TanStack Router for type-safe navigation
+- Tailwind CSS for styling
+- Supabase for backend services
+- TypeScript for type safety
+- Biome for code quality
+- UMAMI for analytics
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or bun
+- Node.js 20 or later
+- Bun (recommended) or npm
+- Git
 
 ### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/mhanifiisik/blogy.git
-cd blogy
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mhanifiisik/blogy.git
+   cd blogy
+   ```
 
-# Install dependencies
-bun install
+2. Install dependencies:
+   ```bash
+   bun install
+   ```
 
-# Start the development server
-bun run dev
-```
+3. Configure environment:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Update `.env.local` with your Supabase credentials.
 
-The application will be launch at `http://localhost:3000`.
+4. Start development server:
+   ```bash
+   bun run dev
+   ```
+
+The application will be available at `http://localhost:3000`.
 
 ## Project Structure
 
 ```
 src/
-├── app/           # Application configuration
 ├── components/    # Reusable UI components
 ├── routes/        # Application routes
 ├── services/      # API and data services
 ├── styles/        # Global styles
 ├── types/         # TypeScript type definitions
-└── utils/         # Utility functions
+├── hooks/         # Custom React hooks
+├── constants/     # Application constants
+└── db/           # Database configuration
 ```
 
 ## Development
 
 ```bash
-# Run development server
-npm run dev
+# Start development server
+bun run dev
 
 # Build for production
-npm run build
+bun run build
+
+# Preview production build
+bun run serve
 
 # Run tests
-npm run test
+bun run test
 
-# Lint and format code
-npm run lint
-npm run format
+# Lint code
+bun run lint
+
+# Format code
+bun run format
 ```
 
-## Built With
+## Deployment
 
-- [React](https://react.dev/) 
-- [TanStack Router](https://tanstack.com/router) 
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Supabase](https://supabase.com//) 
-- [Biome](https://biomejs.dev/) 
-- [UMAMI](https://umami.is/)
+The project is configured for automatic deployment on Netlify. The build process is managed through the `netlify.toml` configuration file.
+
+## Technologies
+
+- [React](https://react.dev/) - UI Library
+- [TanStack Router](https://tanstack.com/router) - Type-safe routing
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [Supabase](https://supabase.com/) - Backend as a Service
+- [Biome](https://biomejs.dev/) - Linting and formatting
+- [UMAMI](https://umami.is/) - Privacy-focused analytics
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Mehmet Hanifi Isik
+- GitHub: [@mhanifiisik](https://github.com/mhanifiisik)

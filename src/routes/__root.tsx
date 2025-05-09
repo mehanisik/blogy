@@ -40,11 +40,13 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 			<head>
 				<link rel="icon" href="/favicon.ico" />
 				<link rel="manifest" href="/site.webmanifest" />
-				<script
-					defer
-					src={import.meta.env.VITE_UMAMI_WEBSITE_URL}
-					data-website-id={import.meta.env.VITE_UMAMI_WEBSITE_ID}
-				/>
+				{import.meta.env.VITE_UMAMI_SCRIPT && (
+					<script
+						defer
+						data-website-id={import.meta.env.VITE_UMAMI_WEBSITE_ID}
+						src={import.meta.env.VITE_UMAMI_SCRIPT}
+					/>
+				)}
 				<HeadContent />
 			</head>
 			<body className=" dark:bg-[#1c1c1c] bg-[#fcfcfc]  text-foreground antialiased font-body">

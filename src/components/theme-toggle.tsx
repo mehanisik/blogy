@@ -2,7 +2,8 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-	const [darkMode, setDarkMode] = useState(false);
+	const [mounted, setMounted] = useState(false);
+	const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
 
 	useEffect(() => {
 		const isDarkMode =
@@ -11,29 +12,43 @@ export default function ThemeToggle() {
 				window.matchMedia("(prefers-color-scheme: dark)").matches);
 
 		setDarkMode(isDarkMode);
-		applyTheme(isDarkMode);
+		setMounted(true);
 	}, []);
 
-	const toggleTheme = () => {
-		const newMode = !darkMode;
-		setDarkMode(newMode);
-		applyTheme(newMode);
-		localStorage.setItem("theme", newMode ? "dark" : "light");
-	};
+	useEffect(() => {
+		if (darkMode === undefined) return;
 
-	const applyTheme = (isDark: boolean) => {
-		if (isDark) {
+		if (darkMode) {
 			document.documentElement.classList.add("dark");
 		} else {
 			document.documentElement.classList.remove("dark");
 		}
+	}, [darkMode]);
+
+	const toggleTheme = () => {
+		const newMode = !darkMode;
+		setDarkMode(newMode);
+		localStorage.setItem("theme", newMode ? "dark" : "light");
 	};
+
+	if (!mounted) {
+		return (
+			<button
+				type="button"
+				className="p-2 rounded-full"
+				aria-label="Loading theme"
+				disabled
+			>
+				<div className="h-5 w-5" />
+			</button>
+		);
+	}
 
 	return (
 		<button
 			type="button"
 			onClick={toggleTheme}
-			className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 text-gray-600 dark:text-gray-300"
+			className="p-2 rounded-full hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 text-gray-600 dark:text-gray-300"
 			aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
 		>
 			{darkMode ? (
