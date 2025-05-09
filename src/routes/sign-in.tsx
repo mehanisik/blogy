@@ -1,9 +1,10 @@
-import { checkAuth, signinFn } from "@/services";
+import { checkAuthFn, signinFn } from "@/services/auth";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/sign-in")({
 	loader: async () => {
-		const result = await checkAuth();
+		const result = await checkAuthFn();
 
 		if (result.authenticated) {
 			throw redirect({
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/sign-in")({
 
 function SignIn() {
 	const navigate = useNavigate();
+	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	return (
 		<section className="max-w-3xl mx-auto min-h-screen flex items-center justify-center">
@@ -36,16 +39,43 @@ function SignIn() {
 					</div>
 					<div className="p-6 pt-0">
 						<div className="grid gap-4">
+							{error && (
+								<div className="p-3 rounded-md bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-400 text-sm">
+									{error}
+								</div>
+							)}
 							<form
 								className="grid gap-4"
 								onSubmit={async (event) => {
 									event.preventDefault();
-									const formData = new FormData(event.currentTarget);
-									const email = formData.get("email") as string;
-									const password = formData.get("password") as string;
-									const res = await signinFn({ data: { email, password } });
-									if (res.succes)
-										navigate({ to: "/admin", search: { redirect: undefined } });
+									setError(null);
+									setIsLoading(true);
+
+									try {
+										const formData = new FormData(event.currentTarget);
+										const email = formData.get("email") as string;
+										const password = formData.get("password") as string;
+
+										if (!email || !password) {
+											setError("Please enter both email and password");
+											return;
+										}
+
+										const res = await signinFn({ data: { email, password } });
+
+										if (res.error) {
+											setError(res.message || "Failed to sign in");
+											return;
+										}
+
+										if (res.success) {
+											navigate({ to: "/admin" });
+										}
+									} catch (err) {
+										setError("An unexpected error occurred. Please try again.");
+									} finally {
+										setIsLoading(false);
+									}
 								}}
 							>
 								<div className="grid gap-2">
@@ -84,9 +114,10 @@ function SignIn() {
 								</div>
 								<button
 									type="submit"
+									disabled={isLoading}
 									className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 dark:bg-[#313131] text-white dark:text-white hover:bg-gray-900/90  h-10 px-4 py-2 w-full"
 								>
-									Log in
+									{isLoading ? "Signing in..." : "Log in"}
 								</button>
 							</form>
 						</div>

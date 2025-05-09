@@ -1,12 +1,12 @@
 import { PageLayout } from "@/components/layout/page-layout";
 import ListCard from "@/components/list-card";
 import { PendingComponent } from "@/components/pending-component";
-import { fetchProjects } from "@/services";
+import { fetchProjectsFn } from "@/services/project";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/projects")({
-	loader: () => fetchProjects(),
-	pendingComponent: () => <PendingComponent title="Projects" />,
+	loader: () => fetchProjectsFn(),
+	pendingComponent: PendingComponent,
 	component: Projects,
 });
 

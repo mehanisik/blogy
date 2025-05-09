@@ -1,4 +1,4 @@
-import Markdown from "@/components/mardown";
+import Markdown from "@/components/markdown";
 import { useState } from "react";
 
 interface MarkdownEditorProps {

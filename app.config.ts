@@ -31,8 +31,4 @@ export default defineConfig({
     appDirectory: "./src",
   },
 
-  server: {
-    // https://tanstack.com/start/latest/docs/framework/react/hosting#deployment
-    preset: "static",
-  },
 });

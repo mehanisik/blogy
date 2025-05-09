@@ -1,10 +1,10 @@
 export function AboutSection() {
 	return (
 		<section>
-			<h2 className="text-xl font-medium md:text-2xl dark:text-white ">
+			<h2 className="text-xl font-medium md:text-2xl text-black dark:text-white">
 				About Me
 			</h2>
-			<div className="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-white">
+			<div className="space-y-4 text-base leading-relaxed">
 				<p>
 					I am recent grad of masters in computer science and I am passionate
 					about building web applications with following the software

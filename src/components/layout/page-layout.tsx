@@ -44,7 +44,7 @@ export function PageLayout({
 			/>
 			<div className="h-screen flex flex-col max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 transition-colors duration-200">
 				<Header />
-				<main className="flex-1 py-4 sm:py-6 lg:py-8 h-calc[100vh-100px]">
+				<main className="flex-1 py-4 sm:py-6 lg:py-8 h-calc[100vh-100px] text-zinc-600 dark:text-white">
 					{children}
 				</main>
 				<footer className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-200 dark:border-[#313131] text-sm text-gray-600 dark:text-gray-400 bg-transparent">

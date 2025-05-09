@@ -9,8 +9,7 @@
     "test": "vitest run",
     "format": "biome format --write ./src",
     "lint": "biome lint",
-    "check": "biome check",
-    "deploy": "gh-pages -d build"
+    "check": "biome check"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",

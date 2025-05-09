@@ -1,14 +1,12 @@
 import { PageLayout } from "@/components/layout/page-layout";
 import ListCard from "@/components/list-card";
 import { PendingComponent } from "@/components/pending-component";
-import { fetchBlogs } from "@/services";
+import { fetchBlogsFn } from "@/services/blog";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/blogs/")({
-	loader: () => fetchBlogs(),
-	pendingComponent: () => (
-		<PendingComponent title="Blogs" className="flex flex-col gap-5" />
-	),
+	loader: () => fetchBlogsFn(),
+	pendingComponent: PendingComponent,
 	component: BlogPage,
 });
 

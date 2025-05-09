@@ -3,21 +3,28 @@ import {
 	Outlet,
 	ScriptOnce,
 	Scripts,
-	createRootRoute,
+	createRootRouteWithContext,
 } from "@tanstack/react-router";
 
+import { ErrorComponent } from "@/components/layout/error-component";
 import { NotFoundComponent } from "@/components/layout/not-found";
+import { PendingComponent } from "@/components/pending-component";
 import { Meta } from "@/constants/meta-tags.constant";
 import { Links } from "@/constants/root-links.constant";
+import type { QueryClient } from "@tanstack/react-query";
 
-export const Route = createRootRoute({
-	head: () => ({
-		meta: Meta,
-		links: Links,
-	}),
-	component: RootComponent,
-	notFoundComponent: NotFoundComponent,
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+	{
+		head: () => ({
+			meta: Meta,
+			links: Links,
+		}),
+		component: RootComponent,
+		notFoundComponent: NotFoundComponent,
+		errorComponent: ErrorComponent,
+		pendingComponent: PendingComponent,
+	},
+);
 
 function RootComponent() {
 	return (

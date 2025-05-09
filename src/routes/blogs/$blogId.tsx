@@ -1,6 +1,6 @@
 import { PageLayout } from "@/components/layout/page-layout";
-import Mardown from "@/components/mardown";
-import { fetchBlogById } from "@/services";
+import Mardown from "@/components/markdown";
+import { fetchBlogByIdFn } from "@/services/blog";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/blogs/$blogId")({
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/blogs/$blogId")({
 		if (!blogId) {
 			throw new Error("Blog ID is required");
 		}
-		const post = await fetchBlogById({ data: Number(blogId) });
+		const post = await fetchBlogByIdFn({ data: Number(blogId) });
 		if (!post) {
 			throw new Error("Blog not found");
 		}
