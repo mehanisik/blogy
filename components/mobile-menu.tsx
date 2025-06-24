@@ -2,7 +2,15 @@
 
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+	Sheet,
+	SheetContent,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface NavLink {
 	href: string;
@@ -16,37 +24,45 @@ interface MobileMenuProps {
 export function MobileMenu({ navLinks }: MobileMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleToggle = () => setIsOpen(!isOpen);
-	const handleClose = () => setIsOpen(false);
+	const handleClose = useCallback(() => {
+		setIsOpen(false);
+	}, []);
 
 	return (
 		<div className="md:hidden">
-			<button
-				type="button"
-				className="p-2 outline-none cursor-pointer rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors duration-200"
-				aria-label="Toggle menu"
-				aria-expanded={isOpen}
-				onClick={handleToggle}
-			>
-				<Menu className="w-6 h-6" />
-			</button>
-
-			{isOpen && (
-				<div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50">
-					<div className="py-1">
-						{navLinks.map((item) => (
-							<Link
-								key={item.href}
-								href={item.href}
-								className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-								onClick={handleClose}
-							>
-								{item.label}
-							</Link>
-						))}
-					</div>
-				</div>
-			)}
+			<Sheet open={isOpen} onOpenChange={setIsOpen}>
+				<SheetTrigger asChild>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="h-8 w-8 sm:h-10 sm:w-10"
+						aria-label="Open mobile menu"
+					>
+						<Menu className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+					</Button>
+				</SheetTrigger>
+				<SheetContent side="right" className="w-[280px] sm:w-[320px] lg:w-[400px]">
+					<SheetHeader>
+						<SheetTitle className="text-lg sm:text-xl">Navigation</SheetTitle>
+					</SheetHeader>
+					<nav className="mt-4 sm:mt-6">
+						<ul className="space-y-1 sm:space-y-2">
+							{navLinks.map((item) => (
+								<li key={item.href}>
+									<Link
+										href={item.href}
+										className="flex w-full items-center rounded-md px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-medium text-foreground transition-colors hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
+										onClick={handleClose}
+										aria-label={`Navigate to ${item.label} page`}
+									>
+										{item.label}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</SheetContent>
+			</Sheet>
 		</div>
 	);
 }

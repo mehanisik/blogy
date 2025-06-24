@@ -6,13 +6,13 @@ import { Label } from "@/components/ui/label";
 import { getPostById } from "@/utils/admin-data";
 import { updatePost } from "../../../actions";
 
-interface UpdatePostPageProps {
-	params: { id: string };
-}
-
 export const dynamic = "force-dynamic";
 
-export default async function UpdatePostPage({ params }: UpdatePostPageProps) {
+export default async function UpdatePostPage({
+	params,
+}: {
+	params: { id: string };
+}) {
 	const id = Number(params.id);
 	if (!id) return notFound();
 	const post = await getPostById(id);
@@ -22,9 +22,7 @@ export default async function UpdatePostPage({ params }: UpdatePostPageProps) {
 		<PageLayout>
 			<div className="py-8">
 				<div className="max-w-2xl mx-auto">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">
-						Edit Post
-					</h1>
+					<h1 className="text-3xl font-bold text-foreground mb-8">Edit Post</h1>
 					<form action={updatePost} className="space-y-6">
 						<input type="hidden" name="id" value={post.id} />
 						<div className="space-y-2">
@@ -105,7 +103,7 @@ export default async function UpdatePostPage({ params }: UpdatePostPageProps) {
 								name="published"
 								type="checkbox"
 								value="true"
-								className="rounded border-gray-300"
+								className="rounded border-border"
 								defaultChecked={post.published}
 							/>
 							<Label htmlFor="published">Publish</Label>

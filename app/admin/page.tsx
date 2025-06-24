@@ -12,10 +12,8 @@ export default function AdminPage() {
 			<div className="flex min-h-screen items-center justify-center py-12">
 				<div className="w-full max-w-md space-y-8">
 					<div className="text-center">
-						<h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-							Admin Login
-						</h1>
-						<p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+						<h1 className="text-2xl font-bold text-foreground">Admin Login</h1>
+						<p className="mt-2 text-sm text-muted-foreground">
 							Sign in to access the dashboard
 						</p>
 					</div>

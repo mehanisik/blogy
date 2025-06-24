@@ -17,17 +17,21 @@ const switzer = localFont({
 export const metadata: Metadata = {
 	metadataBase: new URL(env.BASE_URL),
 	title: {
-		default: "Mehanisik | Personal Blog",
-		template: "%s | Mehanisik",
+		default: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
+		template: "%s | Mehmet ISIK",
 	},
 	description:
-		"This is my personal blog where I share my journey, projects, and thoughts as I learn and grow in software development",
+		"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
 	keywords: [
 		"software engineer",
-		"full-stack development",
+		"full-stack developer",
 		"react",
 		"typescript",
 		"next.js",
+		"web development",
+		"portfolio",
+		"blog",
+		"mehmet isik",
 	],
 	authors: [{ name: "Mehmet ISIK" }],
 	creator: "Mehmet ISIK",
@@ -38,36 +42,37 @@ export const metadata: Metadata = {
 		telephone: false,
 	},
 	openGraph: {
-		title: "Mehanisik | Personal Blog",
+		title: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
 		description:
-			"This is my personal blog where I share my journey, projects, and thoughts as I learn and grow in software development",
+			"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
 		url: env.BASE_URL,
-		siteName: "Mehanisik",
+		siteName: "Mehmet ISIK",
 		locale: "en_US",
 		type: "website",
 		images: [
 			{
-				url: "https://placehold.co/1200x630?text=Mehanisik+Blog",
+				url: "/og.png",
 				width: 1200,
 				height: 630,
-				alt: "Mehanisik Blog Open Graph Image",
+				alt: "Mehmet ISIK Open Graph image",
 			},
 		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Mehanisik | Personal Blog",
+		title: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
 		description:
-			"This is my personal blog where I share my journey, projects, and thoughts as I learn and grow in software development",
+			"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
 		images: [
 			{
-				url: "https://placehold.co/1200x630?text=Mehanisik+Blog",
+				url: "/og.png",
 				width: 1200,
 				height: 630,
-				alt: "Mehanisik Blog Twitter Card",
+				alt: "Mehmet ISIK Open Graph image",
 			},
 		],
-		site: "@mehanisik",
+		site: "@siralcntra",
+		creator: "@siralcntra",
 	},
 	robots: {
 		index: true,
@@ -83,6 +88,9 @@ export const metadata: Metadata = {
 	verification: {
 		google: "your-google-verification-code",
 	},
+	alternates: {
+		canonical: env.BASE_URL,
+	},
 };
 
 export const viewport: Viewport = {
@@ -92,18 +100,25 @@ export const viewport: Viewport = {
 	],
 	width: "device-width",
 	initialScale: 1,
-	maximumScale: 1,
-	userScalable: false,
+	maximumScale: 5,
+	userScalable: true,
 };
 
 export default function RootLayout({ children }: { children: ReactElement }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
+				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+				<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+				<link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png" />
+				<link rel="icon" type="image/png" sizes="196x196" href="/favicon-196x196.png" />
 				<link rel="icon" href="/favicon.ico" sizes="any" />
-				<link rel="icon" href="/icon.svg" type="image/svg+xml" />
-				<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-				<link rel="manifest" href="/manifest.json" />
+				<link rel="manifest" href="/site.webmanifest" />
+				<meta property="og:image" content="/og.png" />
+				<meta name="twitter:image" content="/og.png" />
+				<meta name="theme-color" content="#000000" />
+				<meta name="color-scheme" content="light dark" />
 				<Script
 					src="https://app.rybbit.io/api/script.js"
 					data-site-id="1099"
@@ -111,6 +126,13 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 				/>
 			</head>
 			<body className={cn(switzer.className, "font-sans antialiased")}>
+				<a
+					href="#main-content"
+					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-background text-foreground p-3 rounded-md border border-border z-50"
+				>
+					Skip to main content
+				</a>
+
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"

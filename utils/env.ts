@@ -8,6 +8,9 @@ const envSchema = z.object({
 		.default("development"),
 	NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
 	NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+	WAKATIME_API_KEY: z.string().optional(),
+	GITHUB_TOKEN: z.string().optional(),
+	GITHUB_USERNAME: z.string().optional(),
 });
 
 const envConfig = envSchema.parse({
@@ -16,6 +19,9 @@ const envConfig = envSchema.parse({
 	NEXT_PUBLIC_NODE_ENV: process.env.NEXT_PUBLIC_NODE_ENV,
 	NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
 	NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+	WAKATIME_API_KEY: process.env.WAKATIME_API_KEY,
+	GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+	GITHUB_USERNAME: process.env.GITHUB_USERNAME,
 });
 
 const env = {
@@ -24,6 +30,9 @@ const env = {
 	NODE_ENV: envConfig.NEXT_PUBLIC_NODE_ENV,
 	SUPABASE_URL: envConfig.NEXT_PUBLIC_SUPABASE_URL,
 	SUPABASE_ANON_KEY: envConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+	WAKATIME_API_KEY: envConfig.WAKATIME_API_KEY,
+	GITHUB_TOKEN: envConfig.GITHUB_TOKEN,
+	GITHUB_USERNAME: envConfig.GITHUB_USERNAME,
 };
 
 export default env;

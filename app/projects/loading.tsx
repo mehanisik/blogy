@@ -9,13 +9,13 @@ export default function ProjectsLoading() {
 						{Array.from({ length: 3 }).map((_) => (
 							<div
 								key={crypto.randomUUID()}
-								className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 space-y-4"
+								className="border border-border rounded-lg p-6 space-y-4"
 							>
 								<div className="space-y-3">
-									<div className="h-6 bg-gray-200 dark:bg-gray-900 rounded w-64 animate-pulse" />
+									<div className="h-6 bg-muted rounded w-64 animate-pulse" />
 									<div className="space-y-2">
-										<div className="h-4 bg-gray-200 dark:bg-gray-900 rounded w-full animate-pulse" />
-										<div className="h-4 bg-gray-200 dark:bg-gray-900 rounded w-3/4 animate-pulse" />
+										<div className="h-4 bg-muted rounded w-full animate-pulse" />
+										<div className="h-4 bg-muted rounded w-3/4 animate-pulse" />
 									</div>
 								</div>
 
@@ -23,22 +23,22 @@ export default function ProjectsLoading() {
 									{Array.from({ length: 4 }).map((_) => (
 										<div
 											key={crypto.randomUUID()}
-											className="h-6 bg-gray-200 dark:bg-gray-900 rounded w-16 animate-pulse"
+											className="h-6 bg-muted rounded w-16 animate-pulse"
 										/>
 									))}
 								</div>
 
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-1">
-										<div className="w-4 h-4 bg-gray-200 dark:bg-gray-900 rounded animate-pulse" />
-										<div className="h-4 bg-gray-200 dark:bg-gray-900 rounded w-20 animate-pulse" />
+										<div className="w-4 h-4 bg-muted rounded animate-pulse" />
+										<div className="h-4 bg-muted rounded w-20 animate-pulse" />
 									</div>
 									<div className="flex items-center gap-3">
-										<div className="h-4 bg-gray-200 dark:bg-gray-900 rounded w-16 animate-pulse flex items-center gap-1">
-											<div className="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded" />
+										<div className="h-4 bg-muted rounded w-16 animate-pulse flex items-center gap-1">
+											<div className="w-4 h-4 bg-muted/50 rounded" />
 										</div>
-										<div className="h-4 bg-gray-200 dark:bg-gray-900 rounded w-20 animate-pulse flex items-center gap-1">
-											<div className="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded" />
+										<div className="h-4 bg-muted rounded w-20 animate-pulse flex items-center gap-1">
+											<div className="w-4 h-4 bg-muted/50 rounded" />
 										</div>
 									</div>
 								</div>
