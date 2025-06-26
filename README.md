@@ -34,7 +34,7 @@ A personal blog and portfolio website that i  built with Next.js 15, TypeScript,
 3. **Set up Supabase**
    - Create a new Supabase project
    - Copy your project URL and anon key
-   - Create the database tables (see Database Schema below)
+   
 
 4. **Environment Variables**
    Create a `.env.local` file that similar to example env that i created in .env.example:
@@ -46,8 +46,6 @@ A personal blog and portfolio website that i  built with Next.js 15, TypeScript,
    NEXT_PUBLIC_SUPABASE_ANON_KEY=
    SUPABASE_PROJECT_ID=
    WAKATIME_API_KEY=
-   GITHUB_TOKEN=
-   GITHUB_USERID=
    ```
 
 5. **Run the development server**
@@ -68,17 +66,7 @@ The tracker page displays your coding activity from WakaTime and GitHub contribu
 3. Get your API key from [WakaTime API Settings](https://wakatime.com/settings/api)
 4. Add `WAKATIME_API_KEY=your_api_key` to your `.env.local`
 
-#### GitHub Setup
-1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens)
-2. Generate a new token with the following scopes:
-   - `public_repo` (for public repository access)
-   - `read:user` (for user profile data)
-3. Add the following to your `.env.local`:
-   ```env
-   GITHUB_TOKEN=your_personal_access_token
-   GITHUB_USERNAME=your_github_username
-   ```
+
 
 The tracker will display:
 - **Coding Activity**: Total time, best day, top languages, projects, and editors
-- **GitHub Activity**: Repository stats, recent repos, and recent activity
