@@ -9,14 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-      NEXT_PUBLIC_NODE_ENV: ${{ secrets.NEXT_PUBLIC_NODE_ENV }}
-      NEXT_PUBLIC_PORT: ${{ secrets.NEXT_PUBLIC_PORT }}
-      NEXT_PUBLIC_PROJECT_NAME: ${{ secrets.NEXT_PUBLIC_PROJECT_NAME }}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-      WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,4 +28,12 @@ jobs:
 
       - name: Build
         run: bun run build
-  
+        env:
+          NEXT_PUBLIC_NODE_ENV: development
+          NEXT_PUBLIC_BASE_URL: https://notrealurl.com
+          NEXT_PUBLIC_PROJECT_NAME: Random Project
+          NEXT_PUBLIC_SUPABASE_URL: https://123456.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: some-anon-key
+          SUPABASE_URL: https://123456.supabase.co
+          SUPABASE_ANON_KEY: some-anon-key
+          WAKATIME_API_KEY: wakatime-api-key
