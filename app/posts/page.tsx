@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { EntryTable } from "@/components/entry-table";
+import Loader from "@/components/loader";
 import { PageLayout } from "@/components/page-layout";
 import { env } from "@/env";
 import type { Tables } from "@/schemas/supabase";
 import { getPosts } from "@/utils/data";
-import PostsLoading from "./loading";
 
 type Blog = Tables<"blogs">;
 
@@ -65,7 +65,7 @@ export default async function PostsPage() {
 	const entries: Entry[] = blogs.map(mapBlogToEntry);
 
 	return (
-		<Suspense fallback={<PostsLoading />}>
+		<Suspense fallback={<Loader />}>
 			<PageLayout className="flex flex-col border-b justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
 				<main className="py-8 sm:py-12">
 					<header className="mb-8 sm:mb-12">
@@ -73,8 +73,8 @@ export default async function PostsPage() {
 							Blog Posts
 						</h1>
 						<p className="text-lg text-muted-foreground">
-							Thoughts, tutorials, and insights on software development, React,
-							TypeScript, and web technologies.
+							Trying to improve my writing skills and share my software journey
+							while learning and taking notes.
 						</p>
 					</header>
 					{entries.length === 0 ? (

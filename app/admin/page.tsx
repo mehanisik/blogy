@@ -1,24 +1,22 @@
 import { Suspense } from "react";
+import Loader from "@/components/loader";
 import { PageLayout } from "@/components/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Loading from "../loading";
 import { login } from "./actions";
-
-export const dynamic = "force-dynamic";
 
 export default function AdminPage() {
 	return (
-		<Suspense fallback={<Loading />}>
+		<Suspense fallback={<Loader />}>
 			<PageLayout>
 				<div className="flex min-h-screen items-center justify-center py-12">
 					<div className="w-full max-w-md space-y-8">
 						<div className="text-center">
-							<h1 className="text-2xl font-bold text-foreground">
+							<h1 className="text-3xl font-bold text-foreground mb-3">
 								Admin Login
 							</h1>
-							<p className="mt-2 text-sm text-muted-foreground">
+							<p className="text-muted-foreground">
 								Sign in to access the dashboard
 							</p>
 						</div>

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LoadingIndicator from "./loading-indicator";
 import { MobileMenu } from "./mobile-menu";
 import { ModeToggle } from "./mode-toggle";
 
@@ -42,11 +43,11 @@ export default function Navbar() {
 							<Link
 								key={item.href}
 								href={item.href}
-								className={`text-sm sm:text-base text-foreground-secondary hover:text-foreground hover:underline  outline-none underline-offset-4 transition-all duration-300 ease-out rounded px-2 py-1 ${pathname.startsWith(item.href) ? "text-red-500 dark:text-red-300 " : ""}`}
+								className={`text-sm flex items-center gap-2 sm:text-base text-foreground-secondary hover:text-foreground hover:underline  outline-none underline-offset-4 transition-all duration-300 ease-out rounded px-2 py-1 ${pathname.startsWith(item.href) ? "text-red-500 dark:text-red-300 " : ""}`}
 								role="menuitem"
 								aria-label={`Navigate to ${item.label} page`}
 							>
-								{item.label}
+								{item.label} <LoadingIndicator />
 							</Link>
 						))}
 					</div>

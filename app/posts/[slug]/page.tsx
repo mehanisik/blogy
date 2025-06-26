@@ -61,9 +61,7 @@ export default async function PostPage({ params }: PostPageProps) {
 						</h1>
 
 						{post.subtitle && (
-							<p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
-								{post.subtitle}
-							</p>
+							<p className="text-lg text-muted-foreground">{post.subtitle}</p>
 						)}
 
 						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 gap-2 sm:gap-0">

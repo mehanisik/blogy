@@ -66,12 +66,10 @@ export default async function DashboardPage() {
 			<main className="py-8">
 				<header className="flex items-center justify-between mb-8">
 					<div>
-						<h1 className="text-3xl font-bold text-foreground">
+						<h1 className="text-3xl font-bold text-foreground mb-3">
 							Admin Dashboard
 						</h1>
-						<p className="text-muted-foreground mt-1">
-							Welcome back, {user.email}
-						</p>
+						<p className="text-muted-foreground">Welcome back, {user.email}</p>
 					</div>
 					<form action={logout}>
 						<Button

@@ -6,10 +6,8 @@ export default function NotFound() {
 		<PageLayout className="flex flex-col items-center justify-center min-h-screen">
 			<div className="text-center space-y-6">
 				<div className="space-y-4">
-					<h1 className="text-6xl font-bold text-foreground">404</h1>
-					<h2 className="text-2xl font-semibold text-muted-foreground">
-						Page Not Found
-					</h2>
+					<h1 className="text-3xl font-bold text-foreground mb-3">404</h1>
+					<h2 className="text-lg text-muted-foreground">Page Not Found</h2>
 					<p className="text-muted-foreground max-w-md mx-auto">
 						Sorry, we couldn't find the page you're looking for. It might have
 						been moved, deleted, or you entered the wrong URL.

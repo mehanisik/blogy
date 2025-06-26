@@ -20,9 +20,16 @@ export default async function UpdatePostPage({
 
 	return (
 		<PageLayout>
-			<div className="py-8">
+			<main className="py-8">
 				<div className="max-w-2xl mx-auto">
-					<h1 className="text-3xl font-bold text-foreground mb-8">Edit Post</h1>
+					<header className="mb-8">
+						<h1 className="text-3xl font-bold text-foreground mb-3">
+							Edit Post
+						</h1>
+						<p className="text-muted-foreground">
+							Update the details of this post.
+						</p>
+					</header>
 					<form action={updatePost} className="space-y-6">
 						<input type="hidden" name="id" value={post.id} />
 						<div className="space-y-2">
@@ -115,7 +122,7 @@ export default async function UpdatePostPage({
 						</div>
 					</form>
 				</div>
-			</div>
+			</main>
 		</PageLayout>
 	);
 }

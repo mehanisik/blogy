@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import Loader from "@/components/loader";
 import { PageLayout } from "@/components/page-layout";
 import { getProjects } from "@/utils/data";
-import ProjectsLoading from "./loading";
 
 export const metadata: Metadata = {
 	title: "Projects",
@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
 	const projects = await getProjects();
 
 	return (
-		<Suspense fallback={<ProjectsLoading />}>
+		<Suspense fallback={<Loader />}>
 			<PageLayout className="flex flex-col justify-between w-full border-border border-x border-t">
 				<main className="py-8 sm:py-12">
 					<header className="mb-8 sm:mb-12">
@@ -51,7 +51,8 @@ export default async function ProjectsPage() {
 									here
 								</Link>
 							</span>
-							. Below are some of my projects that i have worked on recently.
+							. Below are some of my projects that i have worked on recently and
+							some of my side projects.
 						</p>
 					</header>
 					<section

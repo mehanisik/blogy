@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
@@ -7,12 +7,7 @@ import Navbar from "@/components/navbar";
 import { env } from "@/env";
 import { cn } from "@/utils/cn";
 import "../styles/globals.css";
-
-const switzer = localFont({
-	src: "../public/fonts/Switzer-Regular.otf",
-	variable: "--font-switzer",
-	display: "swap",
-});
+import { fonts } from "@/utils/fonts";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
@@ -106,7 +101,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactElement }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={cn(fonts, "scroll-smooth antialiased")}
+		>
 			<head>
 				<link
 					rel="icon"
@@ -150,7 +149,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 					strategy="afterInteractive"
 				/>
 			</head>
-			<body className={cn(switzer.className, "font-sans antialiased")}>
+			<body>
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-background text-foreground p-3 rounded-md border border-border z-50"

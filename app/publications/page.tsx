@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Loader from "@/components/loader";
 import { PageLayout } from "@/components/page-layout";
 import { getPublications } from "@/utils/data";
-import PublicationsLoading from "./loading";
 import { PublicationsContent } from "./publications-content";
 
 export const revalidate = 3600;
@@ -32,7 +32,7 @@ export default async function PublicationsPage() {
 	const publications = await getPublications();
 
 	return (
-		<Suspense fallback={<PublicationsLoading />}>
+		<Suspense fallback={<Loader />}>
 			<PageLayout className="flex flex-col justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
 				<main className="py-8 sm:py-12 h-full">
 					<header className="mb-8 sm:mb-12">
@@ -41,8 +41,7 @@ export default async function PublicationsPage() {
 						</h1>
 						<p className="text-lg text-muted-foreground">
 							Here are the my graduation thesis and the papers I have studied
-							and worked on during my bachelor&apos;s degree and master&apos;s
-							degree.
+							and worked on during my studies.
 						</p>
 					</header>
 

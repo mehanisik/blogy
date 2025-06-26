@@ -11,10 +11,13 @@ export default async function UpdatePostPage() {
 
 	return (
 		<PageLayout>
-			<div className="py-8">
-				<h1 className="text-3xl font-bold text-foreground mb-8">
-					Update Posts
-				</h1>
+			<main className="py-8">
+				<header className="mb-8">
+					<h1 className="text-3xl font-bold text-foreground mb-3">
+						Update Posts
+					</h1>
+					<p className="text-muted-foreground">Select a post to edit.</p>
+				</header>
 
 				{posts.length === 0 ? (
 					<div className="text-center py-12">
@@ -56,7 +59,7 @@ export default async function UpdatePostPage() {
 						))}
 					</div>
 				)}
-			</div>
+			</main>
 		</PageLayout>
 	);
 }

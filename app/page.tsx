@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import Loader from "@/components/loader";
 import { PageLayout } from "@/components/page-layout";
 import { getCurrentYear } from "@/utils/date";
-import Loading from "./loading";
 
 export default function Home() {
 	return (
-		<Suspense fallback={<Loading />}>
+		<Suspense fallback={<Loader />}>
 			<PageLayout className="flex flex-col justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
 				<main className="flex flex-1 flex-col">
 					<section className="py-8" aria-labelledby="hero-heading">
@@ -72,11 +72,11 @@ export default function Home() {
 						</div>
 					</section>
 
-					<section className="py-10" aria-labelledby="recent-heading">
+					<section className="py-8 sm:py-12" aria-labelledby="recent-heading">
 						<div className="space-y-6">
 							<h2
 								id="recent-heading"
-								className="text-2xl font-light text-foreground"
+								className="text-2xl font-light text-foreground mb-3"
 							>
 								Recently
 							</h2>

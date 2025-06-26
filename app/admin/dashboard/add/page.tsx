@@ -12,10 +12,13 @@ export default function AddNewPostPage() {
 		<PageLayout>
 			<main className="py-8">
 				<div className="max-w-2xl mx-auto">
-					<header>
-						<h1 className="text-3xl font-bold text-foreground mb-8">
+					<header className="mb-8">
+						<h1 className="text-3xl font-bold text-foreground mb-3">
 							Add New Post
 						</h1>
+						<p className="text-muted-foreground">
+							Fill out the form to create a new post.
+						</p>
 					</header>
 
 					<form

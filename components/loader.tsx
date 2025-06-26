@@ -1,9 +1,9 @@
 import { PageLayout } from "@/components/page-layout";
 
-export default function Loading() {
+export default function Loader() {
 	return (
-		<PageLayout className="w-full max-w-full space-y-6 p-4">
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+		<PageLayout className="flex flex-col gap-2 justify-between w-full h-[calc(100vh-100px)] p-4 border-border border-x border-t">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 ">
 				{["card-1", "card-2", "card-3", "card-4"].map((key) => (
 					<div
 						key={key}
