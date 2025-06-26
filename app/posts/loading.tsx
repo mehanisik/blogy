@@ -1,43 +1,21 @@
 import { PageLayout } from "@/components/page-layout";
 
-export default function PostsLoading() {
+export default function Loading() {
 	return (
-		<PageLayout>
-			<div className="py-16">
-				<div className="space-y-12">
-					<div className="grid gap-6">
-						{Array.from({ length: 5 }).map((_) => (
-							<div
-								key={crypto.randomUUID()}
-								className="border border-border rounded-lg p-6 space-y-4"
-							>
-								<div className="space-y-2">
-									<div className="h-6 bg-muted rounded w-3/4 animate-pulse" />
-									<div className="space-y-2">
-										<div className="h-4 bg-muted rounded w-full animate-pulse" />
-										<div className="h-4 bg-muted rounded w-5/6 animate-pulse" />
-									</div>
-								</div>
-
-								<div className="flex flex-wrap gap-2">
-									{Array.from({ length: 3 }).map((_) => (
-										<div
-											key={crypto.randomUUID()}
-											className="h-6 bg-muted rounded w-16 animate-pulse"
-										/>
-									))}
-								</div>
-
-								<div className="flex items-center gap-4">
-									<div className="h-4 bg-muted rounded w-24 animate-pulse" />
-									<div className="h-4 bg-muted rounded w-16 animate-pulse" />
-									<div className="h-5 bg-muted rounded-full w-20 animate-pulse" />
-								</div>
-							</div>
-						))}
+		<PageLayout className="flex flex-col border-b justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
+			{["post-1", "post-2", "post-3"].map((key) => (
+				<div
+					key={key}
+					className="rounded-lg border bg-gradient-to-br from-background to-muted p-4 flex flex-col gap-4 animate-pulse"
+				>
+					<div className="flex items-center gap-2">
+						<div className="h-4 w-20 bg-muted rounded" />
+						<div className="h-4 w-12 bg-muted rounded" />
 					</div>
+					<div className="h-6 w-2/3 bg-muted rounded" />
+					<div className="h-4 w-full bg-muted rounded" />
 				</div>
-			</div>
+			))}
 		</PageLayout>
 	);
 }

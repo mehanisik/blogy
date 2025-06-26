@@ -1,13 +1,6 @@
 "use client";
 
-import {
-	BookOpen,
-	Calendar,
-	Download,
-	ExternalLink,
-	FileText,
-	Loader2,
-} from "lucide-react";
+import { BookOpen, Calendar, Download, FileText, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -187,7 +180,7 @@ export function PDFViewer({ isOpen, onClose, publication }: PDFViewerProps) {
 										variant="outline"
 										className="flex items-center gap-2"
 									>
-										<a
+										<Link
 											href={publication.pdf}
 											target="_blank"
 											rel="noopener noreferrer"
@@ -195,27 +188,9 @@ export function PDFViewer({ isOpen, onClose, publication }: PDFViewerProps) {
 										>
 											<Download className="w-4 h-4" aria-hidden="true" />
 											Download PDF
-										</a>
+										</Link>
 									</Button>
 								</>
-							)}
-
-							{publication.doi && (
-								<Button
-									asChild
-									variant="outline"
-									className="flex items-center gap-2"
-								>
-									<a
-										href={`https://doi.org/${publication.doi}`}
-										target="_blank"
-										rel="noopener noreferrer"
-										aria-label={`View paper on DOI: ${publication.doi}`}
-									>
-										<ExternalLink className="w-4 h-4" aria-hidden="true" />
-										View Online
-									</a>
-								</Button>
 							)}
 						</div>
 					</div>

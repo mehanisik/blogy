@@ -1,7 +1,3 @@
-export function getWeekdayAbbr(dateStr: string) {
-	return new Date(dateStr).toLocaleDateString("en-US", { weekday: "short" });
-}
-
 export function getCurrentYear() {
 	return new Date().getFullYear();
 }
@@ -16,3 +12,13 @@ export const formatDate = (date: Date) => {
 
 	return `${year}-${monthStr}-${dayStr}`;
 };
+
+export function formatDuration(seconds: number): string {
+	const hours = Math.floor(seconds / 3600);
+	const minutes = Math.floor((seconds % 3600) / 60);
+
+	if (hours > 0) {
+		return `${hours}h ${minutes}m`;
+	}
+	return `${minutes}m`;
+}

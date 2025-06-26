@@ -1,4 +1,11 @@
+"use server";
+
 import { env } from "@/env";
+import {
+	type ActionResponse,
+	type Cache,
+	ResponseStatus,
+} from "@/types/actions";
 import type {
 	WakaTimeAllTimeData,
 	WakaTimeLanguageData,
@@ -10,27 +17,21 @@ const BASE_URL = "https://wakatime.com/api/v1";
 
 const CACHE_DURATION = 60 * 60 * 1000;
 
-let summaryCache: {
-	timestamp: number;
-	data: WakaTimeAllTimeData;
-} | null = null;
+let summaryCache: Cache<WakaTimeAllTimeData> | null = null;
+let languagesCache: Cache<WakaTimeLanguageData[]> | null = null;
+let lastSevenDaysCache: Cache<WakaTimeLastSevenDaysData> | null = null;
 
-let languagesCache: {
-	timestamp: number;
-	data: WakaTimeLanguageData[];
-} | null = null;
-
-let lastSevenDaysCache: {
-	timestamp: number;
-	data: WakaTimeLastSevenDaysData;
-} | null = null;
-
-export async function getWakaTimeSummary() {
+export async function getWakaTimeSummary(): Promise<
+	ActionResponse<WakaTimeAllTimeData>
+> {
+	if (summaryCache && Date.now() - summaryCache.timestamp < CACHE_DURATION) {
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data: summaryCache.data,
+		};
+	}
 	try {
-		if (summaryCache && Date.now() - summaryCache.timestamp < CACHE_DURATION) {
-			return summaryCache.data;
-		}
-
 		const response = await fetch(
 			`${BASE_URL}/users/current/all_time_since_today`,
 			{
@@ -41,9 +42,12 @@ export async function getWakaTimeSummary() {
 		);
 
 		if (!response.ok) {
-			throw new Error(
-				`Failed to fetch WakaTime summary: ${response.statusText}`,
-			);
+			return {
+				timestamp: Date.now(),
+				status: ResponseStatus.ERROR,
+				code: "API_ERROR",
+				message: `Failed to fetch WakaTime summary: ${response.statusText}`,
+			};
 		}
 
 		const { data } = (await response.json()) as { data: WakaTimeAllTimeData };
@@ -53,24 +57,35 @@ export async function getWakaTimeSummary() {
 			data,
 		};
 
-		return data;
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data,
+		};
 	} catch (error) {
-		throw new Error(
-			`Failed to fetch WakaTime summary: ${
-				error instanceof Error ? error.message : "Unknown error"
-			}`,
-		);
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.ERROR,
+			code: "INTERNAL_SERVER_ERROR",
+			message: `Failed to fetch WakaTime summary: ${error instanceof Error ? error.message : "Unknown error"}`,
+		};
 	}
 }
 
-export async function getWakaTimeLanguages() {
+export async function getWakaTimeLanguages(): Promise<
+	ActionResponse<WakaTimeLanguageData[]>
+> {
+	if (
+		languagesCache &&
+		Date.now() - languagesCache.timestamp < CACHE_DURATION
+	) {
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data: languagesCache.data,
+		};
+	}
 	try {
-		if (
-			languagesCache &&
-			Date.now() - languagesCache.timestamp < CACHE_DURATION
-		) {
-			return languagesCache.data;
-		}
 		const response = await fetch(
 			`${BASE_URL}/users/current/stats/last_7_days`,
 			{
@@ -80,9 +95,12 @@ export async function getWakaTimeLanguages() {
 			},
 		);
 		if (!response.ok) {
-			throw new Error(
-				`Failed to fetch WakaTime languages: ${response.statusText}`,
-			);
+			return {
+				timestamp: Date.now(),
+				status: ResponseStatus.ERROR,
+				code: "API_ERROR",
+				message: `Failed to fetch WakaTime languages: ${response.statusText}`,
+			};
 		}
 		const json = (await response.json()) as {
 			data: { languages: WakaTimeLanguageData[] };
@@ -91,24 +109,35 @@ export async function getWakaTimeLanguages() {
 			timestamp: Date.now(),
 			data: json.data.languages,
 		};
-		return json.data.languages;
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data: json.data.languages,
+		};
 	} catch (error) {
-		throw new Error(
-			`Failed to fetch WakaTime languages: ${
-				error instanceof Error ? error.message : "Unknown error"
-			}`,
-		);
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.ERROR,
+			code: "INTERNAL_SERVER_ERROR",
+			message: `Failed to fetch WakaTime languages: ${error instanceof Error ? error.message : "Unknown error"}`,
+		};
 	}
 }
 
-export async function getWakaTimeLastSevenDays() {
+export async function getWakaTimeLastSevenDays(): Promise<
+	ActionResponse<WakaTimeLastSevenDaysData>
+> {
+	if (
+		lastSevenDaysCache &&
+		Date.now() - lastSevenDaysCache.timestamp < CACHE_DURATION
+	) {
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data: lastSevenDaysCache.data,
+		};
+	}
 	try {
-		if (
-			lastSevenDaysCache &&
-			Date.now() - lastSevenDaysCache.timestamp < CACHE_DURATION
-		) {
-			return lastSevenDaysCache.data;
-		}
 		const today = new Date();
 		const startDate = new Date(
 			today.getFullYear(),
@@ -133,9 +162,12 @@ export async function getWakaTimeLastSevenDays() {
 		);
 
 		if (!response.ok) {
-			throw new Error(
-				`Failed to fetch WakaTime last 7 days: ${response.statusText}`,
-			);
+			return {
+				timestamp: Date.now(),
+				status: ResponseStatus.ERROR,
+				code: "API_ERROR",
+				message: `Failed to fetch WakaTime last 7 days: ${response.statusText}`,
+			};
 		}
 
 		const json = (await response.json()) as {
@@ -147,14 +179,17 @@ export async function getWakaTimeLastSevenDays() {
 
 		const dailyData = json.data.map((day) => ({
 			date: day.range.date,
-			hours: parseFloat((day.grand_total.total_seconds / 3600).toFixed(2)),
+			hours: Number.parseFloat(
+				(day.grand_total.total_seconds / 3600).toFixed(2),
+			),
 		}));
 
 		const totalSeconds = dailyData.reduce(
 			(acc, day) => acc + day.hours * 3600,
 			0,
 		);
-		const dailyAverage = totalSeconds / 3600 / dailyData.length;
+		const dailyAverage =
+			dailyData.length > 0 ? totalSeconds / 3600 / dailyData.length : 0;
 
 		const result = {
 			days: dailyData,
@@ -167,12 +202,17 @@ export async function getWakaTimeLastSevenDays() {
 			data: result,
 		};
 
-		return result;
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.SUCCESS,
+			data: result,
+		};
 	} catch (error) {
-		throw new Error(
-			`Failed to fetch WakaTime last 7 days: ${
-				error instanceof Error ? error.message : "Unknown error"
-			}`,
-		);
+		return {
+			timestamp: Date.now(),
+			status: ResponseStatus.ERROR,
+			code: "INTERNAL_SERVER_ERROR",
+			message: `Failed to fetch WakaTime last 7 days: ${error instanceof Error ? error.message : "Unknown error"}`,
+		};
 	}
 }

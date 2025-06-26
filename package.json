@@ -22,7 +22,6 @@
 	"dependencies": {
 		"@radix-ui/react-alert-dialog": "^1.1.14",
 		"@radix-ui/react-dialog": "^1.1.14",
-		"@radix-ui/react-progress": "^1.1.7",
 		"@radix-ui/react-slot": "^1.2.3",
 		"@supabase/ssr": "^0.6.1",
 		"@supabase/supabase-js": "^2.50.2",
@@ -48,13 +47,13 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.0.0",
 		"@radix-ui/react-label": "^2.1.7",
-		"@tailwindcss/postcss": "^4.1.10",
+		"@tailwindcss/postcss": "^4.1.11",
 		"@types/node": "^20.19.1",
 		"@types/react": "^19.1.8",
 		"@types/react-dom": "^19.1.6",
 		"babel-plugin-react-compiler": "^19.1.0-rc.2",
 		"knip": "^5.61.2",
-		"tailwindcss": "^4.1.10",
+		"tailwindcss": "^4.1.11",
 		"typed-query-selector": "^2.12.0",
 		"typescript": "^5.8.3"
 	}

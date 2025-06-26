@@ -14,7 +14,7 @@ const navLinks = [
 export default function Navbar() {
 	const pathname = usePathname();
 	return (
-		<header className="max-w-4xl mx-auto h-16 sm:h-20 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+		<header className="max-w-4xl mx-auto h-16 sm:h-20 px-4 sm:px-6 lg:px-8 transition-colors duration-200 border-border border-x">
 			<nav
 				className="flex flex-row justify-between items-center py-3 sm:py-4 transition-all duration-500 ease-in-out"
 				aria-label="Main navigation"

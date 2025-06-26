@@ -43,7 +43,7 @@ export default async function PostPage({ params }: PostPageProps) {
 	const post = await getPostBySlug(resolvedParams.slug);
 
 	return (
-		<PageLayout>
+		<PageLayout className="flex flex-col border-b justify-between w-full  border-border border-x border-t">
 			<main className="py-8 sm:py-12 lg:py-16 w-full">
 				<nav aria-label="Breadcrumb navigation">
 					<Button variant="outline" asChild className="text-sm">
@@ -96,17 +96,6 @@ export default async function PostPage({ params }: PostPageProps) {
 						</footer>
 					)}
 				</article>
-
-				<nav
-					className="mt-8 sm:mt-12 flex justify-between"
-					aria-label="Post navigation"
-				>
-					<Button variant="outline" asChild className="text-sm">
-						<Link href="/posts" aria-label="View all blog posts">
-							← All Posts
-						</Link>
-					</Button>
-				</nav>
 			</main>
 		</PageLayout>
 	);

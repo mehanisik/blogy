@@ -33,8 +33,8 @@ export default async function PublicationsPage() {
 
 	return (
 		<Suspense fallback={<PublicationsLoading />}>
-			<PageLayout>
-				<main className="py-8 sm:py-12">
+			<PageLayout className="flex flex-col justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
+				<main className="py-8 sm:py-12 h-full">
 					<header className="mb-8 sm:mb-12">
 						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
 							Publications

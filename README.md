@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="public/assets/og.png" alt="Personal Website Open Graph Image" width="100%" />
-</p>
+
 
 # Personal Website
 
@@ -70,3 +68,7 @@ The tracker page displays your coding activity from WakaTime and GitHub contribu
 
 The tracker will display:
 - **Coding Activity**: Total time, best day, top languages, projects, and editors
+
+<p align="center">
+  <img src="/public/assets/og.png" alt="Personal Website Open Graph Image" width="100%" />
+</p>

@@ -9,7 +9,7 @@ import { cn } from "@/utils/cn";
 import "../styles/globals.css";
 
 const switzer = localFont({
-	src: "../public/Switzer-Regular.otf",
+	src: "../public/fonts/Switzer-Regular.otf",
 	variable: "--font-switzer",
 	display: "swap",
 });

@@ -8,7 +8,7 @@ import Loading from "./loading";
 export default function Home() {
 	return (
 		<Suspense fallback={<Loading />}>
-			<PageLayout>
+			<PageLayout className="flex flex-col justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
 				<main className="flex flex-1 flex-col">
 					<section className="py-8" aria-labelledby="hero-heading">
 						<div className="flex items-center justify-between">
@@ -95,7 +95,7 @@ export default function Home() {
 					</section>
 				</main>
 
-				<footer className="border-t border-border py-6">
+				<footer className="border-t border-border p-4 w-full">
 					<div className="flex flex-row items-center justify-between gap-4">
 						<p className="text-sm text-muted-foreground">
 							&copy; {getCurrentYear()} mehanisik

@@ -33,7 +33,7 @@ export default async function ProjectsPage() {
 
 	return (
 		<Suspense fallback={<ProjectsLoading />}>
-			<PageLayout>
+			<PageLayout className="flex flex-col justify-between w-full border-border border-x border-t">
 				<main className="py-8 sm:py-12">
 					<header className="mb-8 sm:mb-12">
 						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">

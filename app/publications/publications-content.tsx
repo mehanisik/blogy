@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, ExternalLink, Eye, FileText } from "lucide-react";
+import { Calendar, Eye, FileText } from "lucide-react";
 import { useState } from "react";
 import { PDFViewer } from "@/components/pdf-viewer";
 import type { Tables } from "@/schemas/supabase";
@@ -101,21 +101,6 @@ export function PublicationsContent({
 												/>
 												Preview
 											</button>
-											{publication.doi && (
-												<a
-													href={`https://doi.org/${publication.doi}`}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="flex items-center gap-1 px-2 sm:px-3 py-1 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-													aria-label={`View ${publication.title} on DOI (opens in new tab)`}
-												>
-													<ExternalLink
-														className="w-3 h-3 sm:w-4 sm:h-4"
-														aria-hidden="true"
-													/>
-													View
-												</a>
-											)}
 											{publication.pdf && (
 												<a
 													href={publication.pdf}
