@@ -1,21 +1,21 @@
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { env } from "@/env";
 import type { Database } from "@/schemas/supabase";
-import env from "./env";
-
-export const supabaseClient = () => {
-	return createBrowserClient<Database>(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
-};
 
 export const supabaseStatic = () => {
-	return createServerClient<Database>(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
-		cookies: {
-			getAll() {
-				return [];
+	return createServerClient<Database>(
+		env.NEXT_PUBLIC_SUPABASE_URL,
+		env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+		{
+			cookies: {
+				getAll() {
+					return [];
+				},
 			},
 		},
-	});
+	);
 };
 
 export const supabaseMiddleware = async (request: NextRequest) => {
@@ -25,24 +25,28 @@ export const supabaseMiddleware = async (request: NextRequest) => {
 		},
 	});
 
-	const supabase = createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
-		cookies: {
-			getAll() {
-				return request.cookies.getAll();
-			},
-			setAll(cookiesToSet) {
-				for (const { options: _options, ...cookie } of cookiesToSet) {
-					request.cookies.set(cookie);
-				}
+	const supabase = createServerClient(
+		env.NEXT_PUBLIC_SUPABASE_URL,
+		env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+		{
+			cookies: {
+				getAll() {
+					return request.cookies.getAll();
+				},
+				setAll(cookiesToSet) {
+					for (const { options: _options, ...cookie } of cookiesToSet) {
+						request.cookies.set(cookie);
+					}
 
-				supabaseResponse = NextResponse.next({ request });
+					supabaseResponse = NextResponse.next({ request });
 
-				for (const cookie of cookiesToSet) {
-					supabaseResponse.cookies.set(cookie);
-				}
+					for (const cookie of cookiesToSet) {
+						supabaseResponse.cookies.set(cookie);
+					}
+				},
 			},
 		},
-	});
+	);
 
 	const {
 		data: { user },

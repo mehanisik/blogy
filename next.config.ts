@@ -1,10 +1,15 @@
 import type { NextConfig } from "next";
 
+import "./env.ts";
+
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
 	trailingSlash: true,
+	experimental: {
+		reactCompiler: true,
+	},
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
@@ -31,6 +36,7 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 };
 
 export default nextConfig;

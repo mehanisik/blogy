@@ -1,113 +1,70 @@
 import { Suspense } from "react";
-import { GitHubCard } from "@/components/github-card";
-import { LanguageBreakdown } from "@/components/language-breakdown";
 import { PageLayout } from "@/components/page-layout";
-import { ProjectBreakdown } from "@/components/project-breakdown";
-import { WakaTimeCard } from "@/components/wakatime-card";
-import { WeeklyActivity } from "@/components/weekly-activity";
+import DailyGoalRadial from "@/components/tracker/daily-goal-radial";
+import StatsCards from "@/components/tracker/stats-cards";
+import TopLanguagesPie from "@/components/tracker/top-languages-pie";
+import WeeklyBarChart from "@/components/tracker/weekly-bar-chart";
 import {
-	getGitHubActivity,
-	getGitHubRepos,
-	getGitHubUser,
-} from "@/utils/github";
-import { getWakaTimeStats } from "@/utils/wakatime";
+	getWakaTimeLanguages,
+	getWakaTimeLastSevenDays,
+	getWakaTimeSummary,
+} from "./actions";
 import TrackerLoading from "./loading";
 
-async function TrackerContent() {
-	const [wakaTimeStats, githubUser, githubRepos, githubActivity] =
-		await Promise.allSettled([
-			getWakaTimeStats(),
-			getGitHubUser(),
-			getGitHubRepos(10),
-			getGitHubActivity(10),
-		]);
+export default async function TrackerPage() {
+	const [allTime, stats, languages] = await Promise.all([
+		getWakaTimeSummary(),
+		getWakaTimeLastSevenDays(),
+		getWakaTimeLanguages(),
+	]);
 
-	const stats =
-		wakaTimeStats.status === "fulfilled" ? wakaTimeStats.value : null;
-	const user = githubUser.status === "fulfilled" ? githubUser.value : null;
-	const repos = githubRepos.status === "fulfilled" ? githubRepos.value : [];
-	const activity =
-		githubActivity.status === "fulfilled" ? githubActivity.value : [];
+	const totalHours = allTime.total_seconds
+		? Math.round(allTime.total_seconds / 3600)
+		: 0;
+	const todayHours = stats.days[stats.days.length - 1]?.hours ?? 0;
+	const dailyAvg = stats.daily_average ?? 0;
+
+	const weeklyData = (stats.days ?? []).map((d) => ({
+		day: new Date(`${d.date}T00:00:00`).toLocaleDateString("en-US", {
+			weekday: "short",
+		}),
+		hours: d.hours,
+	}));
 
 	return (
-		<div className="space-y-6 sm:space-y-8">
-			<div className="space-y-2 sm:space-y-3">
-				<h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">Tracker</h1>
-				<p className="text-base sm:text-lg lg:text-xl text-muted-foreground">
-					My coding activity and development insights
-				</p>
-			</div>
-
-			{stats ? (
-				<div className="space-y-6 sm:space-y-8">
-					<WeeklyActivity stats={stats} />
-
-					<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-						<WakaTimeCard stats={stats} />
-						<GitHubCard user={user} repos={repos} activity={activity} />
-					</div>
-
-					<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-						<LanguageBreakdown stats={stats} />
-						<ProjectBreakdown stats={stats} />
-					</div>
-				</div>
-			) : (
-				<div className="space-y-4 sm:space-y-6">
-					<div className="rounded-lg border border-border bg-card p-6 sm:p-8 text-center">
-						<p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
-							WakaTime data not available. Please check your API key
-							configuration.
-						</p>
-						<div className="text-xs sm:text-sm text-muted-foreground space-y-1">
-							<p>Required environment variables:</p>
-							<ul className="list-disc list-inside space-y-1">
-								<li>WAKATIME_API_KEY - Your WakaTime API key</li>
-								<li>GITHUB_TOKEN - Your GitHub personal access token</li>
-								<li>GITHUB_USERNAME - Your GitHub username</li>
-							</ul>
-						</div>
-					</div>
-
-					{user && (
-						<div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-							<div className="rounded-lg border border-border bg-card p-4 sm:p-6 text-center">
-								<p className="text-sm sm:text-base text-muted-foreground">
-									WakaTime integration not configured
-								</p>
-							</div>
-							<GitHubCard user={user} repos={repos} activity={activity} />
-						</div>
-					)}
-				</div>
-			)}
-
-			{!stats && !user && (
-				<div className="rounded-lg border border-border bg-card p-6 sm:p-8 text-center">
-					<p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
-						No tracker data available. Please configure your WakaTime and GitHub
-						API keys.
+		<Suspense fallback={<TrackerLoading />}>
+			<PageLayout>
+				<header className="mb-8 sm:mb-12">
+					<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
+						Activity Tracker
+					</h1>
+					<p className="text-lg text-muted-foreground">
+						I use WakaTime to track my coding activity with VSCode extension to
+						see how much time I spend on each project so that I can track my
+						progress and organize my time better.
 					</p>
-					<div className="text-xs sm:text-sm text-muted-foreground space-y-1">
-						<p>Required environment variables:</p>
-						<ul className="list-disc list-inside space-y-1">
-							<li>WAKATIME_API_KEY - Your WakaTime API key</li>
-							<li>GITHUB_TOKEN - Your GitHub personal access token</li>
-							<li>GITHUB_USERNAME - Your GitHub username</li>
-						</ul>
+				</header>
+
+				<StatsCards
+					totalHours={totalHours}
+					todayHours={todayHours}
+					dailyAvg={dailyAvg}
+				/>
+
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+					<div className="lg:col-span-2 overflow-x-auto">
+						<WeeklyBarChart data={weeklyData} />
+					</div>
+
+					<div className="lg:col-span-1">
+						<DailyGoalRadial hours={todayHours} />
 					</div>
 				</div>
-			)}
-		</div>
-	);
-}
 
-export default function TrackerPage() {
-	return (
-		<PageLayout>
-			<Suspense fallback={<TrackerLoading />}>
-				<TrackerContent />
-			</Suspense>
-		</PageLayout>
+				<div className="w-full mt-8">
+					<TopLanguagesPie data={languages ?? []} />
+				</div>
+			</PageLayout>
+		</Suspense>
 	);
 }

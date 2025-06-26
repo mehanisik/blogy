@@ -1,12 +1,12 @@
-import env from "@/utils/env";
-import "../styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
 import Navbar from "@/components/navbar";
+import { env } from "@/env";
 import { cn } from "@/utils/cn";
+import "../styles/globals.css";
 
 const switzer = localFont({
 	src: "../public/Switzer-Regular.otf",
@@ -15,7 +15,7 @@ const switzer = localFont({
 });
 
 export const metadata: Metadata = {
-	metadataBase: new URL(env.BASE_URL),
+	metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
 	title: {
 		default: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
 		template: "%s | Mehmet ISIK",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 		title: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
 		description:
 			"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
-		url: env.BASE_URL,
+		url: env.NEXT_PUBLIC_BASE_URL,
 		siteName: "Mehmet ISIK",
 		locale: "en_US",
 		type: "website",
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
 		google: "your-google-verification-code",
 	},
 	alternates: {
-		canonical: env.BASE_URL,
+		canonical: env.NEXT_PUBLIC_BASE_URL,
 	},
 };
 
@@ -108,11 +108,36 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
-				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-				<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-				<link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png" />
-				<link rel="icon" type="image/png" sizes="196x196" href="/favicon-196x196.png" />
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="16x16"
+					href="/favicon-16x16.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="32x32"
+					href="/favicon-32x32.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="96x96"
+					href="/favicon-96x96.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="128x128"
+					href="/favicon-128x128.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="196x196"
+					href="/favicon-196x196.png"
+				/>
 				<link rel="icon" href="/favicon.ico" sizes="any" />
 				<link rel="manifest" href="/site.webmanifest" />
 				<meta property="og:image" content="/og.png" />

@@ -68,7 +68,10 @@ export function PublicationsContent({
 								<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
 									<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
 										<div className="flex items-center gap-1">
-											<Calendar className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+											<Calendar
+												className="w-3 h-3 sm:w-4 sm:h-4"
+												aria-hidden="true"
+											/>
 											<time dateTime={publication.date}>
 												{new Date(publication.date).toLocaleDateString(
 													"en-US",
@@ -92,7 +95,10 @@ export function PublicationsContent({
 												className="flex items-center gap-1 px-2 sm:px-3 py-1 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
 												aria-label={`Preview details and PDF for ${publication.title}`}
 											>
-												<Eye className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+												<Eye
+													className="w-3 h-3 sm:w-4 sm:h-4"
+													aria-hidden="true"
+												/>
 												Preview
 											</button>
 											{publication.doi && (
@@ -118,7 +124,10 @@ export function PublicationsContent({
 													className="flex items-center gap-1 px-2 sm:px-3 py-1 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
 													aria-label={`Download PDF of ${publication.title} (opens in new tab)`}
 												>
-													<FileText className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+													<FileText
+														className="w-3 h-3 sm:w-4 sm:h-4"
+														aria-hidden="true"
+													/>
 													PDF
 												</a>
 											)}

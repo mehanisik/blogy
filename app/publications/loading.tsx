@@ -6,14 +6,10 @@ export default function PublicationsLoading() {
 			<div className="py-16">
 				<div className="space-y-12">
 					<div className="grid gap-8">
-						{Array.from({ length: 3 }).map((_, index) => (
+						{Array.from({ length: 3 }).map(() => (
 							<div
 								key={crypto.randomUUID()}
 								className="border border-border rounded-lg p-6 space-y-4 animate-slide-up"
-								style={{
-									animationDelay: `${index * 100}ms`,
-									animationFillMode: "both",
-								}}
 							>
 								<div className="space-y-3">
 									<div className="h-6 bg-muted rounded w-full animate-pulse" />

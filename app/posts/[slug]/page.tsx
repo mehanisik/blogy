@@ -68,7 +68,9 @@ export default async function PostPage({ params }: PostPageProps) {
 
 						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 gap-2 sm:gap-0">
 							<div className="flex items-center space-x-2 sm:space-x-4">
-								<time dateTime={post.date}>{formatDate(post.date)}</time>
+								<time dateTime={post.date}>
+									{formatDate(new Date(post.date))}
+								</time>
 								{post.read_time && <span>• {post.read_time} min read</span>}
 							</div>
 						</div>

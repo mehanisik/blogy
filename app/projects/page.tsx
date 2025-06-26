@@ -1,14 +1,11 @@
-import { ExternalLink, Folder, Github } from "lucide-react";
+import { Folder, Github } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { PageLayout } from "@/components/page-layout";
-import type { Tables } from "@/schemas/supabase";
 import { getProjects } from "@/utils/data";
 import ProjectsLoading from "./loading";
-
-export const revalidate = 3600;
 
 export const metadata: Metadata = {
 	title: "Projects",
@@ -31,8 +28,6 @@ export const metadata: Metadata = {
 	},
 };
 
-type Project = Tables<"projects">;
-
 export default async function ProjectsPage() {
 	const projects = await getProjects();
 
@@ -41,29 +36,32 @@ export default async function ProjectsPage() {
 			<PageLayout>
 				<main className="py-8 sm:py-12">
 					<header className="mb-8 sm:mb-12">
-						<h1 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-foreground mb-3 sm:mb-4">
+						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
 							Projects
 						</h1>
-						<p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
+						<p className="text-lg text-muted-foreground">
 							Most of my projects are in my github repository{" "}
 							<span className="font-bold">
-								<a
+								<Link
 									href="https://github.com/mehanisik"
 									target="_blank"
-									rel="noopener noreferrer"
+									aria-label="View Mehmet ISIK's GitHub profile"
 									className="text-primary hover:text-primary-hover transition-colors"
 								>
 									here
-								</a>
+								</Link>
 							</span>
 							. Below are some of my projects that i have worked on recently.
 						</p>
 					</header>
-					<section aria-labelledby="projects-heading" className="space-y-6 sm:space-y-8">
+					<section
+						aria-labelledby="projects-heading"
+						className="space-y-6 sm:space-y-8"
+					>
 						<h2 id="projects-heading" className="sr-only">
 							Project Listings
 						</h2>
-						{projects.map((project: Project, idx) => {
+						{projects.map((project, idx) => {
 							return (
 								<article
 									key={project.id}
@@ -71,10 +69,10 @@ export default async function ProjectsPage() {
 								>
 									<div className="flex-1 flex flex-col justify-between p-6 sm:p-8 lg:p-10 gap-4 min-w-0 lg:max-w-[50%]">
 										<div>
-											<h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-foreground mb-2 sm:mb-3">
+											<h2 className="text-xl font-extrabold text-foreground mb-2">
 												{project.title}
 											</h2>
-											<p className="text-sm sm:text-base text-foreground font-light mb-4 sm:mb-6">
+											<p className="text-sm text-foreground font-light mb-4">
 												{project.description}
 											</p>
 
@@ -123,11 +121,7 @@ export default async function ProjectsPage() {
 													href={project.demo}
 													aria-label={`View live demo of ${project.title}`}
 												>
-													<ExternalLink
-														className="w-3 h-3 sm:w-4 sm:h-4"
-														aria-hidden="true"
-													/>
-													Live Demo
+													<span>Live Demo</span>
 												</Link>
 											)}
 											{project.github && (
@@ -136,8 +130,11 @@ export default async function ProjectsPage() {
 													className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-foreground text-foreground font-semibold text-sm sm:text-base hover:bg-foreground hover:text-background focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 transition"
 													aria-label={`View source code of ${project.title} on GitHub`}
 												>
-													<Github className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
-													Source Code
+													<Github
+														className="w-3 h-3 sm:w-4 sm:h-4"
+														aria-hidden="true"
+													/>
+													<span>Source Code</span>
 												</Link>
 											)}
 											{!project.demo && !project.github && (

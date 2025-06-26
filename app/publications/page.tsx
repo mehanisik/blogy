@@ -36,10 +36,10 @@ export default async function PublicationsPage() {
 			<PageLayout>
 				<main className="py-8 sm:py-12">
 					<header className="mb-8 sm:mb-12">
-						<h1 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-foreground mb-3 sm:mb-4">
+						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
 							Publications
 						</h1>
-						<p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
+						<p className="text-lg text-muted-foreground">
 							Here are the my graduation thesis and the papers I have studied
 							and worked on during my bachelor&apos;s degree and master&apos;s
 							degree.

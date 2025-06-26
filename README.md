@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/assets/og.png" alt="Personal Website Open Graph Image" width="100%" />
+</p>
+
 # Personal Website
 
 A personal blog and portfolio website that i  built with Next.js 15, TypeScript, and Supabase.I use this website to share my daily work and projects with along the posting the my studied notes.
@@ -33,16 +37,17 @@ A personal blog and portfolio website that i  built with Next.js 15, TypeScript,
    - Create the database tables (see Database Schema below)
 
 4. **Environment Variables**
-   Create a `.env.local` file that similar to .env.example:
+   Create a `.env.local` file that similar to example env that i created in .env.example:
    ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-   
-   # Tracker Configuration (Optional)
-   WAKATIME_API_KEY=your_wakatime_api_key
-   GITHUB_TOKEN=your_github_personal_access_token
-   GITHUB_USERNAME=your_github_username
+   NEXT_PUBLIC_BASE=http://localhost:3000/
+   NEXT_PUBLIC_PORT=3000
+   NEXT_PUBLIC_NODE_ENV=development
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SUPABASE_PROJECT_ID=
+   WAKATIME_API_KEY=
+   GITHUB_TOKEN=
+   GITHUB_USERID=
    ```
 
 5. **Run the development server**

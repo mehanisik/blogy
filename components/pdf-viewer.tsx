@@ -53,8 +53,11 @@ export function PDFViewer({ isOpen, onClose, publication }: PDFViewerProps) {
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={onClose} >
-			<DialogContent className="max-w-full sm:max-w-6xl w-full p-2 sm:p-6 max-h-[98vh] sm:max-h-[95vh] overflow-hidden">
+		<Dialog open={isOpen} onOpenChange={onClose}>
+			<DialogContent
+				aria-describedby="publication-details"
+				className="max-w-full sm:max-w-6xl w-full p-2 sm:p-6 max-h-[98vh] sm:max-h-[95vh] overflow-hidden"
+			>
 				<DialogHeader>
 					<DialogTitle className="text-base sm:text-xl font-semibold text-foreground">
 						{publication.title}

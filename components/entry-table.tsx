@@ -14,26 +14,12 @@ interface Entry {
 
 interface EntryTableProps {
 	entries: Entry[];
-	title: string;
-	description?: string;
 }
 
-export function EntryTable({ entries, title, description }: EntryTableProps) {
+export function EntryTable({ entries }: EntryTableProps) {
 	return (
 		<section aria-labelledby="entries-heading">
 			<div className="space-y-6 sm:space-y-8">
-				<div>
-					<h1
-						id="entries-heading"
-						className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-foreground"
-					>
-						{title}
-					</h1>
-					{description && (
-						<p className="text-muted-foreground mt-2 sm:mt-3 text-base sm:text-lg">{description}</p>
-					)}
-				</div>
-
 				<div className="space-y-0">
 					{entries.map((entry) => (
 						<article
@@ -47,11 +33,19 @@ export function EntryTable({ entries, title, description }: EntryTableProps) {
 							>
 								<div className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
 									<div className="flex items-center gap-2">
-										<Calendar className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
-										<time dateTime={entry.date}>{formatDate(entry.date)}</time>
+										<Calendar
+											className="w-3 h-3 sm:w-4 sm:h-4"
+											aria-hidden="true"
+										/>
+										<time dateTime={entry.date}>
+											{formatDate(new Date(entry.date))}
+										</time>
 									</div>
 									<div className="flex items-center gap-2">
-										<Clock className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+										<Clock
+											className="w-3 h-3 sm:w-4 sm:h-4"
+											aria-hidden="true"
+										/>
 										<span>
 											{Math.ceil(entry.description.length / 200)} min read
 										</span>
@@ -91,11 +85,6 @@ export function EntryTable({ entries, title, description }: EntryTableProps) {
 							</Link>
 						</article>
 					))}
-				</div>
-
-				<div className="sr-only" aria-live="polite">
-					Found {entries.length} {entries.length === 1 ? "entry" : "entries"} in{" "}
-					{title.toLowerCase()}
 				</div>
 			</div>
 		</section>

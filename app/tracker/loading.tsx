@@ -1,8 +1,9 @@
+import { PageLayout } from "@/components/page-layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function TrackerLoading() {
 	return (
-		<div className="space-y-6">
+		<PageLayout className="space-y-6">
 			<div className="space-y-2">
 				<h1 className="text-3xl font-bold">Tracker</h1>
 				<p className="text-muted-foreground">
@@ -92,6 +93,6 @@ export default function TrackerLoading() {
 					</CardContent>
 				</Card>
 			</div>
-		</div>
+		</PageLayout>
 	);
 }

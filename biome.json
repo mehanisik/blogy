@@ -11,7 +11,8 @@
 			"**/*.ts",
 			"**/*.tsx",
 			"!**/node_modules/**",
-			"!**/.next/**"
+			"!**/.next/**",
+			"!**/app/components/ui/**"
 		]
 	},
 	"formatter": {

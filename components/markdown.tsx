@@ -78,9 +78,7 @@ export function Markdown({ content }: { content: string }) {
 									className,
 								)}
 							>
-								<code className="text-sm font-mono">
-									{children}
-								</code>
+								<code className="text-sm font-mono">{children}</code>
 							</pre>
 						);
 					},

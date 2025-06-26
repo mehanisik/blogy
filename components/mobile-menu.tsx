@@ -41,7 +41,10 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
 						<Menu className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
 					</Button>
 				</SheetTrigger>
-				<SheetContent side="right" className="w-[280px] sm:w-[320px] lg:w-[400px]">
+				<SheetContent
+					side="right"
+					className="w-[280px] sm:w-[320px] lg:w-[400px]"
+				>
 					<SheetHeader>
 						<SheetTitle className="text-lg sm:text-xl">Navigation</SheetTitle>
 					</SheetHeader>
