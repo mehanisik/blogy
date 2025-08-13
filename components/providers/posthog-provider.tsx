@@ -11,7 +11,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	const { user } = useAuth();
 
 	useEffect(() => {
-		posthog.init(env.POSTHOG_KEY as string, {
+		posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY as string, {
 			api_host: env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
 			person_profiles: "identified_only",
 			capture_pageview: false,

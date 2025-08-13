@@ -8,6 +8,8 @@ export const env = createEnv({
 		NEXT_PUBLIC_BASE_URL: z.url().default("http://localhost:3000"),
 		NEXT_PUBLIC_PROJECT_NAME: z.string(),
 		NEXT_PUBLIC_SUPABASE_URL: z.url(),
+		NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+		NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
 		NEXT_PUBLIC_POSTHOG_HOST: z.url().default("https://us.i.posthog.com"),
 	},
 
@@ -18,6 +20,8 @@ export const env = createEnv({
 		NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
 		NEXT_PUBLIC_PROJECT_NAME: process.env.NEXT_PUBLIC_PROJECT_NAME,
 		NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+		NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
 		POSTHOG_KEY: process.env.POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,

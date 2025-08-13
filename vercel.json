@@ -1,4 +1,28 @@
 {
+  "version": 2,
+  "buildCommand": "yarn build",
+  "installCommand": "yarn install",
+  "framework": "nextjs",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_NODE_ENV": "production",
+    "NEXT_PUBLIC_PROJECT_NAME": "mehanisik"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_NODE_ENV": "production"
+    }
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -34,6 +58,13 @@
     {
       "source": "/robots.txt",
       "destination": "/api/robots"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/dashboard",
+      "permanent": false
     }
   ]
 } 

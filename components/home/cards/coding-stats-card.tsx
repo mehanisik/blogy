@@ -11,11 +11,8 @@ export async function CodingStatsCard() {
 	const lastSevenDays = await fetchWakatimeLastSevenDays();
 	const languages = await fetchWakatimeLanguages();
 
-	const totalSeconds = (lastSevenDays?.data ?? []).reduce(
-		(total, day) => total + (day.grand_total.total_seconds || 0),
-		0,
-	);
-	const dailyAvgSeconds = lastSevenDays?.daily_average?.seconds ?? 0;
+	const totalSeconds = lastSevenDays?.data?.total_seconds ?? 0;
+	const dailyAvgSeconds = lastSevenDays?.data?.daily_average ?? 0;
 	const topLanguages = (languages ?? [])
 		.slice()
 		.sort((a, b) => b.percent - a.percent)

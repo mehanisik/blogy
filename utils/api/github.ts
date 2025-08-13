@@ -1,13 +1,22 @@
-"use server";
 import type { GitHubEvent } from "@/types/github";
-import { getBaseUrl } from "@/utils/helpers/get-base-url";
 
 export const getGithubActivities = async () => {
-	const response = await fetch(`${getBaseUrl()}/api/github/activities`, {
-		next: { revalidate: 3600 },
-	});
-	if (!response.ok) {
-		throw new Error("Failed to fetch GitHub activities");
+	try {
+		const response = await fetch(
+			"https://api.github.com/users/mehanisik/events",
+			{
+				next: { revalidate: 3600 },
+			},
+		);
+
+		if (!response.ok) {
+			console.warn(`GitHub API error: ${response.status}`);
+			return null;
+		}
+
+		return (await response.json()) as GitHubEvent[];
+	} catch (error) {
+		console.error("Failed to fetch GitHub activities:", error);
+		return null;
 	}
-	return (await response.json()) as GitHubEvent[];
 };

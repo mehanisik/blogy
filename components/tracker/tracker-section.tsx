@@ -14,7 +14,7 @@ import type {
 } from "@/types/wakatime";
 import {
 	fetchWakatimeLanguages,
-	fetchWakatimeLastSevenDays,
+	fetchWakatimeSummaries,
 	fetchWakatimeSummary,
 } from "@/utils/api/wakatime";
 import {
@@ -29,13 +29,13 @@ import {
 export default async function TrackerSection() {
 	// Fetch all data at the server component level
 	const summaryPromise = fetchWakatimeSummary();
-	const lastSevenDaysPromise = fetchWakatimeLastSevenDays();
+	const summariesPromise = fetchWakatimeSummaries();
 	const languagesPromise = fetchWakatimeLanguages();
 
 	// Use Promise.all to fetch in parallel
-	const [summary, lastSevenDays, languages] = (await Promise.all([
+	const [summary, summaries, languages] = (await Promise.all([
 		summaryPromise,
-		lastSevenDaysPromise,
+		summariesPromise,
 		languagesPromise,
 	])) as [
 		WakaTimeAllTimeData,
@@ -53,12 +53,12 @@ export default async function TrackerSection() {
 				</div>
 				<div className="lg:col-span-3">
 					<Suspense fallback={<DailyAverageLoading />}>
-						<DailyAverage data={lastSevenDays} />
+						<DailyAverage data={summaries} />
 					</Suspense>
 				</div>
 				<div className="lg:col-span-3">
 					<Suspense fallback={<LastSevenDaysStatsLoading />}>
-						<LastSevenDaysStats data={lastSevenDays} />
+						<LastSevenDaysStats data={summaries} />
 					</Suspense>
 				</div>
 				<div className="lg:col-span-3">
@@ -69,7 +69,7 @@ export default async function TrackerSection() {
 
 				<div className="sm:col-span-2 lg:col-span-8">
 					<Suspense fallback={<DailyActivityLoading />}>
-						<DailyActivity data={lastSevenDays} />
+						<DailyActivity data={summaries} />
 					</Suspense>
 				</div>
 				<div className="sm:col-span-2 lg:col-span-4">
