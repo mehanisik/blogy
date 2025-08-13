@@ -3,71 +3,62 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
-import Navbar from "@/components/navbar";
+import { AuthProvider } from "@/components/providers";
 import { env } from "@/env";
-import { cn } from "@/utils/cn";
+import { cn, fonts } from "@/utils/helpers";
 import "../styles/globals.css";
-import { fonts } from "@/utils/fonts";
+import { Footer } from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
+import { PostHogProvider } from "@/components/providers";
+import { Toaster } from "@/components/ui/sonner";
+import { siteConfig } from "@/siteconfig";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
 	title: {
-		default: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
-		template: "%s | Mehmet ISIK",
+		default: siteConfig.seo.defaultTitle,
+		template: siteConfig.seo.titleTemplate,
 	},
-	description:
-		"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
-	keywords: [
-		"software engineer",
-		"full-stack developer",
-		"react",
-		"typescript",
-		"next.js",
-		"web development",
-		"portfolio",
-		"blog",
-		"mehmet isik",
-	],
-	authors: [{ name: "Mehmet ISIK" }],
-	creator: "Mehmet ISIK",
-	publisher: "Mehmet ISIK",
+	description: siteConfig.seo.description,
+	keywords: siteConfig.seo.keywords,
+	authors: [{ name: siteConfig.seo.authorName }],
+	creator: siteConfig.seo.authorName,
+	publisher: siteConfig.seo.authorName,
 	formatDetection: {
 		email: false,
 		address: false,
 		telephone: false,
 	},
 	openGraph: {
-		title: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
-		description:
-			"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
+		title: siteConfig.seo.defaultTitle,
+		description: siteConfig.seo.description,
 		url: env.NEXT_PUBLIC_BASE_URL,
-		siteName: "Mehmet ISIK",
+		siteName: siteConfig.seo.siteName,
 		locale: "en_US",
 		type: "website",
 		images: [
 			{
-				url: "/og.png",
+				url: siteConfig.seo.openGraph.imagePath,
 				width: 1200,
 				height: 630,
-				alt: "Mehmet ISIK Open Graph image",
+				alt: siteConfig.seo.openGraph.imageAlt,
 			},
 		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Mehmet ISIK | Software Engineer & Full-Stack Developer",
-		description:
-			"Personal blog and portfolio of Mehmet ISIK, a Software Engineer and Full-Stack Developer. Sharing insights on React, TypeScript, Next.js, and software development.",
+		title: siteConfig.seo.defaultTitle,
+		description: siteConfig.seo.description,
 		images: [
 			{
-				url: "/og.png",
+				url: siteConfig.seo.openGraph.imagePath,
 				width: 1200,
 				height: 630,
-				alt: "Mehmet ISIK Open Graph image",
+				alt: siteConfig.seo.openGraph.imageAlt,
 			},
 		],
-		site: "@siralcntra",
-		creator: "@siralcntra",
+		site: siteConfig.seo.twitter.site,
+		creator: siteConfig.seo.twitter.creator,
 	},
 	robots: {
 		index: true,
@@ -81,7 +72,7 @@ export const metadata: Metadata = {
 		},
 	},
 	verification: {
-		google: "your-google-verification-code",
+		google: siteConfig.seo.verification.google,
 	},
 	alternates: {
 		canonical: env.NEXT_PUBLIC_BASE_URL,
@@ -104,7 +95,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={cn(fonts, "scroll-smooth antialiased")}
+			className={cn("scroll-smooth", fonts.className)}
 		>
 			<head>
 				<link
@@ -139,10 +130,60 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 				/>
 				<link rel="icon" href="/favicon.ico" sizes="any" />
 				<link rel="manifest" href="/site.webmanifest" />
-				<meta property="og:image" content="/og.png" />
-				<meta name="twitter:image" content="/og.png" />
+				<meta
+					property="og:image"
+					content={siteConfig.seo.openGraph.imagePath}
+				/>
+				<meta
+					name="twitter:image"
+					content={siteConfig.seo.openGraph.imagePath}
+				/>
 				<meta name="theme-color" content="#000000" />
 				<meta name="color-scheme" content="light dark" />
+				{(() => {
+					const twitterHandle = siteConfig.seo.twitter.site?.startsWith("@")
+						? siteConfig.seo.twitter.site.slice(1)
+						: siteConfig.seo.twitter.site;
+					const sameAs = twitterHandle
+						? [`https://twitter.com/${twitterHandle}`]
+						: [];
+					const personJsonLd = {
+						"@context": "https://schema.org",
+						"@type": "Person",
+						name: siteConfig.seo.authorName,
+						url: env.NEXT_PUBLIC_BASE_URL,
+						image: siteConfig.seo.openGraph.imagePath,
+						jobTitle: "Software Engineer",
+						worksFor: {
+							"@type": "Organization",
+							name: siteConfig.seo.siteName,
+						},
+						sameAs,
+					};
+					const websiteJsonLd = {
+						"@context": "https://schema.org",
+						"@type": "WebSite",
+						name: siteConfig.seo.siteName,
+						url: env.NEXT_PUBLIC_BASE_URL,
+						description: siteConfig.seo.description,
+					};
+					return (
+						<>
+							<script
+								type="application/ld+json"
+								dangerouslySetInnerHTML={{
+									__html: JSON.stringify(personJsonLd),
+								}}
+							/>
+							<script
+								type="application/ld+json"
+								dangerouslySetInnerHTML={{
+									__html: JSON.stringify(websiteJsonLd),
+								}}
+							/>
+						</>
+					);
+				})()}
 				<Script
 					src="https://app.rybbit.io/api/script.js"
 					data-site-id="1099"
@@ -154,18 +195,26 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-background text-foreground p-3 rounded-md border border-border z-50"
 				>
-					Skip to main content
+					{siteConfig.pages.layout.skipToContentLabel}
 				</a>
 
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="system"
+					defaultTheme="dark"
 					enableSystem
 					disableTransitionOnChange
 					themes={["light", "dark", "yellow", "purple"]}
 				>
-					<Navbar />
-					{children}
+					<AuthProvider>
+						<PostHogProvider>
+							<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
+								<Navbar />
+								{children}
+								<Footer />
+							</div>
+							<Toaster richColors position="top-right" />
+						</PostHogProvider>
+					</AuthProvider>
 				</ThemeProvider>
 			</body>
 		</html>

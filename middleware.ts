@@ -1,15 +1,12 @@
 import type { NextRequest } from "next/server";
+import { updateSession } from "@/utils/supabase/middleware";
 
-import { supabaseMiddleware } from "@/utils/supabase";
+export async function middleware(request: NextRequest) {
+	return await updateSession(request);
+}
 
-const middleware = (request: NextRequest) => {
-	return supabaseMiddleware(request);
-};
-
-const config = {
+export const config = {
 	matcher: [
 		"/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
 	],
 };
-
-export { middleware, config };

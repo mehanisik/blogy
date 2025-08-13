@@ -12,6 +12,8 @@
 			"**/*.tsx",
 			"!**/node_modules/**",
 			"!**/.next/**",
+			"!**/.vercel/**",
+			"!**/.open-next/**",
 			"!**/app/components/ui/**"
 		]
 	},

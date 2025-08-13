@@ -1,40 +1,31 @@
 import type { NextConfig } from "next";
-
 import "./env.ts";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseHost = (() => {
+	try {
+		return supabaseUrl ? new URL(supabaseUrl).host : undefined;
+	} catch {
+		return undefined;
+	}
+})();
 
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
 	trailingSlash: true,
-	experimental: {
-		reactCompiler: true,
-	},
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
-	typescript: {
-		ignoreBuildErrors: true,
-	},
+	experimental: { reactCompiler: true },
+	eslint: { ignoreDuringBuilds: true },
+	typescript: { ignoreBuildErrors: true },
 	images: {
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "placehold.co",
-			},
-			{
-				protocol: "https",
-				hostname: "random.imagecdn.app",
-			},
-			{
-				protocol: "https",
-				hostname: "github.com",
-			},
-			{
-				protocol: "https",
-				hostname: "placehold.co",
-			},
-		],
+		remotePatterns: supabaseHost
+			? [
+					{
+						protocol: "https",
+						hostname: supabaseHost,
+						pathname: "/storage/v1/object/**",
+					},
+				]
+			: [],
 	},
 	transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 };

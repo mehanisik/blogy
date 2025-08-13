@@ -1,41 +1,35 @@
-import { Suspense } from "react";
-import Loader from "@/components/loader";
-import { PageLayout } from "@/components/page-layout";
-import WakaTimeDashboard from "@/components/wakatime";
-import {
-	getWakaTimeLanguages,
-	getWakaTimeLastSevenDays,
-	getWakaTimeSummary,
-} from "./actions";
+import type { Metadata } from "next";
+import TrackerSection from "@/components/tracker/tracker-section";
+import { env } from "@/env";
+import { siteConfig } from "@/siteconfig";
+
+export const metadata: Metadata = {
+	title: "Activity Tracker",
+	description: `Coding activity insights and time tracking by ${siteConfig.seo.authorName} powered by WakaTime.`,
+	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/tracker` },
+	openGraph: {
+		title: "Activity Tracker",
+		description: `Coding activity insights and time tracking by ${siteConfig.seo.authorName} powered by WakaTime.`,
+		url: `${env.NEXT_PUBLIC_BASE_URL}/tracker`,
+		images: [
+			{
+				url: siteConfig.seo.openGraph.imagePath,
+				width: 1200,
+				height: 630,
+				alt: "Activity Tracker",
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Activity Tracker",
+		description: `Coding activity insights and time tracking by ${siteConfig.seo.authorName} powered by WakaTime.`,
+		images: [siteConfig.seo.openGraph.imagePath],
+		site: siteConfig.seo.twitter.site,
+		creator: siteConfig.seo.twitter.creator,
+	},
+};
 
 export default async function TrackerPage() {
-	const [summaryResult, languagesResult, lastSevenDaysResult] =
-		await Promise.all([
-			getWakaTimeSummary(),
-			getWakaTimeLanguages(),
-			getWakaTimeLastSevenDays(),
-		]);
-	return (
-		<Suspense fallback={<Loader />}>
-			<PageLayout className="flex flex-col justify-between w-full h-full border-border border-x border-t">
-				<main className="py-8 sm:py-12">
-					<header className="mb-8 sm:mb-12">
-						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
-							Activity Tracker
-						</h1>
-						<p className="text-lg text-muted-foreground">
-							I use WakaTime to track my coding activity with VSCode extension
-							to see how much time I spend on each project so that I can track
-							my progress and organize my time better.
-						</p>
-					</header>
-					<WakaTimeDashboard
-						summaryResult={summaryResult}
-						languagesResult={languagesResult}
-						lastSevenDaysResult={lastSevenDaysResult}
-					/>
-				</main>
-			</PageLayout>
-		</Suspense>
-	);
+	return <TrackerSection />;
 }

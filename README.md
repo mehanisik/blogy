@@ -1,74 +1,136 @@
+# Blogy
+
+A modern personal blog and portfolio platform built with Next.js 15, TypeScript, and Supabase.
+
+![Blogy Landing Page](https://raw.githubusercontent.com/mehanisik/blogy/main/landing.png)
+
+[View Live Site](https://mehanisik.com) · [Introduction](#introduction) · [Tech Stack](#tech-stack) · [Features](#features) · [Getting Started](#getting-started)
+
+---
+
+## Introduction
+
+Blogy is a full-stack personal website and blog platform featuring a clean, minimalist design with a powerful admin interface for content management. Built with modern web technologies, it provides a seamless experience for both visitors and content creators.
 
 
-# Personal Website
+## Tech Stack.
 
-A personal blog and portfolio website that i  built with Next.js 15, TypeScript, and Supabase.I use this website to share my daily work and projects with along the posting the my studied notes.
+| Technology      | Version  |
+|-----------------|----------|
+| Next.js         | 15.3.3   |
+| React           | 19.1.1   |
+| TypeScript      | 5.9.2    |
+| Tailwind CSS    | 4.1.11   |
+| PostCSS         | 8.5.6    |
+| Supabase        | 2.34.3   |
+| Biome           | 2.0.0    |
+| Knip            | 5.62.0   |
+| React Hook Form | 7.62.0   |
+| Zod             | 4.0.17   |
+| React Markdown  | 10.1.0   |
+| Recharts        | 3.1.2    |
+| PostHog         | 1.259.0  |
+| Vercel CLI      | 44.7.3   |
 
-- **Next.js 15** 
-- **TypeScript** 
-- **Tailwind CSS** 
-- **Shadcn/ui** 
-- **Supabase** 
-- **PostgreSQL** 
-- **React Markdown** 
-- **Remark GFM** 
-- **Rehype Highlight** 
-- **Biome** 
 
-
-### Installation
+### Quick Start
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/mehanisik/blogy.git
+   git clone <repository-url>
    cd blogy
    ```
 
 2. **Install dependencies**
    ```bash
-   bun install
+   yarn install
    ```
 
-3. **Set up Supabase**
-   - Create a new Supabase project
-   - Copy your project URL and anon key
-   
-
-4. **Environment Variables**
-   Create a `.env.local` file that similar to example env that i created in .env.example:
-   ```env
-   NEXT_PUBLIC_BASE=http://localhost:3000/
-   NEXT_PUBLIC_PORT=3000
-   NEXT_PUBLIC_NODE_ENV=development
-   NEXT_PUBLIC_SUPABASE_URL=
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=
-   SUPABASE_PROJECT_ID=
-   WAKATIME_API_KEY=
-   ```
-
-5. **Run the development server**
+3. **Environment setup**
    ```bash
-   bun dev
+   cp .env.example .env.local
+   # Configure your Supabase credentials and API keys
    ```
 
-6. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+4. **Start development**
+   ```bash
+   yarn dev
+   ```
 
-### Tracker Setup
+### Development Commands
 
-The tracker page displays your coding activity from WakaTime and GitHub contributions. To enable this feature:
+| Command | Description |
+|---------|-------------|
+| `yarn dev` | Start development server with Turbopack |
+| `yarn build` | Build for production |
+| `yarn format` | Format code with Biome |
+| `yarn lint` | Lint code with Biome |
+| `yarn typecheck` | Run TypeScript checks |
+| `yarn clean` | Clean build artifacts and dependencies |
+| `yarn knip` | Detect unused code and dependencies |
 
-#### WakaTime Setup
-1. Go to [WakaTime](https://wakatime.com) and create an account
-2. Install the WakaTime extension for your editor
-3. Get your API key from [WakaTime API Settings](https://wakatime.com/settings/api)
-4. Add `WAKATIME_API_KEY=your_api_key` to your `.env.local`
+### Database Commands
+
+| Command | Description |
+|---------|-------------|
+| `yarn db:types` | Generate TypeScript types from Supabase |
+| `yarn db:push` | Push database migrations |
+| `yarn db:migrate` | Create new migration |
+| `yarn db:link` | Link to Supabase project |
+
+## Project Structure
+
+```
+blogy/
+├── app/                    # Next.js App Router
+│   ├── admin/             # Admin interface and dashboard
+│   ├── api/               # API routes
+│   │   ├── github/        # GitHub API integration
+│   │   └── wakatime/      # WakaTime API integration
+│   ├── posts/             # Blog posts
+│   ├── projects/          # Portfolio projects
+│   ├── publications/      # Academic publications
+│   ├── tracker/           # Activity tracking
+│   ├── legal/             # Privacy and terms pages
+│   ├── auth/              # Authentication pages
+│   ├── layout.tsx         # Root layout with providers
+│   ├── page.tsx           # Homepage
+│   ├── sitemap.ts         # Dynamic sitemap generation
+│   └── robots.ts          # SEO robots configuration
+├── components/            # React components
+│   ├── admin/             # Admin-specific components
+│   ├── ui/                # Shadcn UI components
+│   ├── home/              # Homepage components
+│   ├── layout/            # Layout components
+│   └── common/            # Shared components
+├── types/                 # TypeScript definitions
+├── utils/                 # Utility functions
+├── styles/                # Global CSS and Tailwind
+└── supabase/              # Database configuration
+```
 
 
 
-The tracker will display:
-- **Coding Activity**: Total time, best day, top languages, projects, and editors
+### Environment Variables
+Ensure you have the following environment variables configured:
+- `SUPABASE_URL` - Your Supabase project URL
+- `SUPABASE_ANON_KEY` - Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
+- `GITHUB_TOKEN` - GitHub personal access token
+- `WAKATIME_API_KEY` - WakaTime API key
+- `POSTHOG_KEY` - PostHog analytics key
 
-<p align="center">
-  <img src="/public/assets/og.png" alt="Personal Website Open Graph Image" width="100%" />
-</p>
+## Contributing
+
+This is a personal project, but contributions are welcome:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting (`yarn lint && yarn typecheck`)
+5. Submit a pull request
+
+
+
+
+

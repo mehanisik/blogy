@@ -1,30 +1,35 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Loader from "@/components/loader";
-import { PageLayout } from "@/components/page-layout";
-import { getPublications } from "@/utils/data";
-import { PublicationsContent } from "./publications-content";
-
-export const revalidate = 3600;
+import PublicationsLoader from "@/components/loaders/publications-loader";
+import { PublicationsList } from "@/components/publications/publications-list";
+import { env } from "@/env";
+import { siteConfig } from "@/siteconfig";
+import { getPublications } from "@/utils/helpers/queries";
 
 export const metadata: Metadata = {
 	title: "Publications",
-	description:
-		"Academic publications and research papers by Mehmet ISIK, covering topics in computer systems, networks, and software engineering.",
+	description: `Research and publications by ${siteConfig.seo.authorName}.`,
+	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/publications` },
 	openGraph: {
-		title: "Publications | Mehmet ISIK",
-		description:
-			"Academic publications and research papers by Mehmet ISIK, covering topics in computer systems, networks, and software engineering.",
-		type: "website",
+		title: "Publications",
+		description: `Research and publications by ${siteConfig.seo.authorName}.`,
+		url: `${env.NEXT_PUBLIC_BASE_URL}/publications`,
+		images: [
+			{
+				url: siteConfig.seo.openGraph.imagePath,
+				width: 1200,
+				height: 630,
+				alt: "Publications",
+			},
+		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Publications | Mehmet ISIK",
-		description:
-			"Academic publications and research papers by Mehmet ISIK, covering topics in computer systems, networks, and software engineering.",
-	},
-	alternates: {
-		canonical: "/publications",
+		title: "Publications",
+		description: `Research and publications by ${siteConfig.seo.authorName}.`,
+		images: [siteConfig.seo.openGraph.imagePath],
+		site: siteConfig.seo.twitter.site,
+		creator: siteConfig.seo.twitter.creator,
 	},
 };
 
@@ -32,22 +37,8 @@ export default async function PublicationsPage() {
 	const publications = await getPublications();
 
 	return (
-		<Suspense fallback={<Loader />}>
-			<PageLayout className="flex flex-col justify-between w-full h-[calc(100vh-100px)] border-border border-x border-t">
-				<main className="py-8 sm:py-12 h-full">
-					<header className="mb-8 sm:mb-12">
-						<h1 className="text-3xl font-light tracking-tight text-foreground mb-3">
-							Publications
-						</h1>
-						<p className="text-lg text-muted-foreground">
-							Here are the my graduation thesis and the papers I have studied
-							and worked on during my studies.
-						</p>
-					</header>
-
-					<PublicationsContent publications={publications} />
-				</main>
-			</PageLayout>
+		<Suspense fallback={<PublicationsLoader />}>
+			<PublicationsList publications={publications} />
 		</Suspense>
 	);
 }

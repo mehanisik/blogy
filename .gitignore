@@ -2,7 +2,6 @@ node_modules
 target
 dist
 logs
-.env
 .env.local
 .cursor
 public
