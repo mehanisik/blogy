@@ -36,9 +36,8 @@ jobs:
           NEXT_PUBLIC_BASE_URL: https://notrealurl.com
           NEXT_PUBLIC_PROJECT_NAME: Random Project
           NEXT_PUBLIC_SUPABASE_URL: https://123456.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: some-anon-key
-          SUPABASE_URL: https://123456.supabase.co
           SUPABASE_ANON_KEY: some-anon-key
+          SUPABASE_URL: https://123456.supabase.co
           WAKATIME_API_KEY: wakatime-api-key
-          NEXT_PUBLIC_POSTHOG_KEY: posthog-api-key
+          POSTHOG_KEY: posthog-api-key
           NEXT_PUBLIC_POSTHOG_HOST: posthog-host

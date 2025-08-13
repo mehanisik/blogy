@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		const apiKey = env.NEXT_PUBLIC_WAKATIME_API_KEY;
+		const apiKey = env.WAKATIME_API_KEY;
 		if (!apiKey) {
 			return NextResponse.json(
 				{ error: "Wakatime API key not configured" },

@@ -5,7 +5,7 @@ import type { WakaTimeAllTimeData } from "@/types/wakatime";
 export async function GET() {
 	try {
 		const url = `https://api.wakatime.com/api/v1/users/current/all_time_since_today`;
-		const apiKey = env.NEXT_PUBLIC_WAKATIME_API_KEY;
+		const apiKey = env.WAKATIME_API_KEY;
 		if (!apiKey) {
 			return NextResponse.json(
 				{ error: "Wakatime API key not configured" },

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 		const { searchParams } = new URL(request.url);
 		const range = searchParams.get("range") || "last_7_days";
 		const url = `https://api.wakatime.com/api/v1/users/current/stats/${range}`;
-		const apiKey = env.NEXT_PUBLIC_WAKATIME_API_KEY;
+		const apiKey = env.WAKATIME_API_KEY;
 		if (!apiKey) {
 			return NextResponse.json(
 				{ error: "Wakatime API key not configured" },

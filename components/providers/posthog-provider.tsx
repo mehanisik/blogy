@@ -4,15 +4,15 @@ import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { Suspense, useEffect } from "react";
+import { env } from "@/env";
 import { useAuth } from "./auth-provider";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	const { user } = useAuth();
 
 	useEffect(() => {
-		posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
-			api_host:
-				process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+		posthog.init(env.POSTHOG_KEY as string, {
+			api_host: env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
 			person_profiles: "identified_only",
 			capture_pageview: false,
 		});

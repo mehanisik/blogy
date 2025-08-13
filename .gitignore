@@ -12,3 +12,4 @@ public
 .next
 yarn-error.log
 npm-debug.log
+.vercel
