@@ -1,19 +1,30 @@
 {
-	"name": "",
-	"short_name": "",
+	"name": "mehanisik - Personal Website",
+	"short_name": "mehanisik",
+	"description": "Personal blog and portfolio platform",
 	"icons": [
 		{
-			"src": "/android-chrome-192x192.png",
-			"sizes": "192x192",
-			"type": "image/png"
+			"src": "/icon0.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
 		},
 		{
-			"src": "/android-chrome-512x512.png",
-			"sizes": "512x512",
-			"type": "image/png"
+			"src": "/icon1.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/apple-icon.png",
+			"sizes": "180x180",
+			"type": "image/png",
+			"purpose": "any"
 		}
 	],
-	"theme_color": "#ffffff",
+	"theme_color": "#000000",
 	"background_color": "#ffffff",
-	"display": "standalone"
-}
+	"display": "standalone",
+	"start_url": "/",
+	"scope": "/"
+} 

@@ -96,37 +96,9 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 			className={cn("scroll-smooth", fonts.className)}
 		>
 			<head>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="16x16"
-					href="/favicon-16x16.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="32x32"
-					href="/favicon-32x32.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="96x96"
-					href="/favicon-96x96.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="128x128"
-					href="/favicon-128x128.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="196x196"
-					href="/favicon-196x196.png"
-				/>
-				<link rel="icon" href="/favicon.ico" sizes="any" />
+				<link rel="icon" type="image/svg+xml" href="/icon0.svg" />
+				<link rel="icon" type="image/png" sizes="192x192" href="/icon1.png" />
+				<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
 				<link rel="manifest" href="/site.webmanifest" />
 				<meta
 					property="og:image"
