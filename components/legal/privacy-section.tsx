@@ -6,9 +6,6 @@ export default function TermsSection() {
 					<h1 className="text-3xl font-light tracking-tight">
 						Terms of Service
 					</h1>
-					<p className="text-muted-foreground">
-						Last updated: {new Date().toLocaleDateString()}
-					</p>
 				</div>
 
 				<div className="prose prose-gray dark:prose-invert max-w-none space-y-6">

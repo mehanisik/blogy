@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { signIn } from "@/utils/helpers/sign-in";
 
 const formSchema = z.object({
-	email: z.string().email("Please enter a valid email address").max(254),
+	email: z.email("Please enter a valid email address").max(254),
 	password: z
 		.string()
 		.min(8, "Password must be at least 8 characters")
@@ -63,7 +63,7 @@ export function AuthForm() {
 								Email
 							</label>
 							<Input
-								id="email"
+								id={crypto.randomUUID()}
 								type="email"
 								autoComplete="email"
 								placeholder="Enter your email"
@@ -85,7 +85,7 @@ export function AuthForm() {
 								Password
 							</label>
 							<Input
-								id="password"
+								id={crypto.randomUUID()}
 								type="password"
 								autoComplete="current-password"
 								placeholder="Enter your password"

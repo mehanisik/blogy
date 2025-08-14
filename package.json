@@ -36,16 +36,16 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.539.0",
-		"next": "15.3.3",
+		"next": "15.4.6",
 		"next-themes": "^0.4.6",
 		"posthog-js": "^1.259.0",
-		"posthog-node": "^4.18.0",
+		"posthog-node": "^5.6.0",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"react-hook-form": "^7.62.0",
 		"react-is": "^19.1.1",
 		"react-markdown": "^10.1.0",
-		"recharts": "2.12.0",
+		"recharts": "3.1.2",
 		"rehype-highlight": "^7.0.2",
 		"remark-gfm": "^4.0.1",
 		"sonner": "^2.0.7",
@@ -55,18 +55,18 @@
 		"zod": "^4.0.17"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.0.0",
-		"@tailwindcss/postcss": "^4.1.11",
-		"@types/node": "^20.19.10",
+		"@biomejs/biome": "2.2.0",
+		"@tailwindcss/postcss": "^4.1.12",
+		"@types/node": "^24.2.1",
 		"@types/react": "^19.1.10",
 		"@types/react-dom": "^19.1.7",
 		"babel-plugin-react-compiler": "^19.1.0-rc.2",
 		"highlight.js": "^11.11.1",
 		"knip": "^5.62.0",
 		"postcss": "^8.5.6",
-		"tailwindcss": "^4.1.11",
+		"tailwindcss": "^4.1.12",
 		"typed-query-selector": "^2.12.0",
 		"typescript": "^5.9.2",
-		"vercel": "^44.7.3"
+		"vercel": "^45.0.9"
 	}
 }

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { getWakatimeStats } from "@/app/tracker/actions";
 import { DistributionChart } from "@/components/common/distribution-chart";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -9,7 +10,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import type { WakaTimeLanguageData } from "@/types/wakatime";
-import { getWakatimeStats } from "@/utils/api/wakatime";
 import { formatDuration } from "@/utils/helpers";
 import { LanguageDistributionLoading } from "../loaders";
 
@@ -22,8 +22,10 @@ const COLORS = [
 ];
 
 export default async function LanguageDistribution() {
-	const languages = await getWakatimeStats();
-	const languagesArray: WakaTimeLanguageData[] = languages ?? [];
+	const languages = await getWakatimeStats("last_7_days");
+	const languagesArray: WakaTimeLanguageData[] = languages.success
+		? languages.data
+		: [];
 	const topLanguages = [...languagesArray]
 		.sort((a, b) => b.percent - a.percent)
 		.slice(0, 6);
