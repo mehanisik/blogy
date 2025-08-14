@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { timeAgo } from "@/utils/helpers/date";
 import { getEventAction } from "@/utils/helpers/get-event-action";
 
+export const revalidate = 3600; // 1 hour
+
 export async function RecentActivityCard() {
 	const result = await getGithubActivities();
 
@@ -51,15 +53,15 @@ export async function RecentActivityCard() {
 							>
 								{event.repo.name.split("/")[1]}
 							</Badge>
-							<span className="text-xs text-foreground/70">
+							<span className="text-xs text-foreground/80">
 								{getEventAction(event)}
 							</span>
-							<span className="ml-auto text-[0.65rem] text-foreground/60">
+							<span className="ml-auto text-[0.65rem] text-foreground/70">
 								{timeAgo(event.created_at)}
 							</span>
 						</div>
 						{event.payload?.commits?.[0]?.message && (
-							<p className="ml-1.5 text-xs truncate text-foreground/70 font-mono">
+							<p className="ml-1.5 text-xs truncate text-foreground/80 font-mono">
 								{event.payload.commits[0].message}
 							</p>
 						)}
