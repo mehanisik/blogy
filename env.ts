@@ -31,7 +31,7 @@ export const env = createEnv({
 	server: {
 		SUPABASE_URL: z.url(),
 		SUPABASE_ANON_KEY: z.string().min(1),
-		WAKATIME_API_KEY: z.string().optional(),
+		WAKATIME_API_KEY: z.string().min(1),
 		POSTHOG_KEY: z.string().optional(),
 	},
 });

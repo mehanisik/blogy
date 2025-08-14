@@ -1,22 +1,35 @@
 import type { GitHubEvent } from "@/types/github";
 
-export const getGithubActivities = async () => {
-	try {
-		const response = await fetch(
-			"https://api.github.com/users/mehanisik/events",
-			{
-				next: { revalidate: 3600 },
-			},
-		);
+interface GithubActivitiesResult {
+	data: GitHubEvent[] | null;
+	error: string | null;
+}
 
-		if (!response.ok) {
-			console.warn(`GitHub API error: ${response.status}`);
-			return null;
+export const getGithubActivities =
+	async (): Promise<GithubActivitiesResult> => {
+		try {
+			const response = await fetch(
+				"https://api.github.com/users/mehanisik/events",
+				{
+					next: { revalidate: 3600 },
+				},
+			);
+
+			if (!response.ok) {
+				return {
+					data: null,
+					error: `GitHub API returned status ${response.status} (${response.statusText})`,
+				};
+			}
+
+			const data = (await response.json()) as GitHubEvent[];
+			return { data, error: null };
+		} catch (err) {
+			const message =
+				err instanceof Error ? err.message : "Unknown error occurred";
+			return {
+				data: null,
+				error: `Failed to fetch GitHub activities: ${message}`,
+			};
 		}
-
-		return (await response.json()) as GitHubEvent[];
-	} catch (error) {
-		console.error("Failed to fetch GitHub activities:", error);
-		return null;
-	}
-};
+	};

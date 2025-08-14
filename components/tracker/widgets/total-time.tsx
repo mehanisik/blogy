@@ -11,9 +11,6 @@ interface TotalTimeProps {
 }
 
 export default function TotalTime({ data: summary }: TotalTimeProps) {
-	// Debug logging
-	console.log("TotalTime component received data:", summary);
-
 	return (
 		<Card className="group relative overflow-hidden border border-muted hover:border-muted-foreground/20 transition-all duration-300 hover:-translate-y-1">
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

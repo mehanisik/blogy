@@ -7,15 +7,11 @@ import {
 	TopLanguage,
 	TotalTime,
 } from "@/components/tracker/widgets";
-import type {
-	WakaTimeAllTimeData,
-	WakaTimeLanguageData,
-	WakatimeSummariesResponse,
-} from "@/types/wakatime";
+
 import {
-	fetchWakatimeLanguages,
-	fetchWakatimeSummaries,
-	fetchWakatimeSummary,
+	getWakatimeAllTime,
+	getWakatimeStats,
+	getWakatimeSummaries,
 } from "@/utils/api/wakatime";
 import {
 	DailyActivityLoading,
@@ -27,21 +23,11 @@ import {
 } from "../tracker/loaders";
 
 export default async function TrackerSection() {
-	// Fetch all data at the server component level
-	const summaryPromise = fetchWakatimeSummary();
-	const summariesPromise = fetchWakatimeSummaries();
-	const languagesPromise = fetchWakatimeLanguages();
-
-	// Use Promise.all to fetch in parallel
-	const [summary, summaries, languages] = (await Promise.all([
-		summaryPromise,
-		summariesPromise,
-		languagesPromise,
-	])) as [
-		WakaTimeAllTimeData,
-		WakatimeSummariesResponse,
-		WakaTimeLanguageData[],
-	];
+	const [summary, summaries, languages] = await Promise.all([
+		getWakatimeAllTime(),
+		getWakatimeSummaries(),
+		getWakatimeStats(),
+	]);
 
 	return (
 		<div className="w-full py-6 min-h-[72vh] px-3 md:px-0">

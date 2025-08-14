@@ -1,18 +1,21 @@
 import { Timer } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-	fetchWakatimeLanguages,
-	fetchWakatimeLastSevenDays,
-} from "@/utils/api/wakatime";
+import { getWakatimeStats, getWakatimeSummaries } from "@/utils/api/wakatime";
 import { formatDuration } from "@/utils/helpers";
 
 export async function CodingStatsCard() {
-	const lastSevenDays = await fetchWakatimeLastSevenDays();
-	const languages = await fetchWakatimeLanguages();
+	const [languages, summaries] = await Promise.all([
+		getWakatimeStats(),
+		getWakatimeSummaries(),
+	]);
 
-	const totalSeconds = lastSevenDays?.data?.total_seconds ?? 0;
-	const dailyAvgSeconds = lastSevenDays?.data?.daily_average ?? 0;
+	const totalSeconds =
+		summaries?.data?.reduce(
+			(acc, curr) => acc + curr.grand_total.total_seconds,
+			0,
+		) ?? 0;
+	const dailyAvgSeconds = summaries?.daily_average?.seconds ?? 0;
 	const topLanguages = (languages ?? [])
 		.slice()
 		.sort((a, b) => b.percent - a.percent)
@@ -27,7 +30,7 @@ export async function CodingStatsCard() {
 			</CardHeader>
 
 			<CardContent className="space-y-4">
-				{!lastSevenDays || !languages ? (
+				{!languages || languages.length === 0 ? (
 					<div className="space-y-4">
 						<div className="grid grid-cols-2 gap-3">
 							<div className="space-y-2">

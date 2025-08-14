@@ -1,3 +1,5 @@
+"use server";
+
 import { env } from "@/env";
 import type {
 	WakaTimeAllTimeData,
@@ -6,178 +8,107 @@ import type {
 	WakatimeSummariesResponse,
 } from "@/types/wakatime";
 
-const WAKATIME_API_URL = "https://api.wakatime.com/api/v1";
-
-export async function fetchWakatimeSummary() {
+export async function getWakatimeStats(
+	range: string = "last_7_days",
+): Promise<WakaTimeLanguageData[]> {
 	try {
-		console.log("Fetching Wakatime summary...");
+		const url = `https://api.wakatime.com/api/v1/users/current/stats/${range}`;
+		const apiKey = env.WAKATIME_API_KEY;
 
-		if (!env.WAKATIME_API_KEY) {
-			console.error("WAKATIME_API_KEY environment variable is not set");
-			return null;
-		}
-
-		const response = await fetch(
-			"https://api.wakatime.com/api/v1/users/current/all_time_since_today",
-			{
-				headers: {
-					Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString("base64")}`,
-				},
-				next: { revalidate: 86400 }, // Cache for 24 hours
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				Authorization: `Basic ${Buffer.from(apiKey).toString("base64")}`,
+				"Content-Type": "application/json",
 			},
-		);
-
-		console.log("Wakatime API response status:", response.status);
+			next: { revalidate: 86400 },
+		});
 
 		if (!response.ok) {
-			console.warn(`WakaTime API error: ${response.status}`);
-			return null;
+			throw new Error(`Request failed with status ${response.status}`);
 		}
 
-		const data = (await response.json()) as WakaTimeAllTimeData;
-		console.log("Wakatime API response data:", data);
+		const json = (await response.json()) as WakatimeStatsResponse;
+		const languagesSource = json?.data?.languages ?? [];
+		const languages: WakaTimeLanguageData[] = languagesSource.map((l) => ({
+			name: l.name,
+			percent: l.percent,
+			total_seconds: l.total_seconds,
+		}));
 
-		if (!data || typeof data.total_seconds !== "number") {
-			console.warn("WakaTime API returned unexpected data structure:", data);
-
-			const fallbackResponse = await fetch(
-				"https://api.wakatime.com/api/v1/users/current/stats/all_time",
-				{
-					headers: {
-						Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString("base64")}`,
-					},
-					next: { revalidate: 86400 },
-				},
-			);
-
-			if (fallbackResponse.ok) {
-				const fallbackData = (await fallbackResponse.json()) as any;
-				console.log("Fallback endpoint data:", fallbackData);
-
-				if (
-					fallbackData.data &&
-					typeof fallbackData.data.total_seconds === "number"
-				) {
-					return {
-						total_seconds: fallbackData.data.total_seconds,
-						daily_average: fallbackData.data.daily_average || 0,
-						range: {
-							start_date: fallbackData.data.start || new Date().toISOString(),
-							end_date: fallbackData.data.end || new Date().toISOString(),
-							start: fallbackData.data.start || new Date().toISOString(),
-							end: fallbackData.data.end || new Date().toISOString(),
-							start_text: fallbackData.data.start || "Unknown",
-							end_text: fallbackData.data.end || "Unknown",
-							timezone: "UTC",
-						},
-						decimal: fallbackData.data.human_readable_total || "0",
-						digital: fallbackData.data.human_readable_total || "0",
-						text: fallbackData.data.human_readable_total || "0",
-						percent_calculated: 100,
-						is_up_to_date: true,
-						timeout: 0,
-					} as WakaTimeAllTimeData;
-				}
-			}
-
-			return null;
-		}
-
-		return data;
-	} catch (error) {
-		console.error("Failed to fetch Wakatime all-time stats:", error);
-		return null;
+		return languages;
+	} catch (err: unknown) {
+		throw new Error(err instanceof Error ? err.message : "Unknown error");
 	}
 }
 
-export async function fetchWakatimeLanguages() {
-	try {
-		if (!env.WAKATIME_API_KEY) {
-			console.error("WAKATIME_API_KEY environment variable is not set");
-			return null;
-		}
-
-		const response = await fetch(
-			`${WAKATIME_API_URL}/users/current/stats/last_7_days`,
-			{
-				headers: {
-					Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString("base64")}`,
-				},
-				next: { revalidate: 3600 },
-			},
-		);
-
-		if (!response.ok) {
-			console.warn(`WakaTime API error: ${response.status}`);
-			return null;
-		}
-
-		const data = (await response.json()) as {
-			data?: { languages?: WakaTimeLanguageData[] };
-		};
-		return data.data?.languages || [];
-	} catch (error) {
-		console.error("Failed to fetch WakaTime languages:", error);
-		return null;
+export async function getWakatimeSummaries(
+	start?: string,
+	end?: string,
+): Promise<WakatimeSummariesResponse> {
+	if (!start || !end) {
+		const now = new Date();
+		const endDate = now.toISOString().split("T")[0];
+		const startDate = new Date(now);
+		startDate.setDate(now.getDate() - 6);
+		const startStr = startDate.toISOString().split("T")[0];
+		start = start ?? startStr;
+		end = end ?? endDate;
 	}
-}
 
-export async function fetchWakatimeLastSevenDays() {
 	try {
-		if (!env.WAKATIME_API_KEY) {
-			console.error("WAKATIME_API_KEY environment variable is not set");
-			return null;
-		}
+		const apiKey = env.WAKATIME_API_KEY;
 
 		const response = await fetch(
-			`https://api.wakatime.com/api/v1/users/current/stats/last_7_days`,
+			`https://api.wakatime.com/api/v1/users/current/summaries?start=${start}&end=${end}`,
 			{
+				method: "GET",
 				headers: {
-					Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString("base64")}`,
-				},
-				next: { revalidate: 86400 }, // Cache for 24 hours
-			},
-		);
-
-		if (!response.ok) {
-			console.warn(`WakaTime API error: ${response.status}`);
-			return null;
-		}
-
-		const data = (await response.json()) as WakatimeStatsResponse;
-		return data;
-	} catch (error) {
-		console.error("Failed to fetch Wakatime stats:", error);
-		return null;
-	}
-}
-
-export async function fetchWakatimeSummaries() {
-	try {
-		if (!env.WAKATIME_API_KEY) {
-			console.error("WAKATIME_API_KEY environment variable is not set");
-			return null;
-		}
-
-		const response = await fetch(
-			`https://api.wakatime.com/api/v1/users/current/summaries?range=last_7_days`,
-			{
-				headers: {
-					Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString("base64")}`,
+					Authorization: `Basic ${Buffer.from(apiKey).toString("base64")}`,
+					"Content-Type": "application/json",
 				},
 				next: { revalidate: 86400 },
 			},
 		);
 
 		if (!response.ok) {
-			console.warn(`WakaTime API error: ${response.status}`);
-			return null;
+			throw new Error("Failed to fetch Wakatime summaries");
 		}
 
 		const data = (await response.json()) as WakatimeSummariesResponse;
 		return data;
 	} catch (error) {
-		console.error("Failed to fetch Wakatime summaries:", error);
-		return null;
+		throw new Error(`Failed to fetch coding summaries: ${error}`);
+	}
+}
+
+export async function getWakatimeAllTime(): Promise<WakaTimeAllTimeData> {
+	try {
+		const url = `https://api.wakatime.com/api/v1/users/current/all_time_since_today`;
+		const apiKey = env.WAKATIME_API_KEY;
+
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				Authorization: `Basic ${Buffer.from(apiKey).toString("base64")}`,
+				"Content-Type": "application/json",
+			},
+			next: { revalidate: 86400 },
+		});
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		const raw: unknown = await response.json();
+		const data: WakaTimeAllTimeData = (
+			raw && typeof raw === "object" && "data" in raw
+				? (raw as { data: WakaTimeAllTimeData }).data
+				: (raw as WakaTimeAllTimeData)
+		) as WakaTimeAllTimeData;
+
+		return data;
+	} catch (err: unknown) {
+		throw new Error(err instanceof Error ? err.message : "Unknown error");
 	}
 }

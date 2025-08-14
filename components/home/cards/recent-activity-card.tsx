@@ -6,9 +6,9 @@ import { timeAgo } from "@/utils/helpers/date";
 import { getEventAction } from "@/utils/helpers/get-event-action";
 
 export async function RecentActivityCard() {
-	const data = await getGithubActivities();
+	const result = await getGithubActivities();
 
-	if (!data) {
+	if (!result.data || result.error) {
 		return (
 			<Card className="w-full h-[220px] col-span-1 sm:col-span-2 lg:col-span-2 row-span-2 border border-muted hover:border-muted-foreground/20 transition-colors">
 				<CardHeader>
@@ -39,7 +39,7 @@ export async function RecentActivityCard() {
 				<CardTitle>Recent Activity</CardTitle>
 			</CardHeader>
 			<CardContent>
-				{data?.slice(0, 3).map((event) => (
+				{result.data.slice(0, 3).map((event) => (
 					<div
 						key={event.id}
 						className="flex flex-col gap-1 pb-3 border-b last:border-none border-muted hover:bg-muted/20 transition-colors px-1 -mx-1"
