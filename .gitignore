@@ -4,7 +4,6 @@ dist
 logs
 .env.local
 .cursor
-public
 .cache
 .vscode
 .DS_Store

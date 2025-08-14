@@ -9,7 +9,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_PROJECT_NAME: z.string(),
 		NEXT_PUBLIC_SUPABASE_URL: z.url(),
 		NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-		NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+		NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1),
 		NEXT_PUBLIC_POSTHOG_HOST: z.url().default("https://us.i.posthog.com"),
 	},
 
@@ -32,6 +32,6 @@ export const env = createEnv({
 		SUPABASE_URL: z.url(),
 		SUPABASE_ANON_KEY: z.string().min(1),
 		WAKATIME_API_KEY: z.string().min(1),
-		POSTHOG_KEY: z.string().optional(),
+		POSTHOG_KEY: z.string().min(1),
 	},
 });

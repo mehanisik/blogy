@@ -1,6 +1,6 @@
 # Personal Website
 
-![Blogy Landing Page](./public/landing.png)
+![Blogy Landing Page](./public/og.png)
 
 A personal blog and portfolio platform I built with Next.js 15, TypeScript, and Supabase. This is my personal corner of the internet where I share:
 - **Blog posts** about software development, technology, and my experiences
@@ -25,6 +25,13 @@ The platform features a clean admin interface for content management, built with
 - **PostHog** - Analytics and insights
 
 ---
+
+### Lighthouse
+
+![Lighthouse](./public/lighthouse.png)
+
+
+
 
 ## Getting Started
 

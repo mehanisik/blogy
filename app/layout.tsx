@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
-import { AuthProvider } from "@/components/providers";
 import { env } from "@/env";
 import { cn, fonts } from "@/utils/helpers";
 import "../styles/globals.css";
@@ -184,13 +183,8 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 						</>
 					);
 				})()}
-				<Script
-					src="https://app.rybbit.io/api/script.js"
-					data-site-id="1099"
-					strategy="afterInteractive"
-				/>
 			</head>
-			<body>
+			<body suppressHydrationWarning={true}>
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-background text-foreground p-3 rounded-md border border-border z-50"
@@ -205,16 +199,14 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 					disableTransitionOnChange
 					themes={["light", "dark", "yellow", "purple"]}
 				>
-					<AuthProvider>
-						<PostHogProvider>
-							<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
-								<Navbar />
-								{children}
-								<Footer />
-							</div>
-							<Toaster richColors position="top-right" />
-						</PostHogProvider>
-					</AuthProvider>
+					<PostHogProvider>
+						<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
+							<Navbar />
+							{children}
+							<Footer />
+						</div>
+						<Toaster richColors position="top-right" />
+					</PostHogProvider>
 				</ThemeProvider>
 			</body>
 		</html>
