@@ -12,6 +12,22 @@ export async function getWakatimeStats(
 	range: string = "last_7_days",
 ): Promise<WakaTimeLanguageData[]> {
 	try {
+		if (
+			!env.WAKATIME_API_KEY ||
+			(process.env.NODE_ENV === "production" && !env.WAKATIME_API_KEY)
+		) {
+			console.warn("WakaTime API key not available, returning empty data");
+			return [];
+		}
+
+		if (
+			typeof process !== "undefined" &&
+			process.env.NODE_ENV === "production" &&
+			!env.WAKATIME_API_KEY
+		) {
+			return [];
+		}
+
 		const url = `https://api.wakatime.com/api/v1/users/current/stats/${range}`;
 		const apiKey = env.WAKATIME_API_KEY;
 
@@ -25,7 +41,8 @@ export async function getWakatimeStats(
 		});
 
 		if (!response.ok) {
-			throw new Error(`Request failed with status ${response.status}`);
+			console.warn(`WakaTime API error: ${response.status}`);
+			return [];
 		}
 
 		const json = (await response.json()) as WakatimeStatsResponse;
@@ -38,25 +55,34 @@ export async function getWakatimeStats(
 
 		return languages;
 	} catch (err: unknown) {
-		throw new Error(err instanceof Error ? err.message : "Unknown error");
+		console.warn("Failed to fetch WakaTime stats:", err);
+		return [];
 	}
 }
 
 export async function getWakatimeSummaries(
 	start?: string,
 	end?: string,
-): Promise<WakatimeSummariesResponse> {
-	if (!start || !end) {
-		const now = new Date();
-		const endDate = now.toISOString().split("T")[0];
-		const startDate = new Date(now);
-		startDate.setDate(now.getDate() - 6);
-		const startStr = startDate.toISOString().split("T")[0];
-		start = start ?? startStr;
-		end = end ?? endDate;
-	}
-
+): Promise<WakatimeSummariesResponse | null> {
 	try {
+		if (
+			!env.WAKATIME_API_KEY ||
+			(process.env.NODE_ENV === "production" && !env.WAKATIME_API_KEY)
+		) {
+			console.warn("WakaTime API key not available, returning null");
+			return null;
+		}
+
+		if (!start || !end) {
+			const now = new Date();
+			const endDate = now.toISOString().split("T")[0];
+			const startDate = new Date(now);
+			startDate.setDate(now.getDate() - 6);
+			const startStr = startDate.toISOString().split("T")[0];
+			start = start ?? startStr;
+			end = end ?? endDate;
+		}
+
 		const apiKey = env.WAKATIME_API_KEY;
 
 		const response = await fetch(
@@ -72,18 +98,29 @@ export async function getWakatimeSummaries(
 		);
 
 		if (!response.ok) {
-			throw new Error("Failed to fetch Wakatime summaries");
+			console.warn("Failed to fetch WakaTime summaries");
+			return null;
 		}
 
 		const data = (await response.json()) as WakatimeSummariesResponse;
 		return data;
 	} catch (error) {
-		throw new Error(`Failed to fetch coding summaries: ${error}`);
+		console.warn("Failed to fetch WakaTime summaries:", error);
+		return null;
 	}
 }
 
-export async function getWakatimeAllTime(): Promise<WakaTimeAllTimeData> {
+export async function getWakatimeAllTime(): Promise<WakaTimeAllTimeData | null> {
 	try {
+		// Check if we're in a build environment or if API key is missing
+		if (
+			!env.WAKATIME_API_KEY ||
+			(process.env.NODE_ENV === "production" && !env.WAKATIME_API_KEY)
+		) {
+			console.warn("WakaTime API key not available, returning null");
+			return null;
+		}
+
 		const url = `https://api.wakatime.com/api/v1/users/current/all_time_since_today`;
 		const apiKey = env.WAKATIME_API_KEY;
 
@@ -97,7 +134,8 @@ export async function getWakatimeAllTime(): Promise<WakaTimeAllTimeData> {
 		});
 
 		if (!response.ok) {
-			throw new Error(`Request failed with status ${response.status}`);
+			console.warn(`WakaTime API error: ${response.status}`);
+			return null;
 		}
 
 		const raw: unknown = await response.json();
@@ -109,6 +147,7 @@ export async function getWakatimeAllTime(): Promise<WakaTimeAllTimeData> {
 
 		return data;
 	} catch (err: unknown) {
-		throw new Error(err instanceof Error ? err.message : "Unknown error");
+		console.warn("Failed to fetch WakaTime all-time stats:", err);
+		return null;
 	}
 }

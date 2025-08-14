@@ -29,6 +29,24 @@ export default async function TrackerSection() {
 		getWakatimeStats(),
 	]);
 
+	if (!summary && !summaries && (!languages || languages.length === 0)) {
+		return (
+			<div className="w-full py-6 min-h-[72vh] px-3 md:px-0">
+				<div className="flex items-center justify-center h-full">
+					<div className="text-center space-y-4">
+						<h2 className="text-2xl font-semibold text-foreground">
+							WakaTime Data Unavailable
+						</h2>
+						<p className="text-foreground/70 max-w-md">
+							Unable to load coding activity data. This might be due to missing
+							API keys or network issues.
+						</p>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="w-full py-6 min-h-[72vh] px-3 md:px-0">
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">

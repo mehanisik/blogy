@@ -7,7 +7,7 @@ import type { WakatimeSummariesResponse } from "@/types/wakatime";
 import { formatDuration } from "@/utils/helpers";
 
 interface DailyAverageProps {
-	data: WakatimeSummariesResponse;
+	data: WakatimeSummariesResponse | null;
 }
 
 export default function DailyAverage({ data: summary }: DailyAverageProps) {

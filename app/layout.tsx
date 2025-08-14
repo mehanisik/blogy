@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 
-import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
 import { env } from "@/env";

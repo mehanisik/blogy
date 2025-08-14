@@ -19,7 +19,7 @@ import {
 import type { WakatimeSummariesResponse } from "@/types/wakatime";
 
 interface DailyActivityProps {
-	data: WakatimeSummariesResponse;
+	data: WakatimeSummariesResponse | null;
 }
 
 export default function DailyActivity({

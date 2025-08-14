@@ -7,7 +7,7 @@ import type { WakaTimeAllTimeData } from "@/types/wakatime";
 import { formatDuration } from "@/utils/helpers";
 
 interface TotalTimeProps {
-	data: WakaTimeAllTimeData;
+	data: WakaTimeAllTimeData | null;
 }
 
 export default function TotalTime({ data: summary }: TotalTimeProps) {
