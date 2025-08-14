@@ -13,9 +13,13 @@ const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
 	trailingSlash: true,
-	experimental: { reactCompiler: true },
+	experimental: {
+		reactCompiler: true,
+	},
+	serverExternalPackages: ["@supabase/supabase-js"],
 	eslint: { ignoreDuringBuilds: true },
 	typescript: { ignoreBuildErrors: true },
+	output: "standalone",
 	images: {
 		remotePatterns: supabaseHost
 			? [

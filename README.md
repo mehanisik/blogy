@@ -57,7 +57,6 @@ Configure your environment variables:
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-GITHUB_TOKEN=your_github_token
 WAKATIME_API_KEY=your_wakatime_key
 POSTHOG_KEY=your_posthog_key
 ```
