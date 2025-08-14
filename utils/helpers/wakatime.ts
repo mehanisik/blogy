@@ -1,3 +1,4 @@
+import "server-only";
 import { env } from "@/env";
 import type {
 	WakatimeStatsResponse,
@@ -6,7 +7,7 @@ import type {
 
 const WAKATIME_BASE_URL = "https://api.wakatime.com/api/v1";
 const WAKATIME_API_KEY = env.WAKATIME_API_KEY;
-const WAKATIME_REVALIDATE_TIME = 3600; // 1 hour
+const CACHE_DURATION = 3600; // 1 hour
 
 export const getWakatimeStats = async (
 	range:
@@ -23,7 +24,7 @@ export const getWakatimeStats = async (
 				headers: {
 					Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString("base64")}`,
 				},
-				next: { revalidate: WAKATIME_REVALIDATE_TIME },
+				next: { revalidate: CACHE_DURATION },
 			},
 		);
 		const data = (await response.json()) as WakatimeStatsResponse;
@@ -47,7 +48,7 @@ export const getWakatimeSummaries = async (
 				headers: {
 					Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString("base64")}`,
 				},
-				next: { revalidate: WAKATIME_REVALIDATE_TIME },
+				next: { revalidate: CACHE_DURATION },
 			},
 		);
 		const data = (await response.json()) as WakatimeSummariesResponse;
@@ -57,7 +58,6 @@ export const getWakatimeSummaries = async (
 	}
 };
 
-// Utility functions for calculating productivity metrics
 export const calculateProductivityMetrics = (
 	summaries: WakatimeSummariesResponse,
 ) => {
@@ -76,7 +76,6 @@ export const calculateProductivityMetrics = (
 	const productivityRate = daysCount > 0 ? (activeDays / daysCount) * 100 : 0;
 	const consistencyScore = Math.round(productivityRate);
 
-	// Calculate streak
 	let currentStreak = 0;
 	let maxStreak = 0;
 	for (let i = summaries.data.length - 1; i >= 0; i--) {
@@ -140,7 +139,6 @@ export const getActivityInsights = (summaries: WakatimeSummariesResponse) => {
 		isActive: day.grand_total.total_seconds > 0,
 	}));
 
-	// Find most productive day of the week
 	const dayStats = dailyData.reduce(
 		(acc, day) => {
 			if (!acc[day.dayOfWeek]) {

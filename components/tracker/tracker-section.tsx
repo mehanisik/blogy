@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import { formatDuration } from "@/utils/helpers";
 import {
 	calculateProductivityMetrics,
-	getActivityInsights,
 	getTopPerformers,
 	getWakatimeStats,
 	getWakatimeSummaries,
@@ -35,9 +34,8 @@ export default async function TrackerSection() {
 
 	const metrics = calculateProductivityMetrics(wakatimeSummaries);
 	const topPerformers = getTopPerformers(wakatimeStats);
-	const insights = getActivityInsights(wakatimeSummaries);
 
-	if (!metrics || !topPerformers || !insights) {
+	if (!metrics || !topPerformers) {
 		return <TrackerSkeleton />;
 	}
 
@@ -52,7 +50,6 @@ export default async function TrackerSection() {
 		"var(--chart-3)",
 		"var(--chart-4)",
 		"var(--chart-5)",
-		"var(--chart-6)",
 	];
 
 	const mostUsedLanguage = topPerformers.topLanguages[0];
