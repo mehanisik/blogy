@@ -1,18 +1,11 @@
-"use client";
-
 import { Calendar } from "lucide-react";
 import WakaTimeError from "@/components/tracker/wakatime-error";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { WakatimeSummariesResponse } from "@/types/wakatime";
+import { getWakatimeSummaries } from "@/utils/api/wakatime";
 import { formatDuration } from "@/utils/helpers";
 
-interface LastSevenDaysStatsProps {
-	data: WakatimeSummariesResponse | null;
-}
-
-export default function LastSevenDaysStats({
-	data: lastSevenDays,
-}: LastSevenDaysStatsProps) {
+export default async function LastSevenDaysStats() {
+	const lastSevenDays = await getWakatimeSummaries();
 	const lastSevenDaysTotalSeconds = (lastSevenDays?.data ?? []).reduce(
 		(total, day) => total + (day.grand_total.total_seconds || 0),
 		0,
