@@ -396,6 +396,11 @@
     "@emnapi/runtime" "^1.4.5"
     "@tybys/wasm-util" "^0.10.0"
 
+"@netlify/plugin-nextjs@^5.12.0":
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-5.12.0.tgz#7345d5e5e827a25ae905d7e4bddd8794366cea73"
+  integrity sha512-SXQY/nCiSOSAZWNls/DQxrICldUR7PHSMUw2J2/ZejH1dk12Vwd3+SzSihHrRW9PNcErZkC2g3seM7bWZlvBRg==
+
 "@next/env@15.4.6":
   version "15.4.6"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-15.4.6.tgz#d52942ee978818b79df8027f5fe62d5523cf058b"
@@ -563,6 +568,11 @@
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
+
+"@posthog/core@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@posthog/core/-/core-1.0.0.tgz#ee65f82c445317f8a1cc863da9c004507bef64f6"
+  integrity sha512-gquQld+duT9DdzLIFoHZkUMW0DZOTSLCtSjuuC/zKFz65Qecbz9p37DHBJMkw0dCuB8Mgh2GtH8Ag3PznJrP3g==
 
 "@radix-ui/number@1.1.1":
   version "1.1.1"
@@ -969,9 +979,9 @@
     cookie "^1.0.1"
 
 "@supabase/storage-js@^2.10.4":
-  version "2.10.5"
-  resolved "https://registry.yarnpkg.com/@supabase/storage-js/-/storage-js-2.10.5.tgz#9475932d4a824fbf426d14c2f84f2a7f1f1743be"
-  integrity sha512-9O7DfVI+v+exwPIKFGlCn2gigx441ojHnJ5QpHPegvblPdZQnnmCrL+A0JHj7wD/e+f9fnLu/DBKAtLYrLtftw==
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@supabase/storage-js/-/storage-js-2.11.0.tgz#900be1e00089da7c636711976cf5f29bfd24a926"
+  integrity sha512-Y+kx/wDgd4oasAgoAq0bsbQojwQ+ejIif8uczZ9qufRHWFLMU5cODT+ApHsSrDufqUcVKt+eyxtOXSkeh2v9ww==
   dependencies:
     "@supabase/node-fetch" "^2.6.14"
 
@@ -3517,9 +3527,11 @@ posthog-js@^1.259.0:
     web-vitals "^4.2.4"
 
 posthog-node@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/posthog-node/-/posthog-node-5.6.0.tgz#81c2848a553a03cc3ecf781ba67abda19390fc12"
-  integrity sha512-MVXxKmqAYp2cPBrN1YMhnhYsJYIu6yc6wumbHz1dbo67wZBf2WtMm67Uh+4VCrp07049qierWlxQqz1W5zGDeg==
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/posthog-node/-/posthog-node-5.7.0.tgz#0bcd9dbbac8da6162a5d32d929103d9aba093809"
+  integrity sha512-6J1AIZWtbr2lEbZOO2AzO/h1FPJjUZM4KWcdaL2UQw7FY8J7VNaH3NiaRockASFmglpID7zEY25gV/YwCtuXjg==
+  dependencies:
+    "@posthog/core" "1.0.0"
 
 preact@^10.19.3:
   version "10.27.0"

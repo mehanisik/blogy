@@ -19,7 +19,6 @@ const nextConfig: NextConfig = {
 	serverExternalPackages: ["@supabase/supabase-js"],
 	eslint: { ignoreDuringBuilds: true },
 	typescript: { ignoreBuildErrors: true },
-	output: "standalone",
 	images: {
 		remotePatterns: supabaseHost
 			? [
