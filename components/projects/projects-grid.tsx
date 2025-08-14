@@ -12,11 +12,11 @@ import { Card } from "../ui/card";
 
 export function ProjectsGrid({ projects }: { projects: Tables<"projects">[] }) {
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 py-5 min-h-[72vh]">
+		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 py-5 min-h-[72vh] overflow-hidden gap-0 rounded-none">
 			{projects?.map((project) => (
 				<Card
 					key={project.id}
-					className="w-full h-full border border-muted hover:border-muted-foreground/20 transition-colors rounded-xl shadow-none"
+					className={`w-full h-full shadow-none p-4 transition-colors hover:bg-accent/50 border-1 border-border`}
 				>
 					<div>
 						<div className="flex items-center justify-between mb-3">

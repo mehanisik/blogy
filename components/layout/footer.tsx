@@ -5,7 +5,7 @@ import { Logo } from "./logo";
 export const Footer = () => {
 	return (
 		<footer className="border-t border-border/40 bg-background/90 backdrop-blur-sm">
-			<div className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-6">
+			<div className="mx-auto w-full  px-4 sm:px-0 py-6">
 				<div className="flex flex-col md:flex-row md:justify-between md:space-y-0 space-y-8">
 					<div className="flex flex-col items-start space-y-4">
 						<Link href="/" className="group">
@@ -43,7 +43,7 @@ export const Footer = () => {
 
 						<div className="space-y-4 min-w-[160px]">
 							<h3 className="text-sm font-medium">Legal</h3>
-							<nav className="space-y-3">
+							<nav className="space-y-3 text-right">
 								{[
 									{ href: "/legal/privacy", label: "Privacy Policy" },
 									{ href: "/legal/terms", label: "Terms of Service" },
@@ -61,7 +61,7 @@ export const Footer = () => {
 					</div>
 				</div>
 
-				<div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+				<div className="mx-auto w-full px-4 md:px-0">
 					<div className="mt-12 flex flex-col md:flex-row md:justify-between items-center border-t border-border/40 pt-8 gap-4">
 						<p className="text-sm text-foreground/70">Mehmet ISIK © 2025</p>
 
