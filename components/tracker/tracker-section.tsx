@@ -6,15 +6,13 @@ import {
 	PieChart,
 	Trophy,
 } from "lucide-react";
+import { getWakatimeStats, getWakatimeSummaries } from "@/app/tracker/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-
 import { formatDuration } from "@/utils/helpers";
 import {
 	calculateProductivityMetrics,
 	getTopPerformers,
-	getWakatimeStats,
-	getWakatimeSummaries,
 } from "@/utils/helpers/wakatime";
 import DailyActivityChart from "../common/daily-activity-chart";
 import DistributionChart from "../common/distribution-chart";

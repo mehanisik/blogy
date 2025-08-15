@@ -1,12 +1,9 @@
 import { Timer } from "lucide-react";
+import { getWakatimeStats, getWakatimeSummaries } from "@/app/tracker/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WakatimeSummariesResponse } from "@/types/wakatime";
 import { formatDuration } from "@/utils/helpers";
-import {
-	getWakatimeStats,
-	getWakatimeSummaries,
-} from "@/utils/helpers/wakatime";
 
 export async function CodingStatsCard() {
 	const [languagesResult, summariesResult] = await Promise.all([
