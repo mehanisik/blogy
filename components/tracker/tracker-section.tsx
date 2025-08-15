@@ -20,8 +20,6 @@ import DailyActivityChart from "../common/daily-activity-chart";
 import DistributionChart from "../common/distribution-chart";
 import { TrackerSkeleton } from "./tracker-skeletons";
 
-export const revalidate = 3600; // 1 hour
-
 export default async function TrackerSection() {
 	const [wakatimeStats, wakatimeSummaries] = await Promise.all([
 		getWakatimeStats("last_7_days"),

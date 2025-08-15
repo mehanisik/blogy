@@ -8,8 +8,6 @@ import {
 	getWakatimeSummaries,
 } from "@/utils/helpers/wakatime";
 
-export const revalidate = 3600; // 1 hour
-
 export async function CodingStatsCard() {
 	const [languagesResult, summariesResult] = await Promise.all([
 		getWakatimeStats("last_7_days"),

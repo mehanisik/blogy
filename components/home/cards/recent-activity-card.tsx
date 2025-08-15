@@ -5,8 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { timeAgo } from "@/utils/helpers/date";
 import { getEventAction } from "@/utils/helpers/get-event-action";
 
-export const revalidate = 3600; // 1 hour
-
 export async function RecentActivityCard() {
 	const result = await getGithubActivities();
 
