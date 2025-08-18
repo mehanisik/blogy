@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Markdown } from "@/components/blog/markdown";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Tables } from "@/types/supabase";
@@ -17,13 +18,24 @@ import {
 	calculateDurationDaysString,
 	formatMonthYearLong,
 } from "@/utils/helpers/date";
+import { isLikelyMarkdown } from "@/utils/helpers/publications";
 
-export function ProjectDetail({ project }: { project?: Tables<"projects"> }) {
+export function ProjectDetail({
+	project,
+	githubReadme,
+}: {
+	project?: Tables<"projects">;
+	githubReadme?: string | null;
+}) {
 	if (!project) return notFound();
 	const duration = calculateDurationDaysString(
 		project.start_date || "",
 		project.end_date || "",
 	);
+
+	// Determine what content to display
+	const displayContent = githubReadme || project.content;
+	const contentSource = githubReadme ? "README.md" : "Details";
 
 	return (
 		<div className="w-full py-5 space-y-6">
@@ -144,14 +156,27 @@ export function ProjectDetail({ project }: { project?: Tables<"projects"> }) {
 						</div>
 					)}
 
-					{project.content && (
+					{displayContent && (
 						<div className="space-y-3">
 							<h2 className="text-lg font-medium flex items-center gap-2">
 								<Code className="w-5 h-5" />
-								Details
+								{contentSource}
+								{githubReadme && (
+									<Badge variant="outline" className="text-xs ml-2">
+										from GitHub
+									</Badge>
+								)}
 							</h2>
 							<div className="prose prose-neutral dark:prose-invert max-w-none">
-								<div dangerouslySetInnerHTML={{ __html: project.content }} />
+								{githubReadme ? (
+									<Markdown content={githubReadme} variant="readme" />
+								) : isLikelyMarkdown(project.content) ? (
+									<Markdown content={project.content || ""} />
+								) : (
+									<div
+										dangerouslySetInnerHTML={{ __html: project.content || "" }}
+									/>
+								)}
 							</div>
 						</div>
 					)}
@@ -169,6 +194,14 @@ export function ProjectDetail({ project }: { project?: Tables<"projects"> }) {
 									{project.status || "draft"}
 								</Badge>
 							</div>
+							{githubReadme && (
+								<div className="flex items-center justify-between">
+									<span className="text-sm text-muted-foreground">Content</span>
+									<Badge variant="outline" className="text-xs">
+										GitHub README
+									</Badge>
+								</div>
+							)}
 						</CardContent>
 					</Card>
 

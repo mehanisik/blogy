@@ -27,10 +27,10 @@ interface PushEventPayload {
 	ref: string;
 	head: string;
 	before: string;
-	commits: Commit[];
+	commits: GitHubCommit[];
 }
 
-export interface Commit {
+export interface GitHubCommit {
 	sha: string;
 	author: {
 		email: string;
@@ -39,4 +39,36 @@ export interface Commit {
 	message: string;
 	distinct: boolean;
 	url: string;
+}
+
+export interface GitHubReadmeResponse {
+	name: string;
+	path: string;
+	sha: string;
+	size: number;
+	url: string;
+	html_url: string;
+	git_url: string;
+	download_url: string;
+	type: "file";
+	content: string;
+	encoding: "base64";
+}
+
+export interface GitHubRepository {
+	id: number;
+	name: string;
+	full_name: string;
+	owner: {
+		login: string;
+		id: number;
+		avatar_url: string;
+		html_url: string;
+	};
+	private: boolean;
+	html_url: string;
+	description: string | null;
+	fork: boolean;
+	url: string;
+	default_branch: string;
 }
