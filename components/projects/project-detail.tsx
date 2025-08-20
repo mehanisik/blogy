@@ -169,7 +169,7 @@ export function ProjectDetail({
 							</h2>
 							<div className="prose prose-neutral dark:prose-invert max-w-none">
 								{githubReadme ? (
-									<Markdown content={githubReadme} variant="readme" />
+									<Markdown content={githubReadme} />
 								) : isLikelyMarkdown(project.content) ? (
 									<Markdown content={project.content || ""} />
 								) : (
