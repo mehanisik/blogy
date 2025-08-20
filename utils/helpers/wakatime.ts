@@ -45,7 +45,14 @@ export const calculateProductivityMetrics = (
 };
 
 export const getTopPerformers = (stats: WakatimeStatsResponse) => {
-	if (!stats?.data) return null;
+	if (
+		!stats?.data ||
+		!stats.data.languages ||
+		!stats.data.projects ||
+		!stats.data.editors ||
+		!stats.data.operating_systems
+	)
+		return null;
 
 	return {
 		topLanguages: stats.data.languages

@@ -11,7 +11,12 @@ export async function CodingStatsCard() {
 		getWakatimeSummaries(),
 	]);
 
-	if (!languagesResult || !summariesResult) {
+	if (
+		!languagesResult ||
+		!summariesResult ||
+		!languagesResult.data ||
+		!languagesResult.data.languages
+	) {
 		return (
 			<Card className="w-full h-full col-span-1 sm:col-span-2 lg:col-span-2 row-span-4 border border-muted hover:border-muted-foreground/20 transition-colors overflow-hidden relative">
 				<CardHeader>

@@ -28,9 +28,18 @@ export async function getWakatimeStats(
 				next: { revalidate: CACHE_DURATION },
 			},
 		);
+
+		if (!response.ok) {
+			console.warn(
+				`WakaTime API error: ${response.status} ${response.statusText}`,
+			);
+			return null;
+		}
+
 		const data = (await response.json()) as WakatimeStatsResponse;
 		return data;
-	} catch {
+	} catch (error) {
+		console.warn("WakaTime API error:", error);
 		return null;
 	}
 }
@@ -52,9 +61,18 @@ export async function getWakatimeSummaries(
 				next: { revalidate: CACHE_DURATION },
 			},
 		);
+
+		if (!response.ok) {
+			console.warn(
+				`WakaTime API error: ${response.status} ${response.statusText}`,
+			);
+			return null;
+		}
+
 		const data = (await response.json()) as WakatimeSummariesResponse;
 		return data;
-	} catch {
+	} catch (error) {
+		console.warn("WakaTime API error:", error);
 		return null;
 	}
 }
