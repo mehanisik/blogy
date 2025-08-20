@@ -13,9 +13,6 @@ const nextConfig: NextConfig = {
 	poweredByHeader: false,
 	reactStrictMode: true,
 	trailingSlash: true,
-	experimental: {
-		reactCompiler: true,
-	},
 	serverExternalPackages: ["@supabase/supabase-js"],
 	eslint: { ignoreDuringBuilds: true },
 	typescript: { ignoreBuildErrors: true },
