@@ -6,22 +6,27 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { supabaseServer } from "@/utils/supabase/server";
 
-export function AboutCard() {
+export async function AboutCard() {
+	const supabase = await supabaseServer();
+	const {
+		data: { publicUrl },
+	} = supabase.storage.from("personal-files").getPublicUrl("profile.png");
 	return (
 		<Card className="w-full h-full col-span-1 sm:col-span-2 lg:col-span-2 row-span-3 border border-muted hover:border-muted-foreground/20 transition-colors overflow-hidden relative">
 			<CardHeader>
 				<CardTitle>About</CardTitle>
 				<CardAction>
-					<div className="relative inline-flex items-center justify-center rounded-full bg-gradient-to-tr from-primary/60 via-primary to-primary/60 shadow-sm">
-						<div className="rounded-full ring-1 ring-background bg-background">
+					<div className="relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-primary/60 via-primary to-primary/60 shadow-sm p-1">
+						<div className="relative w-full h-full rounded-full ring-1 ring-background bg-background overflow-hidden">
 							<Image
-								src="/profile.jpeg"
+								src={publicUrl}
 								alt="Mehmet ISIK"
-								width={100}
-								height={100}
-								className="rounded-full object-cover w-20 h-20 "
+								fill
+								className="rounded-full object-cover"
 								priority
+								sizes="(max-width: 768px) 80px, 88px"
 							/>
 						</div>
 					</div>

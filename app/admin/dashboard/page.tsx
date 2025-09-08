@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
-import { env } from "@/env";
+import { getBaseUrl } from "@/utils/helpers";
 import { supabaseServer } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 		follow: false,
 		googleBot: { index: false, follow: false },
 	},
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/admin/dashboard` },
+	alternates: { canonical: `${getBaseUrl()}/admin/dashboard` },
 };
 
 export default async function DashboardPage() {

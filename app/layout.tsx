@@ -2,17 +2,16 @@ import type { Metadata, Viewport } from "next";
 
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
-import { env } from "@/env";
-import { cn, fonts } from "@/utils/helpers";
+import { cn, fonts, getBaseUrl } from "@/utils/helpers";
 import "../styles/globals.css";
 import { Footer } from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
-import { PostHogProvider } from "@/components/providers";
+import { AuthProvider, PostHogProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/siteconfig";
 
 export const metadata: Metadata = {
-	metadataBase: new URL(env.NEXT_PUBLIC_BASE_URL),
+	metadataBase: new URL(getBaseUrl()),
 	title: {
 		default: siteConfig.seo.defaultTitle,
 		template: siteConfig.seo.titleTemplate,
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: siteConfig.seo.defaultTitle,
 		description: siteConfig.seo.description,
-		url: env.NEXT_PUBLIC_BASE_URL,
+		url: getBaseUrl(),
 		siteName: siteConfig.seo.siteName,
 		locale: "en_US",
 		type: "website",
@@ -73,7 +72,7 @@ export const metadata: Metadata = {
 		google: siteConfig.seo.verification.google,
 	},
 	alternates: {
-		canonical: env.NEXT_PUBLIC_BASE_URL,
+		canonical: getBaseUrl(),
 	},
 };
 
@@ -121,7 +120,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 						"@context": "https://schema.org",
 						"@type": "Person",
 						name: siteConfig.seo.authorName,
-						url: env.NEXT_PUBLIC_BASE_URL,
+						url: getBaseUrl(),
 						image: siteConfig.seo.openGraph.imagePath,
 						jobTitle: "Software Engineer",
 						worksFor: {
@@ -134,7 +133,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 						"@context": "https://schema.org",
 						"@type": "WebSite",
 						name: siteConfig.seo.siteName,
-						url: env.NEXT_PUBLIC_BASE_URL,
+						url: getBaseUrl(),
 						description: siteConfig.seo.description,
 					};
 					return (
@@ -170,14 +169,16 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 					disableTransitionOnChange
 					themes={["light", "dark", "yellow", "purple"]}
 				>
-					<PostHogProvider>
-						<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
-							<Navbar />
-							{children}
-							<Footer />
-						</div>
-						<Toaster richColors position="top-right" />
-					</PostHogProvider>
+					<AuthProvider>
+						<PostHogProvider>
+							<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
+								<Navbar />
+								{children}
+								<Footer />
+							</div>
+							<Toaster richColors position="top-right" />
+						</PostHogProvider>
+					</AuthProvider>
 				</ThemeProvider>
 			</body>
 		</html>

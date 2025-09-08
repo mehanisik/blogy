@@ -30,7 +30,7 @@ interface PushEventPayload {
 	commits: GitHubCommit[];
 }
 
-export interface GitHubCommit {
+interface GitHubCommit {
 	sha: string;
 	author: {
 		email: string;

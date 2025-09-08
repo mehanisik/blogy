@@ -4,8 +4,8 @@ import { Suspense } from "react";
 import { getGithubReadmeFromUrl } from "@/app/projects/actions";
 import ProjectDetailLoader from "@/components/loaders/project-detail-loader";
 import { ProjectDetail } from "@/components/projects/project-detail";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getProjectById } from "@/utils/helpers/queries";
 
 export async function generateMetadata(props: {
@@ -13,7 +13,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
 	const { id } = await props.params;
 	const idNum = Number(id);
-	const url = `${env.NEXT_PUBLIC_BASE_URL}/projects/${id}`;
+	const url = `${getBaseUrl()}/projects/${id}`;
 	if (Number.isNaN(idNum)) {
 		return {
 			title: "Project",
@@ -59,7 +59,6 @@ export default async function ProjectDetailPage(props: {
 	const project = await getProjectById(Number(id));
 	if (!project) return notFound();
 
-	// Fetch GitHub README if project has a GitHub URL
 	let githubReadme: string | null = null;
 	if (project.github) {
 		try {

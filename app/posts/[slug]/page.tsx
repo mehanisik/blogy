@@ -3,15 +3,15 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PostContent } from "@/components/blog/post-content";
 import PostDetailLoader from "@/components/loaders/post-detail-loader";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getPostById } from "@/utils/helpers/queries";
 
 export async function generateMetadata(props: {
 	params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
 	const { slug } = await props.params;
-	const url = `${env.NEXT_PUBLIC_BASE_URL}/posts/${slug}`;
+	const url = `${getBaseUrl()}/posts/${slug}`;
 	const idNum = Number(slug);
 	if (Number.isNaN(idNum)) {
 		return {

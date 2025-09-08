@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import PublicationsLoader from "@/components/loaders/publications-loader";
 import { PublicationsList } from "@/components/publications/publications-list";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getPublications } from "@/utils/helpers/queries";
 
 export const metadata: Metadata = {
 	title: "Publications",
 	description: `Research and publications by ${siteConfig.seo.authorName}.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/publications` },
+	alternates: { canonical: `${getBaseUrl()}/publications` },
 	openGraph: {
 		title: "Publications",
 		description: `Research and publications by ${siteConfig.seo.authorName}.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/publications`,
+		url: `${getBaseUrl()}/publications`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

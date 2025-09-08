@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import PublicationDetailLoader from "@/components/loaders/publication-detail-loader";
 import { PublicationDetail } from "@/components/publications/publication-detail";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getPublicationById } from "@/utils/helpers/queries";
 
 export async function generateMetadata(props: {
@@ -12,7 +12,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
 	const { id } = await props.params;
 	const idNum = Number(id);
-	const url = `${env.NEXT_PUBLIC_BASE_URL}/publications/${id}`;
+	const url = `${getBaseUrl()}/publications/${id}`;
 	if (Number.isNaN(idNum)) {
 		return {
 			title: "Publication",

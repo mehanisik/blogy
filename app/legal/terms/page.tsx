@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import TermsSection from "@/components/legal/terms-section";
 import TermsLoader from "@/components/loaders/terms-loader";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 
 export const metadata: Metadata = {
 	title: "Terms of Service",
 	description: `Terms and conditions for using ${siteConfig.seo.siteName}.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/legal/terms` },
+	alternates: { canonical: `${getBaseUrl()}/legal/terms` },
 	openGraph: {
 		title: "Terms of Service",
 		description: `Terms and conditions for using ${siteConfig.seo.siteName}.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/legal/terms`,
+		url: `${getBaseUrl()}/legal/terms`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

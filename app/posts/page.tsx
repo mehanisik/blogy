@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PostsList } from "@/components/blog/posts-list";
 import PostsLoader from "@/components/loaders/posts-loader";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getPosts } from "@/utils/helpers/queries";
 
 export const metadata: Metadata = {
 	title: "Blog Posts",
 	description: `Articles by ${siteConfig.seo.authorName} on React, TypeScript, Next.js, and full-stack development.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/posts` },
+	alternates: { canonical: `${getBaseUrl()}/posts` },
 	openGraph: {
 		title: "Blog Posts",
 		description: `Articles by ${siteConfig.seo.authorName} on React, TypeScript, Next.js, and full-stack development.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/posts`,
+		url: `${getBaseUrl()}/posts`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

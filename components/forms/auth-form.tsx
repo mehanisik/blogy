@@ -1,44 +1,47 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+
+import { useId, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/utils/helpers/sign-in";
-
-const formSchema = z.object({
-	email: z.email("Please enter a valid email address").max(254),
-	password: z
-		.string()
-		.min(8, "Password must be at least 8 characters")
-		.max(128),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { Label } from "@/components/ui/label";
+import { signInAction } from "@/utils/helpers/sign-in";
 
 export function AuthForm() {
-	const searchParams = useSearchParams();
-	const redirectTo = searchParams.get("redirectTo");
+	const emailId = useId();
+	const passwordId = useId();
+	const [isPending, startTransition] = useTransition();
+	const [error, setError] = useState<string | null>(null);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<FormData>({
-		resolver: zodResolver(formSchema),
-	});
+	const handleSubmit = async (formData: FormData) => {
+		setError(null);
+		startTransition(async () => {
+			try {
+				await signInAction(formData);
+				toast.success("Welcome back!", {
+					description: "You have been signed in successfully.",
+				});
+			} catch (err) {
+				// Check if this is a Next.js redirect error (these should not be treated as auth errors)
+				if (
+					err &&
+					typeof err === "object" &&
+					"digest" in err &&
+					typeof err.digest === "string" &&
+					err.digest.includes("NEXT_REDIRECT")
+				) {
+					// This is a successful redirect, not an error
+					return;
+				}
 
-	const onSubmit = async (data: FormData) => {
-		try {
-			await signIn(data.email, data.password, redirectTo || undefined);
-		} catch (error) {
-			toast.error("Authentication failed", {
-				description:
-					error instanceof Error ? error.message : "Invalid credentials",
-			});
-		}
+				const errorMessage =
+					err instanceof Error ? err.message : "Authentication failed";
+				setError(errorMessage);
+				toast.error("Authentication failed", {
+					description: errorMessage,
+				});
+			}
+		});
 	};
 
 	return (
@@ -53,55 +56,46 @@ export function AuthForm() {
 					</p>
 				</div>
 
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+				<form action={handleSubmit} className="space-y-6">
 					<div className="space-y-4">
 						<div className="space-y-2">
-							<label
-								htmlFor="email"
-								className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							>
-								Email
-							</label>
+							<Label htmlFor={emailId}>Email</Label>
 							<Input
-								id={crypto.randomUUID()}
+								id={emailId}
+								name="email"
 								type="email"
 								autoComplete="email"
 								placeholder="Enter your email"
 								className="h-10"
-								{...register("email")}
+								required
+								disabled={isPending}
 							/>
-							{errors.email && (
-								<p className="text-sm text-destructive">
-									{errors.email.message}
-								</p>
-							)}
 						</div>
 
 						<div className="space-y-2">
-							<label
-								htmlFor="password"
-								className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							>
-								Password
-							</label>
+							<Label htmlFor={passwordId}>Password</Label>
 							<Input
-								id={crypto.randomUUID()}
+								id={passwordId}
+								name="password"
 								type="password"
 								autoComplete="current-password"
 								placeholder="Enter your password"
 								className="h-10"
-								{...register("password")}
+								required
+								minLength={6}
+								disabled={isPending}
 							/>
-							{errors.password && (
-								<p className="text-sm text-destructive">
-									{errors.password.message}
-								</p>
-							)}
 						</div>
+
+						{error && (
+							<div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+								{error}
+							</div>
+						)}
 					</div>
 
-					<Button type="submit" className="w-full h-10" disabled={isSubmitting}>
-						{isSubmitting ? "Signing in..." : "Sign in"}
+					<Button type="submit" className="w-full h-10" disabled={isPending}>
+						{isPending ? "Signing in..." : "Sign in"}
 					</Button>
 				</form>
 

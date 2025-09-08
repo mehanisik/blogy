@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { HomeGrid } from "@/components/home/home-grid";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 
 export const metadata: Metadata = {
 	title: "Home",
 	description: siteConfig.seo.description,
-	alternates: { canonical: env.NEXT_PUBLIC_BASE_URL },
+	alternates: { canonical: getBaseUrl() },
 	openGraph: {
 		title: siteConfig.seo.defaultTitle,
 		description: siteConfig.seo.description,
-		url: env.NEXT_PUBLIC_BASE_URL,
+		url: getBaseUrl(),
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

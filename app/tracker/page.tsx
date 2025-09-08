@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import TrackerSection from "@/components/tracker/tracker-section";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 
 export const metadata: Metadata = {
 	title: "Activity Tracker",
 	description: `Coding activity insights and time tracking by ${siteConfig.seo.authorName} powered by WakaTime.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/tracker` },
+	alternates: { canonical: `${getBaseUrl()}/tracker` },
 	openGraph: {
 		title: "Activity Tracker",
 		description: `Coding activity insights and time tracking by ${siteConfig.seo.authorName} powered by WakaTime.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/tracker`,
+		url: `${getBaseUrl()}/tracker`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

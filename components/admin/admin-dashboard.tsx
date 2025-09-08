@@ -32,7 +32,10 @@ import {
 	TableRow as UITableRow,
 } from "@/components/ui/table";
 import type { Database } from "@/types/supabase";
+import { cn } from "@/utils/helpers";
+import { signOut } from "@/utils/helpers/sign-out";
 import { supabaseClient } from "@/utils/supabase/client";
+import { BlogForm } from "./blog-form";
 import { ItemForm } from "./item-form";
 
 type Tables = Database["public"]["Tables"];
@@ -42,7 +45,6 @@ type Project = Tables["projects"]["Row"];
 type Blog = Tables["blogs"]["Row"];
 type DataRow = Publication | Project | Blog;
 
-// Form data type that matches what ItemForm expects
 type FormData = {
 	title: string;
 	content: string;
@@ -79,7 +81,6 @@ function isBlog(item: DataRow): item is Blog {
 	return "published" in item;
 }
 
-// Convert DataRow to FormData
 function convertToFormData(item: DataRow, _table: TableName): FormData {
 	const formData: FormData = {
 		title: item.title,
@@ -257,12 +258,9 @@ export function AdminDashboard() {
 			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-2xl font-bold">Admin Dashboard</h1>
 				<div className="flex items-center gap-4">
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => supabaseClient.auth.signOut()}
-					>
+					<Button variant="outline" size="sm" onClick={signOut}>
 						<LogOut className="h-4 w-4" />
+						Sign Out
 					</Button>
 				</div>
 			</div>
@@ -293,22 +291,39 @@ export function AdminDashboard() {
 							Add {activeTable.slice(0, -1)}
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+					<DialogContent
+						className={cn(
+							"max-h-[90vh] overflow-y-auto",
+							activeTable === "blogs" ? "max-w-7xl" : "max-w-2xl",
+						)}
+					>
 						<DialogHeader>
 							<DialogTitle>
 								{editingItem ? "Edit" : "Create"} {activeTable.slice(0, -1)}
 							</DialogTitle>
 						</DialogHeader>
-						<ItemForm
-							table={activeTable}
-							item={
-								editingItem
-									? convertToFormData(editingItem, activeTable)
-									: undefined
-							}
-							onSave={handleSave}
-							onCancel={() => setIsDialogOpen(false)}
-						/>
+						{activeTable === "blogs" ? (
+							<BlogForm
+								item={
+									editingItem
+										? convertToFormData(editingItem, activeTable)
+										: undefined
+								}
+								onSave={handleSave}
+								onCancel={() => setIsDialogOpen(false)}
+							/>
+						) : (
+							<ItemForm
+								table={activeTable}
+								item={
+									editingItem
+										? convertToFormData(editingItem, activeTable)
+										: undefined
+								}
+								onSave={handleSave}
+								onCancel={() => setIsDialogOpen(false)}
+							/>
+						)}
 					</DialogContent>
 				</Dialog>
 			</div>

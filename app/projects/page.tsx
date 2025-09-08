@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProjectsLoader from "@/components/loaders/projects-loader";
 import { ProjectsGrid } from "@/components/projects/projects-grid";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 import { getProjects } from "@/utils/helpers/queries";
 
 export const metadata: Metadata = {
 	title: "Projects",
 	description: `Browse projects by ${siteConfig.seo.authorName} including web apps, tools, and experiments.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/projects` },
+	alternates: { canonical: `${getBaseUrl()}/projects` },
 	openGraph: {
 		title: "Projects",
 		description: `Browse projects by ${siteConfig.seo.authorName} including web apps, tools, and experiments.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/projects`,
+		url: `${getBaseUrl()}/projects`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,

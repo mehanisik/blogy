@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import PrivacySection from "@/components/legal/privacy-section";
 import PrivacyLoader from "@/components/loaders/privacy-loader";
-import { env } from "@/env";
 import { siteConfig } from "@/siteconfig";
+import { getBaseUrl } from "@/utils/helpers";
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",
 	description: `Privacy practices and data usage at ${siteConfig.seo.siteName}.`,
-	alternates: { canonical: `${env.NEXT_PUBLIC_BASE_URL}/legal/privacy` },
+	alternates: { canonical: `${getBaseUrl()}/legal/privacy` },
 	openGraph: {
 		title: "Privacy Policy",
 		description: `Privacy practices and data usage at ${siteConfig.seo.siteName}.`,
-		url: `${env.NEXT_PUBLIC_BASE_URL}/legal/privacy`,
+		url: `${getBaseUrl()}/legal/privacy`,
 		images: [
 			{
 				url: siteConfig.seo.openGraph.imagePath,
