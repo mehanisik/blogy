@@ -2,6 +2,8 @@
 
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+// @ts-ignore - rehype-raw doesn't have built-in types
+import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import "highlight.js/styles/dark.css";
 import Image from "next/image";
@@ -12,7 +14,7 @@ export function Markdown({ content }: { content: string }) {
 		<div className="max-w-none">
 			<ReactMarkdown
 				remarkPlugins={[remarkGfm]}
-				rehypePlugins={[rehypeHighlight]}
+				rehypePlugins={[rehypeRaw, rehypeHighlight]}
 				components={{
 					h1: (props) => (
 						<h1
@@ -126,23 +128,15 @@ export function Markdown({ content }: { content: string }) {
 					img: (props) => {
 						let src = props.src as string;
 
-						// Skip if no src
 						if (!src) {
 							console.warn("Markdown image: No src provided", props);
 							return null;
 						}
 
-						// Fix relative paths that start with 'public/'
-						if (src.startsWith("public/")) {
-							src = src.replace("public/", "/");
-						}
-
-						// Handle different image types and paths
 						const isExternal = src.startsWith("http");
 						const isAbsolute = src.startsWith("/");
 						const isRelative = src.startsWith("./") || src.startsWith("../");
 
-						// Debug logging in development
 						if (process.env.NODE_ENV === "development") {
 							console.log("Markdown image:", {
 								original: props.src,
@@ -153,7 +147,6 @@ export function Markdown({ content }: { content: string }) {
 							});
 						}
 
-						// For external URLs, absolute paths, or relative paths, use Next.js Image
 						if (isExternal || isAbsolute || isRelative) {
 							try {
 								return (
@@ -211,6 +204,15 @@ export function Markdown({ content }: { content: string }) {
 							{...props}
 						/>
 					),
+					div: (props: any) => {
+						// Handle center-aligned image containers
+						if (props.align === "center") {
+							return (
+								<div className="flex flex-wrap justify-center items-center gap-6 my-8" {...props} />
+							);
+						}
+						return <div {...props} />;
+					},
 				}}
 			>
 				{content}
