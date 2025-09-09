@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useState } from "react";
@@ -11,6 +12,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import { mobileMenuVariants } from "@/utils/motion/variants";
 
 interface NavLink {
 	href: string;
@@ -50,8 +52,14 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
 					</SheetHeader>
 					<nav className="mt-4 sm:mt-6">
 						<ul className="space-y-1 sm:space-y-2">
-							{navLinks.map((item) => (
-								<li key={item.href}>
+							{navLinks.map((item, index) => (
+								<motion.li
+									key={item.href}
+									variants={mobileMenuVariants}
+									initial="hidden"
+									animate="visible"
+									custom={index}
+								>
 									<Link
 										href={item.href}
 										className="flex w-full items-center rounded-md px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-medium text-foreground transition-colors hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
@@ -60,7 +68,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
 									>
 										{item.label}
 									</Link>
-								</li>
+								</motion.li>
 							))}
 						</ul>
 					</nav>

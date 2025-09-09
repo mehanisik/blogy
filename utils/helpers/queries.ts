@@ -2,7 +2,7 @@
 import { unstable_cache } from "next/cache";
 import { supabaseServer } from "../supabase/server";
 
-const CACHE_DURATION = 3600; // 1 hour
+const CACHE_DURATION = false; // 0 second
 
 const getProjects = async () => {
 	const supabase = await supabaseServer();

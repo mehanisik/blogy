@@ -7,16 +7,16 @@ import {
 	Trophy,
 } from "lucide-react";
 import { getWakatimeStats, getWakatimeSummaries } from "@/app/tracker/actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { formatDuration } from "@/utils/helpers";
 import {
 	calculateProductivityMetrics,
 	getTopPerformers,
 } from "@/utils/helpers/wakatime";
+import { MotionCard, MotionContainer } from "@/utils/motion/motion-components";
 import DailyActivityChart from "../common/daily-activity-chart";
 import DistributionChart from "../common/distribution-chart";
-import { TrackerSkeleton } from "./tracker-skeletons";
 
 export default async function TrackerSection() {
 	const [wakatimeStats, wakatimeSummaries] = await Promise.all([
@@ -25,14 +25,22 @@ export default async function TrackerSection() {
 	]);
 
 	if (!wakatimeStats || !wakatimeSummaries) {
-		return <TrackerSkeleton />;
+		return (
+			<div className="text-center py-8 text-muted-foreground">
+				Loading tracker data...
+			</div>
+		);
 	}
 
 	const metrics = calculateProductivityMetrics(wakatimeSummaries);
 	const topPerformers = getTopPerformers(wakatimeStats);
 
 	if (!metrics || !topPerformers) {
-		return <TrackerSkeleton />;
+		return (
+			<div className="text-center py-8 text-muted-foreground">
+				Loading tracker data...
+			</div>
+		);
 	}
 
 	const totalHours = Math.floor(metrics.totalSeconds / 3600);
@@ -52,9 +60,9 @@ export default async function TrackerSection() {
 
 	return (
 		<div className="w-full py-6 min-h-[72vh] px-3 md:px-0">
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
+			<MotionContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
 				<div className="lg:col-span-3">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader className="pb-3">
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<Clock className="h-4 w-4" />
@@ -75,11 +83,11 @@ export default async function TrackerSection() {
 								{metrics.activeDays} active days
 							</div>
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
 
 				<div className="lg:col-span-3">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader className="pb-3">
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<BarChart3 className="h-4 w-4" />
@@ -99,11 +107,11 @@ export default async function TrackerSection() {
 								{metrics.consistencyScore}% consistency
 							</div>
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
 
 				<div className="lg:col-span-3">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader className="pb-3">
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<Trophy className="h-4 w-4" />
@@ -129,11 +137,11 @@ export default async function TrackerSection() {
 									: "N/A"}
 							</div>
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
 
 				<div className="lg:col-span-3">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader className="pb-3">
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<Code className="h-4 w-4" />
@@ -157,11 +165,11 @@ export default async function TrackerSection() {
 									: "N/A"}
 							</div>
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
 
 				<div className="sm:col-span-2 lg:col-span-8">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<BarChart3 className="h-4 w-4" />
@@ -171,11 +179,11 @@ export default async function TrackerSection() {
 						<CardContent className="h-[350px]">
 							<DailyActivityChart data={wakatimeSummaries} />
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
 
 				<div className="sm:col-span-2 lg:col-span-4">
-					<Card className="h-full border border-muted hover:border-muted-foreground/20 transition-colors">
+					<MotionCard className="h-full bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm hover:border-muted-foreground/20">
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2 text-sm font-medium">
 								<PieChart className="h-4 w-4" />
@@ -185,9 +193,9 @@ export default async function TrackerSection() {
 						<CardContent className="h-[350px]">
 							<DistributionChart data={wakatimeStats} colors={colors} />
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</div>
-			</div>
+			</MotionContainer>
 		</div>
 	);
 }

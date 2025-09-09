@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function EducationCard() {
 	return (
-		<Card className="w-full h-[220px] col-span-1 sm:col-span-2 lg:col-span-2 row-span-2 border border-muted hover:border-muted-foreground/20 transition-colors overflow-hidden relative">
+		<Card className="w-full h-[220px] col-span-1 sm:col-span-2 lg:col-span-2 row-span-2 border border-muted hover:border-muted-foreground/20 overflow-hidden relative">
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2">Education</CardTitle>
 			</CardHeader>

@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/navbar";
 import { AuthProvider, PostHogProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/siteconfig";
+import { PageTransition } from "@/utils/motion/page-transition";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(getBaseUrl()),
@@ -173,7 +174,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 						<PostHogProvider>
 							<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
 								<Navbar />
-								{children}
+								<PageTransition>{children}</PageTransition>
 								<Footer />
 							</div>
 							<Toaster richColors position="top-right" />

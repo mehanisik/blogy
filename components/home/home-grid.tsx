@@ -9,6 +9,7 @@ import {
 } from "@/components/home/cards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MotionContainer } from "@/utils/motion/motion-components";
 
 function CardSkeleton({ title }: { title: string }) {
 	return (
@@ -28,7 +29,7 @@ function CardSkeleton({ title }: { title: string }) {
 export async function HomeGrid() {
 	return (
 		<div className="flex h-full w-full items-center justify-center min-h-[70vh]">
-			<div className="grid h-full w-full gap-2  lg:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-lg py-5">
+			<MotionContainer className="grid h-full w-full gap-2 lg:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-lg py-5">
 				<Suspense fallback={<CardSkeleton title="Recent Activity" />}>
 					<RecentActivityCard />
 				</Suspense>
@@ -39,7 +40,7 @@ export async function HomeGrid() {
 				<AboutCard />
 				<HobbiesCard />
 				<LocationCard />
-			</div>
+			</MotionContainer>
 		</div>
 	);
 }

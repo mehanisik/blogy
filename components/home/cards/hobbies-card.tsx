@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const HobbiesCard = () => {
 	return (
-		<Card className="w-full h-full col-span-1 sm:col-span-1 lg:col-span-1 row-span-1 border border-muted hover:border-muted-foreground/20 transition-colors">
+		<Card className="w-full h-full col-span-1 sm:col-span-1 lg:col-span-1 row-span-1 border border-muted hover:border-muted-foreground/20">
 			<CardHeader>
 				<CardTitle>Hobbies</CardTitle>
 			</CardHeader>

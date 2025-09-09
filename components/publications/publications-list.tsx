@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import type { Tables } from "@/types/supabase";
 import { formatMonthYearShort } from "@/utils/helpers/date";
 import {
@@ -22,6 +22,7 @@ import {
 	getThesisLabel,
 	type KeywordCategory,
 } from "@/utils/helpers/publications";
+import { MotionCard, MotionContainer } from "@/utils/motion/motion-components";
 
 export function PublicationsList({
 	publications,
@@ -46,11 +47,11 @@ export function PublicationsList({
 	};
 
 	return (
-		<div className="w-full py-5 min-h-[72vh] space-y-3">
+		<MotionContainer className="w-full py-5 min-h-[72vh] space-y-3">
 			{publications.map((p) => (
-				<Card
+				<MotionCard
 					key={p.id}
-					className="border border-muted hover:border-muted-foreground/20 transition-colors rounded-xl shadow-none"
+					className="border border-muted hover:border-muted-foreground/20 rounded-xl shadow-none"
 				>
 					<CardContent className="p-4 sm:p-5 flex gap-4">
 						{p.cover_image && (
@@ -136,8 +137,8 @@ export function PublicationsList({
 							</div>
 						</div>
 					</CardContent>
-				</Card>
+				</MotionCard>
 			))}
-		</div>
+		</MotionContainer>
 	);
 }

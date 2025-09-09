@@ -1,3 +1,5 @@
+"use client";
+
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
@@ -121,17 +123,80 @@ export function Markdown({ content }: { content: string }) {
 							{...props}
 						/>
 					),
-					img: (props) => (
-						<div className="my-6 flex justify-center">
-							<Image
-								src={props.src as string}
-								width={(props.width as number) || 800}
-								height={(props.height as number) || 600}
-								className="rounded-lg max-h-96 object-contain border border-border shadow-sm"
-								alt={props.alt || `Image from ${props.src}`}
-							/>
-						</div>
-					),
+					img: (props) => {
+						let src = props.src as string;
+
+						// Skip if no src
+						if (!src) {
+							console.warn("Markdown image: No src provided", props);
+							return null;
+						}
+
+						// Fix relative paths that start with 'public/'
+						if (src.startsWith("public/")) {
+							src = src.replace("public/", "/");
+						}
+
+						// Handle different image types and paths
+						const isExternal = src.startsWith("http");
+						const isAbsolute = src.startsWith("/");
+						const isRelative = src.startsWith("./") || src.startsWith("../");
+
+						// Debug logging in development
+						if (process.env.NODE_ENV === "development") {
+							console.log("Markdown image:", {
+								original: props.src,
+								processed: src,
+								isExternal,
+								isAbsolute,
+								isRelative,
+							});
+						}
+
+						// For external URLs, absolute paths, or relative paths, use Next.js Image
+						if (isExternal || isAbsolute || isRelative) {
+							try {
+								return (
+									<div className="my-6 flex justify-center">
+										<Image
+											src={src}
+											width={(props.width as number) || 800}
+											height={(props.height as number) || 600}
+											className="rounded-lg max-h-96 object-contain border border-border shadow-sm"
+											alt={props.alt || `Image`}
+											unoptimized={isExternal}
+											onError={(e) => {
+												console.error("Next.js Image failed to load:", src, e);
+											}}
+										/>
+									</div>
+								);
+							} catch (error) {
+								console.error(
+									"Next.js Image error:",
+									error,
+									"Falling back to img tag",
+								);
+								// Fall through to regular img tag
+							}
+						}
+
+						// Fallback to regular img tag
+						return (
+							<div className="my-6 flex justify-center">
+								{/* eslint-disable-next-line @next/next/no-img-element */}
+								<img
+									src={src}
+									className="rounded-lg max-h-96 object-contain border border-border shadow-sm"
+									alt={props.alt || `Image`}
+									loading="lazy"
+									onError={(e) => {
+										console.error("Regular img tag failed to load:", src, e);
+									}}
+								/>
+							</div>
+						);
+					},
 					hr: (props) => <hr className="my-8 border-border" {...props} />,
 					strong: (props) => (
 						<strong className="font-semibold text-foreground" {...props} />

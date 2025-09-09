@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getGithubReadmeFromUrl } from "@/app/projects/actions";
 import ProjectDetailLoader from "@/components/loaders/project-detail-loader";
 import { ProjectDetail } from "@/components/projects/project-detail";
 import { siteConfig } from "@/siteconfig";
@@ -59,18 +58,9 @@ export default async function ProjectDetailPage(props: {
 	const project = await getProjectById(Number(id));
 	if (!project) return notFound();
 
-	let githubReadme: string | null = null;
-	if (project.github) {
-		try {
-			githubReadme = await getGithubReadmeFromUrl(project.github);
-		} catch (error) {
-			console.error("Failed to fetch GitHub README:", error);
-		}
-	}
-
 	return (
 		<Suspense fallback={<ProjectDetailLoader />}>
-			<ProjectDetail project={project} githubReadme={githubReadme} />
+			<ProjectDetail project={project} />
 		</Suspense>
 	);
 }

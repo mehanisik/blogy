@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import type { Tables } from "@/types/supabase";
 import { formatMonthYearShort } from "@/utils/helpers/date";
+import { MotionCard, MotionContainer } from "@/utils/motion/motion-components";
 
 export const PostsList = async ({ posts }: { posts: Tables<"blogs">[] }) => {
 	if (!posts?.length) {
@@ -14,10 +15,10 @@ export const PostsList = async ({ posts }: { posts: Tables<"blogs">[] }) => {
 	}
 
 	return (
-		<div className="w-full py-5 min-h-[72vh] space-y-3">
+		<MotionContainer className="w-full py-5 min-h-[72vh] space-y-3">
 			{posts.map((post) => (
 				<Link key={post.id} href={`/posts/${post.id}`}>
-					<Card className="border border-muted hover:border-muted-foreground/20 transition-colors rounded-xl shadow-none">
+					<MotionCard className="border border-muted rounded-xl shadow-none">
 						<CardContent className="p-5 space-y-3">
 							<h3 className="text-lg font-medium tracking-tight text-foreground group-hover:opacity-80">
 								{post.title}
@@ -55,9 +56,9 @@ export const PostsList = async ({ posts }: { posts: Tables<"blogs">[] }) => {
 								</div>
 							)}
 						</CardContent>
-					</Card>
+					</MotionCard>
 				</Link>
 			))}
-		</div>
+		</MotionContainer>
 	);
 };

@@ -18,24 +18,13 @@ import {
 	calculateDurationDaysString,
 	formatMonthYearLong,
 } from "@/utils/helpers/date";
-import { isLikelyMarkdown } from "@/utils/helpers/publications";
 
-export function ProjectDetail({
-	project,
-	githubReadme,
-}: {
-	project?: Tables<"projects">;
-	githubReadme?: string | null;
-}) {
+export function ProjectDetail({ project }: { project?: Tables<"projects"> }) {
 	if (!project) return notFound();
 	const duration = calculateDurationDaysString(
 		project.start_date || "",
 		project.end_date || "",
 	);
-
-	// Determine what content to display
-	const displayContent = githubReadme || project.content;
-	const contentSource = githubReadme ? "README.md" : "Details";
 
 	return (
 		<div className="w-full py-5 space-y-6">
@@ -156,27 +145,14 @@ export function ProjectDetail({
 						</div>
 					)}
 
-					{displayContent && (
+					{project.content && (
 						<div className="space-y-3">
 							<h2 className="text-lg font-medium flex items-center gap-2">
 								<Code className="w-5 h-5" />
-								{contentSource}
-								{githubReadme && (
-									<Badge variant="outline" className="text-xs ml-2">
-										from GitHub
-									</Badge>
-								)}
+								Details
 							</h2>
 							<div className="prose prose-neutral dark:prose-invert max-w-none">
-								{githubReadme ? (
-									<Markdown content={githubReadme} />
-								) : isLikelyMarkdown(project.content) ? (
-									<Markdown content={project.content || ""} />
-								) : (
-									<div
-										dangerouslySetInnerHTML={{ __html: project.content || "" }}
-									/>
-								)}
+								<Markdown content={project.content} />
 							</div>
 						</div>
 					)}
@@ -194,11 +170,11 @@ export function ProjectDetail({
 									{project.status || "draft"}
 								</Badge>
 							</div>
-							{githubReadme && (
+							{project.content && (
 								<div className="flex items-center justify-between">
 									<span className="text-sm text-muted-foreground">Content</span>
 									<Badge variant="outline" className="text-xs">
-										GitHub README
+										Markdown
 									</Badge>
 								</div>
 							)}
