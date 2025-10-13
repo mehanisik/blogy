@@ -1,5 +1,5 @@
 import { Timer } from "lucide-react";
-import { getWakatimeStats, getWakatimeSummaries } from "@/app/tracker/actions";
+import { getWakatimeStats, getWakatimeSummaries } from "@/app/actions/wakatime";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WakatimeSummariesResponse } from "@/types/wakatime";

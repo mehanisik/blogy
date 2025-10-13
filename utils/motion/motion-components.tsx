@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 import { cn } from "@/utils/helpers";
 import { cardHoverVariants, containerVariants } from "./variants";
 
-// Motion Container for staggered animations
 interface MotionContainerProps extends HTMLMotionProps<"div"> {
 	children: ReactNode;
 	stagger?: boolean;
@@ -48,7 +47,7 @@ export function MotionCard({
 	return (
 		<motion.div
 			className={cn(className)}
-			variants={hover ? cardHoverVariants : itemVariants}
+			variants={hover ? cardHoverVariants : undefined}
 			initial="initial"
 			animate="visible"
 			whileHover={hover ? "hover" : undefined}

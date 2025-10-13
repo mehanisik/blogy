@@ -2,7 +2,6 @@
 
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-// @ts-ignore - rehype-raw doesn't have built-in types
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import "highlight.js/styles/dark.css";
@@ -78,7 +77,7 @@ export function Markdown({ content }: { content: string }) {
 						return (
 							<pre
 								className={cn(
-									"rounded-lg bg-[#303030] p-4 overflow-x-auto border border-border my-4",
+									"rounded-lg bg-muted p-4 overflow-x-auto border border-border my-4",
 									className,
 								)}
 							>
@@ -126,7 +125,7 @@ export function Markdown({ content }: { content: string }) {
 						/>
 					),
 					img: (props) => {
-						let src = props.src as string;
+						const src = props.src as string;
 
 						if (!src) {
 							console.warn("Markdown image: No src provided", props);
@@ -174,17 +173,22 @@ export function Markdown({ content }: { content: string }) {
 							}
 						}
 
-						// Fallback to regular img tag
+						// Fallback to Next.js Image with unoptimized for external images
 						return (
 							<div className="my-6 flex justify-center">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img
+								<Image
 									src={src}
+									width={800}
+									height={600}
 									className="rounded-lg max-h-96 object-contain border border-border shadow-sm"
 									alt={props.alt || `Image`}
-									loading="lazy"
+									unoptimized={true}
 									onError={(e) => {
-										console.error("Regular img tag failed to load:", src, e);
+										console.error(
+											"Next.js Image fallback failed to load:",
+											src,
+											e,
+										);
 									}}
 								/>
 							</div>
@@ -200,15 +204,20 @@ export function Markdown({ content }: { content: string }) {
 					),
 					pre: (props) => (
 						<pre
-							className="bg-[#303030] p-4 rounded-lg overflow-x-auto border border-border my-4"
+							className="bg-muted p-4 rounded-lg overflow-x-auto border border-border my-4"
 							{...props}
 						/>
 					),
-					div: (props: any) => {
+					div: (
+						props: React.HTMLAttributes<HTMLDivElement> & { align?: string },
+					) => {
 						// Handle center-aligned image containers
 						if (props.align === "center") {
 							return (
-								<div className="flex flex-wrap justify-center items-center gap-6 my-8" {...props} />
+								<div
+									className="flex flex-wrap justify-center items-center gap-6 my-8"
+									{...props}
+								/>
 							);
 						}
 						return <div {...props} />;

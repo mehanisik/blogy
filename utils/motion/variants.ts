@@ -5,8 +5,8 @@ export const containerVariants: Variants = {
 	visible: {
 		opacity: 1,
 		transition: {
-			staggerChildren: 0.08,
-			delayChildren: 0.1,
+			staggerChildren: 0.1,
+			delayChildren: 0.2,
 		},
 	},
 };
@@ -15,30 +15,42 @@ export const cardHoverVariants: Variants = {
 	initial: {
 		scale: 1,
 		y: 0,
-		boxShadow: "0 0 0 rgba(0, 0, 0, 0)",
+		boxShadow: "0 0 0 hsl(var(--foreground) / 0)",
 		rotateX: 0,
 		rotateY: 0,
+		opacity: 0.8,
 	},
-	hover: {
-		scale: 1.03,
-		y: -8,
-		boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
-		rotateX: 2,
-		rotateY: 2,
+	visible: {
+		opacity: 1,
+		scale: 1,
+		y: 0,
 		transition: {
 			type: "spring",
-			stiffness: 300,
-			damping: 30,
+			stiffness: 200,
+			damping: 20,
 			mass: 0.8,
 		},
 	},
-	tap: {
-		scale: 0.97,
+	hover: {
+		scale: 1.02,
+		y: -4,
+		boxShadow: "0 10px 25px hsl(var(--foreground) / 0.08)",
+		rotateX: 1,
+		rotateY: 1,
 		transition: {
 			type: "spring",
-			stiffness: 500,
+			stiffness: 400,
+			damping: 25,
+			mass: 0.6,
+		},
+	},
+	tap: {
+		scale: 0.98,
+		transition: {
+			type: "spring",
+			stiffness: 600,
 			damping: 30,
-			mass: 0.5,
+			mass: 0.4,
 		},
 	},
 };
@@ -91,6 +103,25 @@ export const pageTransition = {
 	damping: 25,
 	mass: 0.8,
 	duration: 0.6,
+};
+
+export const itemVariants: Variants = {
+	hidden: {
+		opacity: 0,
+		y: 20,
+		scale: 0.95,
+	},
+	visible: {
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: {
+			type: "spring",
+			stiffness: 200,
+			damping: 20,
+			mass: 0.8,
+		},
+	},
 };
 
 export const mobileMenuVariants: Variants = {

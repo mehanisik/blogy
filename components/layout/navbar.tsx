@@ -14,7 +14,6 @@ import { ModeToggle } from "./mode-toggle";
 const navLinks = [
 	{ href: "/projects", label: "Projects" },
 	{ href: "/publications", label: "Publications" },
-	{ href: "/tracker", label: "Tracker" },
 	{ href: "/posts", label: "Posts" },
 ] as const;
 
@@ -23,7 +22,7 @@ export default function Navbar() {
 	const { user, signOut } = useAuth();
 
 	return (
-		<header className="w-full h-16 border-b border-border bg-background">
+		<header className="w-full h-16 border-b border-border">
 			<div className="max-w-5xl mx-auto px-4 md:px-0 py-3">
 				<div className="flex items-center justify-between h-full">
 					<div className="flex items-center gap-8">

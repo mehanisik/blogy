@@ -79,8 +79,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
 	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "#ffffff" },
-		{ media: "(prefers-color-scheme: dark)", color: "#000000" },
+		{ media: "(prefers-color-scheme: light)", color: "hsl(var(--background))" },
+		{ media: "(prefers-color-scheme: dark)", color: "hsl(var(--background))" },
 	],
 	width: "device-width",
 	initialScale: 1,
@@ -108,7 +108,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 					name="twitter:image"
 					content={siteConfig.seo.openGraph.imagePath}
 				/>
-				<meta name="theme-color" content="#000000" />
+				<meta name="theme-color" content="hsl(var(--background))" />
 				<meta name="color-scheme" content="light dark" />
 				{(() => {
 					const twitterHandle = siteConfig.seo.twitter.site?.startsWith("@")
@@ -154,6 +154,11 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 						</>
 					);
 				})()}
+				<script
+					async
+					crossOrigin="anonymous"
+					src="https://tweakcn.com/live-preview.min.js"
+				/>
 			</head>
 			<body suppressHydrationWarning={true}>
 				<a

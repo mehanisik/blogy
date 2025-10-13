@@ -4,7 +4,7 @@ import { Logo } from "./logo";
 
 export const Footer = () => {
 	return (
-		<footer className="border-t border-border/40 bg-background/90 backdrop-blur-sm">
+		<footer className="border-t border-border">
 			<div className="mx-auto w-full  px-4 sm:px-0 py-6">
 				<div className="flex flex-col md:flex-row md:justify-between md:space-y-0 space-y-8">
 					<div className="flex flex-col items-start space-y-4">
@@ -28,7 +28,6 @@ export const Footer = () => {
 									{ href: "/projects", label: "Projects" },
 									{ href: "/publications", label: "Publications" },
 									{ href: "/posts", label: "Blog Posts" },
-									{ href: "/tracker", label: "Activity Tracker" },
 								].map(({ href, label }) => (
 									<Link
 										key={href}
