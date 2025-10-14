@@ -105,25 +105,6 @@ export const pageTransition = {
 	duration: 0.6,
 };
 
-export const itemVariants: Variants = {
-	hidden: {
-		opacity: 0,
-		y: 20,
-		scale: 0.95,
-	},
-	visible: {
-		opacity: 1,
-		y: 0,
-		scale: 1,
-		transition: {
-			type: "spring",
-			stiffness: 200,
-			damping: 20,
-			mass: 0.8,
-		},
-	},
-};
-
 export const mobileMenuVariants: Variants = {
 	hidden: {
 		opacity: 0,

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 import { ThemeProvider } from "next-themes";
 import type { ReactElement } from "react";
-import { cn, fonts, getBaseUrl } from "@/utils/helpers";
+import { cn, font, getBaseUrl } from "@/utils/helpers";
 import "../styles/globals.css";
 import { Footer } from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
@@ -93,7 +93,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={cn("scroll-smooth", fonts.className)}
+			className={cn("scroll-smooth", font.className)}
 		>
 			<head>
 				<link rel="icon" type="image/svg+xml" href="/icon0.svg" />
@@ -177,7 +177,7 @@ export default function RootLayout({ children }: { children: ReactElement }) {
 				>
 					<AuthProvider>
 						<PostHogProvider>
-							<div className="flex flex-col justify-between min-h-screen antialiased max-w-5xl mx-auto">
+							<div className="flex flex-col justify-between min-h-screen antialiased max-w-6xl mx-auto">
 								<Navbar />
 								<PageTransition>{children}</PageTransition>
 								<Footer />

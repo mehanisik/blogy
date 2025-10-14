@@ -20,17 +20,6 @@ export function getPublicationVenue(
 	return null;
 }
 
-export function getDoiUrl(doi?: string | null): string {
-	if (!doi) return "#";
-	return doi.startsWith("http") ? doi : `https://doi.org/${doi}`;
-}
-
-export function getDoiDisplay(doi?: string | null): string {
-	if (!doi) return "";
-	const url = getDoiUrl(doi);
-	return url.replace(/^https?:\/\//, "");
-}
-
 export function getThesisLabel(publication: PublicationLike): string | null {
 	const haystack = [
 		...(publication.journal ?? []),

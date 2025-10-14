@@ -1,5 +1,3 @@
-import { brandFont } from "@/utils/helpers";
-
 interface LogoProps {
 	className?: string;
 	showText?: boolean;
@@ -31,7 +29,7 @@ export function Logo({ className, showText = true }: LogoProps) {
 					x="80"
 					y="50"
 					fill="currentColor"
-					fontFamily={`${brandFont?.style?.fontFamily || "Inter"}, -apple-system, system-ui, sans-serif`}
+					fontFamily={"Inter, -apple-system, system-ui, sans-serif"}
 					fontSize="32"
 					fontWeight="600"
 					letterSpacing="-0.5"

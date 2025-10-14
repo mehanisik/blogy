@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import { HomeGrid } from "@/components/home/home-grid";
+import { getWakatimeStats, getWakatimeSummaries } from "@/app/actions/wakatime";
+import { CodingStatsCard } from "@/components/home/cards";
+import {
+	AboutCard,
+	EducationCard,
+	InterestsCard,
+	LocationCard,
+	RecentActivityCard,
+} from "@/components/home/page";
 import { siteConfig } from "@/siteconfig";
 import { getBaseUrl } from "@/utils/helpers";
 
@@ -30,6 +38,31 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function Home() {
-	return <HomeGrid />;
+const githubUsername = "mehanisik";
+
+export default async function Home() {
+	const [wakatimeStats, wakatimeSummaries] = await Promise.all([
+		getWakatimeStats("last_7_days"),
+		getWakatimeSummaries("last_7_days"),
+	]);
+
+	return (
+		<main className="flex-1 overflow-auto bg-background">
+			<div className="mx-auto h-full max-w-7xl py-6">
+				<div className="grid h-full auto-rows-fr grid-cols-1 gap-0 md:grid-cols-3">
+					<AboutCard username={githubUsername} />
+					<EducationCard />
+					<RecentActivityCard username={githubUsername} />
+					<InterestsCard />
+					<LocationCard />
+					<div className="col-span-1 row-span-1">
+						<CodingStatsCard
+							languagesResult={wakatimeStats}
+							summariesResult={wakatimeSummaries}
+						/>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
 }

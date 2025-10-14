@@ -1,13 +1,3 @@
-import { Orbitron, Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 
-export const fonts = Roboto({
-	weight: ["400", "700"],
-	subsets: ["latin"],
-	display: "swap",
-});
-
-export const brandFont = Orbitron({
-	weight: ["400", "700"],
-	subsets: ["latin"],
-	display: "swap",
-});
+export const font = Inter({ subsets: ["latin"] });

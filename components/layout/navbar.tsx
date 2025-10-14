@@ -23,7 +23,7 @@ export default function Navbar() {
 
 	return (
 		<header className="w-full h-16 border-b border-border">
-			<div className="max-w-5xl mx-auto px-4 md:px-0 py-3">
+			<div className="max-w-7xl mx-auto px-4 md:px-0 py-3">
 				<div className="flex items-center justify-between h-full">
 					<div className="flex items-center gap-8">
 						<Link href="/" className="flex items-center">

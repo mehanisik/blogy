@@ -8,16 +8,6 @@ export function formatDuration(seconds: number): string {
 	return `${minutes}m`;
 }
 
-export function timeAgo(dateString: string) {
-	const date = new Date(dateString);
-	const now = new Date();
-	const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
-	if (diff < 60) return `${diff}s ago`;
-	if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-	if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-	return `${Math.floor(diff / 86400)}d ago`;
-}
-
 export function formatMonthYearShort(dateString: string | null): string | null {
 	if (!dateString) return null;
 	return new Date(dateString).toLocaleDateString("en-US", {
@@ -46,4 +36,32 @@ export function calculateDurationDaysString(
 	if (diffDays < 30) return `${diffDays} days`;
 	if (diffDays < 365) return `${Math.floor(diffDays / 30)} months`;
 	return `${Math.floor(diffDays / 365)} years`;
+}
+
+export function timeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    return Math.floor(interval) + " years ago";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months ago";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days ago";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours ago";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes ago";
+  }
+  return Math.floor(seconds) + " seconds ago";
 }

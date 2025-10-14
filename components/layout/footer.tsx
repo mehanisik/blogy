@@ -5,7 +5,7 @@ import { Logo } from "./logo";
 export const Footer = () => {
 	return (
 		<footer className="border-t border-border">
-			<div className="mx-auto w-full  px-4 sm:px-0 py-6">
+			<div className="mx-auto w-full max-w-7xl px-4 sm:px-0 py-6">
 				<div className="flex flex-col md:flex-row md:justify-between md:space-y-0 space-y-8">
 					<div className="flex flex-col items-start space-y-4">
 						<Link href="/" className="group">
