@@ -49,7 +49,7 @@ export default async function Home() {
 	return (
 		<main className="flex-1 overflow-auto bg-background">
 			<div className="mx-auto h-full max-w-7xl py-6">
-				<div className="grid h-full auto-rows-fr grid-cols-1 gap-0 md:grid-cols-3">
+				<div className="card-grid grid h-full auto-rows-fr grid-cols-1 gap-px border bg-border md:grid-cols-3">
 					<AboutCard username={githubUsername} />
 					<EducationCard />
 					<RecentActivityCard username={githubUsername} />

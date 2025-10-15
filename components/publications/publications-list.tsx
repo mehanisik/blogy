@@ -110,12 +110,22 @@ export function PublicationsList({
 										</span>
 									) : null}
 									{p.doi && (
-										<span className="inline-flex items-center gap-1 font-mono text-muted-foreground">
+										<a
+											href={
+												p.doi.startsWith("http")
+													? p.doi
+													: `https://doi.org/${p.doi}`
+											}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-flex items-center gap-1 font-mono text-muted-foreground hover:text-foreground transition-colors"
+											onClick={(e) => e.stopPropagation()}
+										>
 											<LinkIcon className="w-3 h-3" />
 											{p.doi.startsWith("http")
 												? p.doi
 												: `https://doi.org/${p.doi}`}
-										</span>
+										</a>
 									)}
 									{p.pdf && (
 										<span className="inline-flex items-center gap-1">
