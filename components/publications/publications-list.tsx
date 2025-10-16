@@ -6,7 +6,6 @@ import {
 	Database,
 	FileText,
 	GraduationCap,
-	Link as LinkIcon,
 	Server,
 } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +20,7 @@ import {
 	type KeywordCategory,
 } from "@/utils/helpers/publications";
 import { MotionCard, MotionContainer } from "@/utils/motion/motion-components";
+import { DoiLink } from "./doi-link";
 
 export function PublicationsList({
 	publications,
@@ -52,7 +52,7 @@ export function PublicationsList({
 					href={`/publications/${p.id}`}
 					className="block group mb-4"
 				>
-					<MotionCard className="border border-muted hover:border-muted-foreground/20 rounded-xl shadow-none cursor-pointer">
+					<MotionCard className="border border-muted-foreground/20 hover:border-muted-foreground/40 rounded-xl shadow-none cursor-pointer">
 						<CardContent className="p-4 sm:p-5 flex gap-4">
 							{p.cover_image && (
 								<div className="relative hidden sm:block w-28 h-36 rounded-lg overflow-hidden bg-background">
@@ -109,24 +109,7 @@ export function PublicationsList({
 											{p.page_count} pages
 										</span>
 									) : null}
-									{p.doi && (
-										<a
-											href={
-												p.doi.startsWith("http")
-													? p.doi
-													: `https://doi.org/${p.doi}`
-											}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="inline-flex items-center gap-1 font-mono text-muted-foreground hover:text-foreground transition-colors"
-											onClick={(e) => e.stopPropagation()}
-										>
-											<LinkIcon className="w-3 h-3" />
-											{p.doi.startsWith("http")
-												? p.doi
-												: `https://doi.org/${p.doi}`}
-										</a>
-									)}
+									{p.doi && <DoiLink doi={p.doi} />}
 									{p.pdf && (
 										<span className="inline-flex items-center gap-1">
 											<FileText className="w-3 h-3" />
