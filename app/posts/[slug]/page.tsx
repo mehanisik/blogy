@@ -2,25 +2,22 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PostContent } from "@/components/blog/post-content";
+import { ViewIncrementer } from "@/components/blog/view-incrementer";
 import PostDetailLoader from "@/components/loaders/post-detail-loader";
 import { siteConfig } from "@/siteconfig";
 import { getBaseUrl } from "@/utils/helpers";
-import { getPostById } from "@/utils/helpers/queries";
+import { getPostById, getPostBySlug } from "@/utils/helpers/queries";
 
 export async function generateMetadata(props: {
 	params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
 	const { slug } = await props.params;
 	const url = `${getBaseUrl()}/posts/${slug}`;
-	const idNum = Number(slug);
-	if (Number.isNaN(idNum)) {
-		return {
-			title: "Blog Post",
-			description: siteConfig.seo.description,
-			alternates: { canonical: url },
-		};
-	}
-	const post = await getPostById(idNum);
+
+	const isId = !isNaN(parseInt(slug, 10));
+	const post = await (isId
+		? getPostById(parseInt(slug, 10))
+		: getPostBySlug(slug));
 
 	const title = post?.title ?? "Blog Post";
 	const description = post?.subtitle ?? siteConfig.seo.description;
@@ -54,7 +51,10 @@ export default async function PostSlugPage(props: {
 }) {
 	const { slug } = await props.params;
 
-	const post = await getPostById(Number(slug));
+	const isId = !isNaN(parseInt(slug, 10));
+	const post = await (isId
+		? getPostById(parseInt(slug, 10))
+		: getPostBySlug(slug));
 
 	if (!post) {
 		return notFound();
@@ -62,6 +62,7 @@ export default async function PostSlugPage(props: {
 
 	return (
 		<Suspense fallback={<PostDetailLoader />}>
+			{post.slug && <ViewIncrementer slug={post.slug} />}
 			<PostContent post={post} />
 		</Suspense>
 	);

@@ -15,30 +15,34 @@ export const PostsList = async ({ posts }: { posts: Tables<"blogs">[] }) => {
 	}
 
 	return (
-		<MotionContainer className="w-full py-5 min-h-[72vh]">
+		<MotionContainer className="container mx-auto grid grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-3">
 			{posts.map((post) => (
-				<Link key={post.id} href={`/posts/${post.id}`} className="mb-4 block">
-					<MotionCard className="border border-muted rounded-xl shadow-none">
-						<CardContent className="p-5 space-y-3">
-							<h3 className="text-lg font-medium tracking-tight text-foreground group-hover:opacity-80">
-								{post.title}
-							</h3>
+				<Link
+					key={post.id}
+					href={`/posts/${post.slug || post.id}`}
+					className="group"
+				>
+					<MotionCard className="h-full transform border border-muted rounded-xl shadow-none transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+						<CardContent className="flex h-full flex-col p-5">
+							<div className="flex-grow space-y-3">
+								<h3 className="text-lg font-medium tracking-tight text-foreground group-hover:opacity-80">
+									{post.title}
+								</h3>
+							</div>
 
-							{post.subtitle && (
-								<p className="text-sm text-muted-foreground line-clamp-2">
-									{post.subtitle}
-								</p>
-							)}
-
-							<div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+							<div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
 								{post.date && <span>{formatMonthYearShort(post.date)}</span>}
-								{typeof post.read_time === "number" && post.read_time > 0 && (
-									<span>{post.read_time} min read</span>
-								)}
+								{typeof post.read_time === "number" &&
+									post.read_time > 0 && (
+										<>
+											<span>•</span>
+											<span>{post.read_time} min read</span>
+										</>
+									)}
 							</div>
 
 							{post.tags && post.tags.length > 0 && (
-								<div className="flex flex-wrap gap-1.5">
+								<div className="mt-3 flex flex-wrap gap-1.5">
 									{post.tags.slice(0, 3).map((tag) => (
 										<Badge
 											key={`${post.id}-${tag}`}
@@ -49,7 +53,10 @@ export const PostsList = async ({ posts }: { posts: Tables<"blogs">[] }) => {
 										</Badge>
 									))}
 									{post.tags && post.tags.length > 3 && (
-										<Badge variant="outline" className="font-normal text-xs">
+										<Badge
+											variant="outline"
+											className="font-normal text-xs"
+										>
 											+{post.tags.length - 3}
 										</Badge>
 									)}

@@ -63,9 +63,9 @@ export function BlogForm({ item, onSave, onCancel }: BlogFormProps) {
 		}
 	}, [item]);
 
-	// Auto-generate slug from title
+	// Auto-generate slug from title if slug is empty
 	useEffect(() => {
-		if (formData.title && !item) {
+		if (formData.title && !formData.slug) {
 			const slug = formData.title
 				.toLowerCase()
 				.replace(/[^a-z0-9\s-]/g, "")
@@ -74,7 +74,7 @@ export function BlogForm({ item, onSave, onCancel }: BlogFormProps) {
 				.trim();
 			setFormData((prev) => ({ ...prev, slug }));
 		}
-	}, [formData.title, item]);
+	}, [formData.title, formData.slug]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();

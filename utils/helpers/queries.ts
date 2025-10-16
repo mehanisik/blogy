@@ -133,6 +133,28 @@ const getPostById = async (id: number) => {
 	return cachedFunction();
 };
 
+const getPostBySlug = async (slug: string) => {
+	const supabase = await supabaseServer();
+	const cachedFunction = unstable_cache(
+		async () => {
+			const { data, error } = await supabase
+				.from("blogs")
+				.select("*")
+				.eq("slug", slug);
+			if (error) {
+				throw new Error(error.message || "Failed to fetch post by slug");
+			}
+			return data[0];
+		},
+		["post-by-slug", slug],
+		{
+			tags: ["posts", `post-by-slug-${slug}`],
+			revalidate: CACHE_DURATION,
+		},
+	);
+	return cachedFunction();
+};
+
 export {
 	getProjects,
 	getProjectById,
@@ -140,4 +162,5 @@ export {
 	getPublicationById,
 	getPosts,
 	getPostById,
+	getPostBySlug,
 };

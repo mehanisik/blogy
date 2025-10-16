@@ -34,11 +34,25 @@ export const metadata: Metadata = {
 };
 
 export default async function PostsPage() {
+
 	const posts = await getPosts();
 
+
+
 	return (
-		<Suspense fallback={<PostsLoader />}>
-			<PostsList posts={posts} />
-		</Suspense>
+
+		<div className="w-full py-10">
+
+			<Suspense fallback={<PostsLoader />}>
+
+				<PostsList posts={posts} />
+
+			</Suspense>
+
+		</div>
+
 	);
+
 }
+
+
