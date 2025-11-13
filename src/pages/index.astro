@@ -6,6 +6,20 @@ import Layout from "../layouts/layout.astro";
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
+<script>
+		import Lenis from "lenis"
+
+const lenis = new Lenis({ lerp: 0.1});
+
+
+function raf(time:number) {
+	lenis.raf(time);
+	requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
+</script>
+
 <Layout>
 	<Welcome />
 </Layout>
