@@ -1,0 +1,70 @@
+---
+import { hero, socialLinks, navLinks } from "../data/portfolio";
+---
+
+<section class="relative min-h-[90vh] flex flex-col items-center justify-center px-6 py-24 text-center">
+	<div class="absolute inset-0 bg-gradient-to-b from-black via-black to-transparent opacity-50"></div>
+	
+	<div class="relative z-10 max-w-4xl space-y-8">
+		<div class="space-y-4">
+			<p class="text-sm uppercase tracking-[0.5em] text-[var(--color-muted)] opacity-80">
+				{hero.name}
+			</p>
+			<h1 class="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight text-white">
+				<span class="block">{hero.role}</span>
+			</h1>
+			<p class="text-xl sm:text-2xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed">
+				{hero.tagline}
+			</p>
+		</div>
+
+		<div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+			{navLinks.map((link) => (
+				<a
+					class="px-6 py-3 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/50 backdrop-blur-sm text-sm font-medium text-white transition hover:bg-white hover:text-black hover:border-white"
+					href={link.href}
+				>
+					{link.label}
+				</a>
+			))}
+		</div>
+
+		<div class="flex items-center justify-center gap-6 pt-8">
+			{socialLinks.map((link) => (
+				<a
+					class="text-[var(--color-muted)] transition hover:text-white hover:scale-110"
+					href={link.href}
+					target="_blank"
+					rel="noreferrer"
+					aria-label={link.label}
+				>
+					<span class="text-lg font-medium">{link.label}</span>
+				</a>
+			))}
+		</div>
+
+		<div class="pt-12">
+			<a
+				href="#about"
+				class="inline-flex flex-col items-center gap-2 text-[var(--color-muted)] hover:text-white transition group"
+				aria-label="Scroll to about section"
+			>
+				<span class="text-sm">Scroll to explore</span>
+				<svg
+					class="w-6 h-6 animate-bounce group-hover:scale-110 transition"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M19 14l-7 7m0 0l-7-7m7 7V3"
+					/>
+				</svg>
+			</a>
+		</div>
+	</div>
+</section>
+

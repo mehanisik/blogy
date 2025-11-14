@@ -1,0 +1,39 @@
+---
+import { experience } from "../data/portfolio";
+---
+
+<section id="experience" data-animate="section" class="space-y-6">
+	<div class="flex items-center justify-between">
+		<div>
+			<p class="text-sm uppercase tracking-[0.3em] text-[var(--color-muted)]">Experience</p>
+			<h2 class="text-2xl font-semibold text-white">A decade of building for the web</h2>
+		</div>
+		<a class="text-sm text-[var(--color-accent)]" href="/resume.pdf">
+			View Full Résumé
+		</a>
+	</div>
+	<div class="space-y-4">
+		{experience.map((item) => (
+			<article
+				data-animate="timeline-item"
+				class="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-panel)]/70 p-5 transition hover:border-[var(--color-accent)]"
+			>
+				<div class="flex flex-wrap items-baseline justify-between gap-2 text-sm text-[var(--color-muted)]">
+					<span>{item.period}</span>
+					{item.meta && <span>{item.meta}</span>}
+				</div>
+				<h3 class="mt-2 text-xl font-semibold text-white">{item.role}</h3>
+				<p class="text-base text-[var(--color-muted)]">{item.organization}</p>
+				<p class="mt-3 text-sm leading-relaxed text-[var(--color-foreground)]/80">{item.summary}</p>
+				<ul class="mt-4 flex flex-wrap gap-2 text-xs font-medium">
+					{item.stack.map((tech) => (
+						<li class="rounded-full bg-[var(--color-tag-bg)] px-3 py-1 text-[var(--color-accent)]">
+							{tech}
+						</li>
+					))}
+				</ul>
+			</article>
+		))}
+	</div>
+</section>
+
