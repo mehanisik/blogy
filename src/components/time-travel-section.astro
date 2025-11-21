@@ -1,18 +1,40 @@
+---
+import BinaryStrip from "./binary-strip.astro";
+---
+
+<BinaryStrip />
+
 <section
 	id="time-travel"
 	data-animate="section"
-	class="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-panel)]/80 p-6 text-center shadow-[var(--shadow-soft)]"
+	class="max-w-[1200px] mx-auto px-6 py-16 text-center"
 >
-	<p class="text-sm uppercase tracking-[0.3em] text-[var(--color-muted)]">Click to time travel</p>
-	<h2 class="mt-2 text-3xl font-semibold text-white">Spinning TARDIS from Doctor Who</h2>
-	<p class="mt-3 text-base text-[var(--color-muted)]">
+	<p class="font-ui text-[var(--ui-small)] uppercase tracking-[2px] text-[var(--ink)]">Click to time travel</p>
+	<h2 class="font-display text-[var(--h2)] font-black uppercase text-[var(--ink)] leading-[1.02] mt-4">
+		Spinning TARDIS from Doctor Who
+	</h2>
+	<p class="font-body text-[var(--body)] text-[var(--ink)] leading-[1.38] mt-4 max-w-[600px] mx-auto">
 		Tap below to warp through my past lives, projects, and experiments.
 	</p>
 	<a
-		class="mt-6 inline-flex items-center gap-3 rounded-full bg-[var(--gradient-accent)] px-6 py-3 text-base font-semibold text-white shadow-lg shadow-sky-500/25 transition hover:-translate-y-0.5"
 		href="#experience"
+		class="mt-8 inline-flex items-center gap-3 border border-[var(--ink)] px-6 py-3 font-ui text-[var(--ui-small)] uppercase tracking-[2px] text-[var(--ink)] transition hover:bg-[var(--ink)] hover:text-[var(--bg)]"
+		style="border-width: var(--stroke-width);"
 	>
 		Engage Time Circuit
 		<span aria-hidden="true">⟲</span>
 	</a>
 </section>
+
+<style>
+	.font-display {
+		font-family: var(--display-font);
+	}
+	.font-body {
+		font-family: var(--body-font);
+		font-weight: 300;
+	}
+	.font-ui {
+		font-family: var(--ui-font);
+	}
+</style>

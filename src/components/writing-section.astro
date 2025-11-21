@@ -1,29 +1,43 @@
 ---
 import { writings } from "../data/portfolio";
+import BinaryStrip from "./binary-strip.astro";
 ---
 
-<section id="writing" data-animate="section" class="space-y-6">
-	<div class="flex items-center justify-between">
-		<div>
-			<p class="text-sm uppercase tracking-[0.3em] text-[var(--color-muted)]">Writing</p>
-			<h2 class="text-2xl font-semibold text-white">Sharing ideas & learnings</h2>
-		</div>
+<BinaryStrip />
+
+<section id="writing" data-animate="section" class="max-w-[1200px] mx-auto px-6 py-16 space-y-8">
+	<div>
+		<p class="font-ui text-[var(--ui-small)] uppercase tracking-[2px] text-[var(--ink)]">Writing</p>
+		<h2 class="font-display text-[var(--h2)] font-black uppercase text-[var(--ink)] leading-[1.02] mt-2">
+			Sharing ideas & learnings
+		</h2>
 	</div>
 	<div class="space-y-4">
 		{writings.map((post) => (
 			<a
-				class="flex flex-col gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] p-5 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)]/60"
 				href={post.link}
 				target="_blank"
 				rel="noreferrer"
+				class="border border-[var(--ink)] p-6 bg-[var(--bg)] transition hover:bg-[var(--muted)] block"
+				style="border-width: var(--stroke-width);"
 			>
-				<div class="flex items-center justify-between text-sm text-[var(--color-muted)]">
+				<div class="flex items-center justify-between font-ui text-[var(--body-small)] text-[var(--ink)] mb-3">
 					<span>{post.icon}</span>
 					<span>{post.year}</span>
 				</div>
-				<p class="text-lg font-semibold text-white">{post.title}</p>
+				<p class="font-display text-[var(--h1)] font-black uppercase text-[var(--ink)] leading-[1.02]">
+					{post.title}
+				</p>
 			</a>
 		))}
 	</div>
 </section>
 
+<style>
+	.font-display {
+		font-family: var(--display-font);
+	}
+	.font-ui {
+		font-family: var(--ui-font);
+	}
+</style>

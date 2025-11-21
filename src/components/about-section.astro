@@ -1,23 +1,108 @@
 ---
-import { aboutParagraphs } from "../data/portfolio";
+import type { Education, Skill } from "../lib/api";
+
+interface Props {
+  education: Education[];
+  skills: Skill[];
+}
+
+const { education, skills } = Astro.props;
+
+const languages = skills.find((s) => s.category === "languages")?.items || [];
+const frameworks = skills.find((s) => s.category === "frameworks")?.items || [];
+const tools = skills.find((s) => s.category === "tools")?.items || [];
 ---
 
-<section id="about" data-animate="section" class="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)]/70 p-6 backdrop-blur">
-	<p class="text-sm uppercase tracking-[0.3em] text-[var(--color-muted)]">About</p>
-	<div class="mt-4 space-y-4 text-base leading-relaxed text-[var(--color-foreground)]/90">
-		{aboutParagraphs.map((text) => (
-			<p>{text}</p>
-		))}
-		<div class="flex flex-wrap gap-2 text-lg font-semibold uppercase tracking-[0.5em] text-[var(--color-accent)]">
-			{"Korok seeds".split("").map((char, index) => (
-				<span
-					style={{ animationDelay: `${index * 50}ms` }}
-					class="animate-pulse text-[var(--color-accent-strong)]"
-				>
-					{char === " " ? "\u00A0" : char}
-				</span>
-			))}
+<section id="about" class="max-w-[var(--container-width)] mx-auto px-6 py-32">
+	<div class="grid md:grid-cols-2 gap-20">
+		<!-- Skills Column -->
+		<div class="space-y-12" data-animate="section">
+			<h2
+				class="font-display text-[var(--text-h2)] text-[var(--ink)] tracking-tight"
+			>
+				Skills
+			</h2>
+
+			<div class="space-y-8">
+				<div class="space-y-4">
+					<h3
+						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
+					>
+						Languages
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						{
+							languages.map((skill) => (
+								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
+									{skill}
+								</span>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="space-y-4">
+					<h3
+						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
+					>
+						Frameworks
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						{
+							frameworks.map((skill) => (
+								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
+									{skill}
+								</span>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="space-y-4">
+					<h3
+						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
+					>
+						Tools
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						{
+							tools.map((skill) => (
+								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
+									{skill}
+								</span>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Education Column -->
+		<div class="space-y-12" data-animate="section">
+			<h2 class="font-display text-[var(--text-h2)] text-[var(--ink)]">
+				Education
+			</h2>
+
+			<div class="space-y-10">
+				{
+					education.map((edu) => (
+						<div class="space-y-2">
+							<span class="font-mono text-sm text-[var(--ink-muted)] block">
+								{edu.date}
+							</span>
+							<h3 class="font-display text-[var(--text-body-l)] font-medium text-[var(--ink)]">
+								{edu.school}
+							</h3>
+							<p class="font-body text-[var(--text-body)] text-[var(--ink-muted)]">
+								{edu.degree}
+							</p>
+							<p class="font-body text-sm text-[var(--ink-muted)] opacity-80">
+								{edu.location}
+							</p>
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</div>
 </section>
-

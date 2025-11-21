@@ -1,0 +1,43 @@
+---
+import type { Hero } from "../lib/api";
+
+interface Props {
+  hero: Hero;
+}
+
+const { hero } = Astro.props;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 px-6 py-6">
+	<div
+		class="max-w-[var(--container-width)] mx-auto flex items-center justify-between bg-[var(--bg)]/80 backdrop-blur-md border border-[var(--line)] rounded-full px-6 py-3 shadow-sm"
+	>
+		<a
+			href="/"
+			class="font-display font-bold text-lg tracking-tight text-[var(--ink)] hover:opacity-70 transition-opacity"
+		>
+			{hero.name}
+		</a>
+
+		<nav class="flex items-center gap-6">
+			<a
+				href="#projects"
+				class="font-mono text-xs text-[var(--ink-muted)] hover:text-[var(--ink)] transition-colors"
+			>
+				Work
+			</a>
+			<a
+				href="#experience"
+				class="font-mono text-xs text-[var(--ink-muted)] hover:text-[var(--ink)] transition-colors"
+			>
+				About
+			</a>
+			<a
+				href="/resume.pdf"
+				class="font-mono text-xs text-[var(--bg)] bg-[var(--ink)] px-3 py-1.5 rounded-full hover:bg-[var(--accent-dim)] transition-colors"
+			>
+				Resume
+			</a>
+		</nav>
+	</div>
+</header>

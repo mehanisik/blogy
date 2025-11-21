@@ -1,70 +1,64 @@
 ---
-import { hero, socialLinks, navLinks } from "../data/portfolio";
+import type { Hero, SocialLink } from "../lib/api";
+
+interface Props {
+  hero: Hero;
+  socialLinks: SocialLink[];
+}
+
+const { hero, socialLinks } = Astro.props;
 ---
 
-<section class="relative min-h-[90vh] flex flex-col items-center justify-center px-6 py-24 text-center">
-	<div class="absolute inset-0 bg-gradient-to-b from-black via-black to-transparent opacity-50"></div>
-	
-	<div class="relative z-10 max-w-4xl space-y-8">
-		<div class="space-y-4">
-			<p class="text-sm uppercase tracking-[0.5em] text-[var(--color-muted)] opacity-80">
-				{hero.name}
-			</p>
-			<h1 class="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight text-white">
-				<span class="block">{hero.role}</span>
-			</h1>
-			<p class="text-xl sm:text-2xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed">
-				{hero.tagline}
-			</p>
-		</div>
+<section
+    class="relative min-h-screen flex flex-col justify-center max-w-[var(--container-width)] mx-auto px-6 pt-20"
+>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <div class="lg:col-span-9 space-y-6">
+            <div class="space-y-2">
+                <p
+                    class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
+                    data-animate="hero"
+                >
+                    {hero.location} — Available for work
+                </p>
+                <h1
+                    class="font-display text-[var(--text-display-2xl)] leading-[0.9] tracking-tighter text-[var(--ink)] -ml-[0.05em]"
+                    data-animate="hero"
+                >
+                    {hero.name}
+                </h1>
+                <h2
+                    class="font-display text-[var(--text-display-l)] leading-[1] tracking-tight text-[var(--ink-muted)]"
+                    data-animate="hero"
+                >
+                    {hero.tagline}
+                </h2>
+            </div>
+        </div>
 
-		<div class="flex flex-wrap items-center justify-center gap-4 pt-4">
-			{navLinks.map((link) => (
-				<a
-					class="px-6 py-3 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/50 backdrop-blur-sm text-sm font-medium text-white transition hover:bg-white hover:text-black hover:border-white"
-					href={link.href}
-				>
-					{link.label}
-				</a>
-			))}
-		</div>
+        <div class="lg:col-span-3 lg:pb-4 space-y-8">
+            <p
+                class="font-body text-[var(--text-body)] text-[var(--ink-muted)] leading-relaxed"
+                data-animate="hero"
+            >
+                {hero.summary}
+            </p>
 
-		<div class="flex items-center justify-center gap-6 pt-8">
-			{socialLinks.map((link) => (
-				<a
-					class="text-[var(--color-muted)] transition hover:text-white hover:scale-110"
-					href={link.href}
-					target="_blank"
-					rel="noreferrer"
-					aria-label={link.label}
-				>
-					<span class="text-lg font-medium">{link.label}</span>
-				</a>
-			))}
-		</div>
-
-		<div class="pt-12">
-			<a
-				href="#about"
-				class="inline-flex flex-col items-center gap-2 text-[var(--color-muted)] hover:text-white transition group"
-				aria-label="Scroll to about section"
-			>
-				<span class="text-sm">Scroll to explore</span>
-				<svg
-					class="w-6 h-6 animate-bounce group-hover:scale-110 transition"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M19 14l-7 7m0 0l-7-7m7 7V3"
-					/>
-				</svg>
-			</a>
-		</div>
-	</div>
+            <div class="flex flex-col gap-3" data-animate="hero">
+                {
+                    socialLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            class="group flex items-center justify-between font-mono text-sm text-[var(--ink)] border-b border-[var(--line)] pb-2 hover:border-[var(--ink)] transition-colors"
+                        >
+                            <span class="capitalize">{link.label}</span>
+                            <span class="opacity-50 group-hover:opacity-100 transition-opacity">
+                                ↗
+                            </span>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
 </section>
-

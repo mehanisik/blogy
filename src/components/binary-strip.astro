@@ -1,0 +1,11 @@
+---
+type Props = {
+  content?: string;
+};
+const { content = "0101101010 // // // //// 111001" } = Astro.props;
+---
+
+<div class="binary-strip font-mono text-[var(--ui-small)] h-[22px] border-t border-b border-[var(--line)] px-4 flex items-center text-[var(--binary)]" style="border-width: var(--fine-line); font-family: var(--mono-font);">
+	{content}
+</div>
+

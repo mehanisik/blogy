@@ -1,47 +1,69 @@
 ---
-import { projects } from "../data/portfolio";
+import type { Project } from "../lib/api";
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
 ---
 
-<section id="projects" data-animate="section" class="space-y-6">
-	<div class="flex items-center justify-between">
-		<div>
-			<p class="text-sm uppercase tracking-[0.3em] text-[var(--color-muted)]">Projects</p>
-			<h2 class="text-2xl font-semibold text-white">Selected work</h2>
-		</div>
-		<a class="text-sm text-[var(--color-accent)]" href="https://github.com/bchiang7" target="_blank" rel="noreferrer">
-			View Full Project Archive
-		</a>
+<section
+	id="projects"
+	class="max-w-[var(--container-width)] mx-auto px-6 py-32"
+>
+	<div class="mb-20 flex items-end justify-between">
+		<h2
+			class="font-display text-[var(--text-h1)] leading-none text-[var(--ink)] tracking-tight"
+			data-animate="section"
+		>
+			Selected<br />Works
+		</h2>
+		<span
+			class="font-mono text-sm text-[var(--ink-muted)] hidden md:block mb-2"
+		>
+			(2021 — Present)
+		</span>
 	</div>
-	<div class="grid gap-5 md:grid-cols-2">
-		{projects.map((project) => (
-			<article
-				data-animate="card"
-				class="flex flex-col justify-between rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-gradient-to-br from-[rgba(56,189,248,0.08)] via-[var(--color-panel)] to-[rgba(168,85,247,0.08)] p-5 shadow-[var(--shadow-soft)]"
-			>
-				<div class="space-y-1">
-					<p class="text-xs uppercase tracking-[0.4em] text-[var(--color-muted)]">{project.tagline}</p>
-					<h3 class="text-2xl font-semibold text-white">{project.title}</h3>
-					<p class="text-sm text-[var(--color-muted)]">{project.metrics}</p>
-					<p class="mt-3 text-sm leading-relaxed text-[var(--color-foreground)]/90">{project.description}</p>
-				</div>
-				<div class="mt-6 flex flex-wrap gap-2 text-xs font-medium text-[var(--color-accent)]">
-					{project.stack.map((tech) => (
-						<span class="rounded-full bg-[var(--color-tag-bg)] px-3 py-1">
-							{tech}
-						</span>
-					))}
-				</div>
+
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		{
+			projects.map((project, index) => (
 				<a
-					class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-accent-strong)]"
-					href={project.link}
+					href={project.demo || project.github || "#"}
 					target="_blank"
-					rel="noreferrer"
+					rel="noopener noreferrer"
+					class={`group relative flex flex-col justify-between p-8 rounded-2xl bg-[var(--surface)] hover:bg-[var(--line)] transition-colors duration-500 ${index === 0 ? "md:col-span-2 md:min-h-[400px]" : "min-h-[300px]"}`}
+					data-animate="project-card"
 				>
-					{project.imageLabel}
-					<span aria-hidden="true">↗</span>
+					<div class="flex justify-between items-start w-full">
+						<span class="font-mono text-xs text-[var(--ink-muted)] border border-[var(--line)] px-2 py-1 rounded-full bg-[var(--bg)]">
+							0{index + 1}
+						</span>
+						<span class="font-mono text-2xl text-[var(--ink)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+							↗
+						</span>
+					</div>
+
+					<div class="space-y-4 max-w-xl">
+						<h3 class="font-display text-[var(--text-h2)] text-[var(--ink)] leading-tight">
+							{project.title}
+						</h3>
+						<p class="font-body text-[var(--text-body)] text-[var(--ink-muted)] leading-relaxed line-clamp-3">
+							{project.description}
+						</p>
+						{project.technologies && (
+							<div class="flex flex-wrap gap-2 pt-2">
+								{project.technologies.map((tech) => (
+									<span class="font-mono text-xs text-[var(--ink-muted)] bg-[var(--bg)] px-2 py-1 rounded border border-[var(--line)]">
+										{tech}
+									</span>
+								))}
+							</div>
+						)}
+					</div>
 				</a>
-			</article>
-		))}
+			))
+		}
 	</div>
 </section>
-

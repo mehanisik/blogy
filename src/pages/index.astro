@@ -1,104 +1,168 @@
 ---
-import HeroSection from "../components/hero-section.astro";
 import AboutSection from "../components/about-section.astro";
+import BlogSection from "../components/blog-section.astro";
 import ExperienceSection from "../components/experience-section.astro";
 import Footer from "../components/footer.astro";
+import HeroSection from "../components/hero-section.astro";
+import Navigation from "../components/navigation.astro";
 import ProjectsSection from "../components/project-section.astro";
-import TimeTravelSection from "../components/time-travel-section.astro";
-import WritingSection from "../components/writing-section.astro";
-import { hero } from "../data/portfolio";
+import PublicationSection from "../components/publication-section.astro";
 import Layout from "../layouts/layout.astro";
+import {
+  getBlogs,
+  getEducation,
+  getExperience,
+  getHero,
+  getProjects,
+  getPublications,
+  getSkills,
+  getSocialLinks,
+} from "../lib/api";
+
+const projects = await getProjects();
+const experience = await getExperience();
+const education = await getEducation();
+const skills = await getSkills();
+const heroData = await getHero();
+const socialLinks = await getSocialLinks();
+const blogs = await getBlogs();
+const publications = await getPublications();
+
+// Fallback for hero if DB is empty (optional, but good for safety)
+const hero = heroData || {
+  name: "Portfolio User",
+  tagline: "Full Stack Developer",
+  role: "Developer",
+  location: "Earth",
+  summary: "Welcome to my portfolio.",
+  contact: {},
+};
 ---
 
-<Layout title={`${hero.name} – ${hero.role}`} description={hero.tagline}>
-	<main class="min-h-screen bg-transparent">
-		<HeroSection />
-		
-		<div class="mx-auto max-w-6xl space-y-16 px-6 py-16 sm:px-8 lg:py-24">
-			<AboutSection />
-			<ExperienceSection />
-			<ProjectsSection />
-			<WritingSection />
-			<TimeTravelSection />
-			<Footer />
-		</div>
-	</main>
+<Layout title={`${hero.name} – ${hero.role}`} description={hero.summary || ""}>
+    <Navigation hero={hero} />
+    <main class="min-h-screen bg-[var(--bg)] pt-24">
+        <div class="space-y-32 pb-32">
+            <HeroSection hero={hero} socialLinks={socialLinks} />
+            <ProjectsSection projects={projects} />
+            <ExperienceSection experience={experience} />
+            <AboutSection education={education} skills={skills} />
+            {blogs.length > 0 && <BlogSection blogs={blogs} />}
+            {
+                publications.length > 0 && (
+                    <PublicationSection publications={publications} />
+                )
+            }
+        </div>
+        <Footer hero={hero} socialLinks={socialLinks} />
+    </main>
+    <script>
+        import gsap from "gsap";
+        import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-	<script>
-		import gsap from "gsap";
-		import { ScrollTrigger } from "gsap/ScrollTrigger";
+        type LenisWindow = Window & {
+            lenis?: {
+                on?: (event: string, callback: () => void) => void;
+            };
+        };
 
-		type LenisWindow = Window & {
-			lenis?: {
-				on?: (event: string, callback: () => void) => void;
-			};
-		};
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
 
-		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!prefersReducedMotion) {
+            gsap.registerPlugin(ScrollTrigger);
+            const lenisWindow = window as LenisWindow;
+            const lenis = lenisWindow.lenis;
 
-		if (!prefersReducedMotion) {
-			gsap.registerPlugin(ScrollTrigger);
+            if (lenis?.on) {
+                lenis.on("scroll", ScrollTrigger.update);
+            }
 
-			const lenisWindow = window as LenisWindow;
-			const lenis = lenisWindow.lenis;
-			if (lenis?.on) {
-				lenis.on("scroll", ScrollTrigger.update);
-			}
+            // Hero Animation
+            const heroElements = document.querySelectorAll(
+                "[data-animate='hero']",
+            );
+            if (heroElements.length) {
+                gsap.fromTo(
+                    heroElements,
+                    { y: 20, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1.2,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        delay: 0.2,
+                    },
+                );
+            }
 
-			const sections = document.querySelectorAll("[data-animate='section']");
-			sections.forEach((section) => {
-				gsap.fromTo(
-					section,
-					{ opacity: 0, y: 48 },
-					{
-						opacity: 1,
-						y: 0,
-						duration: 1,
-						ease: "power3.out",
-						scrollTrigger: {
-							trigger: section,
-							start: "top 80%",
-							toggleActions: "play none none reverse",
-						},
-					},
-				);
-			});
+            // Section Headers & General Fade In
+            const sections = document.querySelectorAll(
+                "[data-animate='section']",
+            );
+            sections.forEach((section) => {
+                gsap.fromTo(
+                    section,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse",
+                        },
+                    },
+                );
+            });
 
-			const cards = document.querySelectorAll("[data-animate='card']");
-			if (cards.length) {
-				gsap.fromTo(
-					cards,
-					{ opacity: 0, y: 32 },
-					{
-						opacity: 1,
-						y: 0,
-						stagger: 0.15,
-						duration: 0.9,
-						ease: "power2.out",
-						scrollTrigger: {
-							trigger: "#projects",
-							start: "top 75%",
-						},
-					},
-				);
-			}
+            // Experience Items
+            const experienceItems = document.querySelectorAll(
+                "[data-animate='experience-item']",
+            );
+            if (experienceItems.length) {
+                gsap.fromTo(
+                    experienceItems,
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: "#experience",
+                            start: "top 75%",
+                        },
+                    },
+                );
+            }
 
-			const timelineItems = document.querySelectorAll("[data-animate='timeline-item']");
-			timelineItems.forEach((item) => {
-				gsap.fromTo(
-					item,
-					{ borderColor: "transparent" },
-					{
-						borderColor: "rgba(255, 255, 255, 0.3)",
-						duration: 0.8,
-						ease: "power1.out",
-						scrollTrigger: {
-							trigger: item,
-							start: "top 85%",
-						},
-					},
-				);
-			});
-		}
-	</script>
+            // Project Cards
+            const projectCards = document.querySelectorAll(
+                "[data-animate='project-card']",
+            );
+            if (projectCards.length) {
+                gsap.fromTo(
+                    projectCards,
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: "#projects",
+                            start: "top 75%",
+                        },
+                    },
+                );
+            }
+        }
+    </script>
 </Layout>

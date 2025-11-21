@@ -1,52 +1,66 @@
-@import "modern-normalize/modern-normalize.css";
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
 :root {
-  --font-sans:
-    "Inter", "SF Pro Display", "SF Pro Text", "system-ui", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --color-bg: #000000;
-  --color-surface: #0a0a0a;
-  --color-panel: #111111;
-  --color-muted: #888888;
-  --color-foreground: #e5e5e5;
-  --color-accent: #ffffff;
-  --color-accent-strong: #ffffff;
-  --color-tag-bg: rgba(255, 255, 255, 0.1);
-  --color-border: rgba(255, 255, 255, 0.1);
-  --radius-lg: 1.5rem;
-  --radius-md: 0.75rem;
-  --radius-sm: 0.375rem;
-  --shadow-soft: 0 10px 35px rgba(0, 0, 0, 0.5);
-  --gradient-accent: linear-gradient(
-    120deg,
-    #ffffff 0%,
-    #cccccc 50%,
-    #999999 100%
-  );
-  color-scheme: dark;
-  background-color: var(--color-bg);
+  /* Minimalist Palette - High Contrast & Clean */
+  --bg: #ffffff;
+  --surface: #f4f4f5;
+  --ink: #09090b;
+  --ink-muted: #71717a;
+  --line: #e4e4e7;
+
+  /* Accent - Subtle & Professional */
+  --accent: #18181b;
+  --accent-dim: #27272a;
+
+  /* Typography */
+  --font-display: "Geist Sans", system-ui, sans-serif;
+  --font-body: "Geist Sans", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Source Code Pro", monospace;
+
+  /* Spacing & Layout */
+  --unit: 4px;
+  --container-width: 1400px;
+  /* Wider container for impact */
+  --header-height: 80px;
+
+  /* Fluid Typography - Massive for Awwwards Style */
+  --text-display-2xl: clamp(4.5rem, 8vw, 8rem);
+  --text-display-xl: clamp(3.5rem, 6vw, 6rem);
+  --text-display-l: clamp(2.5rem, 5vw, 4rem);
+  --text-h1: clamp(2rem, 4vw, 3rem);
+  --text-h2: clamp(1.5rem, 3vw, 2.25rem);
+  --text-body-l: 1.25rem;
+  --text-body: 1.125rem;
+  --text-small: 0.875rem;
+
+  /* Animation Defaults */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #f0f4ff;
-    --color-surface: #ffffff;
-    --color-panel: #edf2ff;
-    --color-muted: #475569;
-    --color-foreground: #0f172a;
-    --color-accent: #0ea5e9;
-    --color-accent-strong: #2563eb;
-    --color-tag-bg: rgba(14, 165, 233, 0.12);
-    --color-border: rgba(51, 65, 85, 0.2);
-    --gradient-accent: linear-gradient(
-      120deg,
-      #2563eb 0%,
-      #7c3aed 60%,
-      #db2777 100%
-    );
+    --bg: #09090b;
+    --surface: #18181b;
+    --ink: #fafafa;
+    --ink-muted: #a1a1aa;
+    --line: #27272a;
+    --accent: #fafafa;
   }
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
 *,
@@ -55,40 +69,81 @@
   box-sizing: border-box;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
-  font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-foreground);
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.7;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: #030712;
+  background: var(--ink);
+  color: var(--bg);
 }
+
+/* Custom Scrollbar - Minimal */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
-  margin-block: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
-  border-radius: var(--radius-sm);
-  min-height: 6px;
+  background: var(--line);
+  border-radius: 4px;
 }
 
-::-webkit-scrollbar-button {
-  height: 10px;
-  background: transparent;
-  display: block;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-muted);
 }
