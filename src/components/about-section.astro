@@ -1,107 +1,83 @@
 ---
-import type { Education, Skill } from "../lib/api";
+import type { Hero } from "../lib/api";
 
 interface Props {
-  education: Education[];
-  skills: Skill[];
+  hero?: Hero;
 }
 
-const { education, skills } = Astro.props;
-
-const languages = skills.find((s) => s.category === "languages")?.items || [];
-const frameworks = skills.find((s) => s.category === "frameworks")?.items || [];
-const tools = skills.find((s) => s.category === "tools")?.items || [];
+const { hero } = Astro.props;
 ---
 
-<section id="about" class="max-w-[var(--container-width)] mx-auto px-6 py-32">
-	<div class="grid md:grid-cols-2 gap-20">
-		<!-- Skills Column -->
-		<div class="space-y-12" data-animate="section">
+<section id="about" class="w-full border-t border-[var(--border-color)] pt-12">
+	<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+		<div class="md:col-span-3">
 			<h2
-				class="font-display text-[var(--text-h2)] text-[var(--ink)] tracking-tight"
+				class="text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-widest sticky top-32"
 			>
-				Skills
+				About Me
 			</h2>
-
-			<div class="space-y-8">
-				<div class="space-y-4">
-					<h3
-						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
-					>
-						Languages
-					</h3>
-					<div class="flex flex-wrap gap-2">
-						{
-							languages.map((skill) => (
-								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
-									{skill}
-								</span>
-							))
-						}
-					</div>
-				</div>
-
-				<div class="space-y-4">
-					<h3
-						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
-					>
-						Frameworks
-					</h3>
-					<div class="flex flex-wrap gap-2">
-						{
-							frameworks.map((skill) => (
-								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
-									{skill}
-								</span>
-							))
-						}
-					</div>
-				</div>
-
-				<div class="space-y-4">
-					<h3
-						class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
-					>
-						Tools
-					</h3>
-					<div class="flex flex-wrap gap-2">
-						{
-							tools.map((skill) => (
-								<span class="font-body text-[var(--text-body)] text-[var(--ink)] bg-[var(--surface)] px-3 py-1 rounded-md">
-									{skill}
-								</span>
-							))
-						}
-					</div>
-				</div>
-			</div>
 		</div>
-
-		<!-- Education Column -->
-		<div class="space-y-12" data-animate="section">
-			<h2 class="font-display text-[var(--text-h2)] text-[var(--ink)]">
-				Education
-			</h2>
-
-			<div class="space-y-10">
+		<div class="md:col-span-9">
+			<p class="text-2xl md:text-4xl leading-tight font-medium mb-12">
 				{
-					education.map((edu) => (
-						<div class="space-y-2">
-							<span class="font-mono text-sm text-[var(--ink-muted)] block">
-								{edu.date}
-							</span>
-							<h3 class="font-display text-[var(--text-body-l)] font-medium text-[var(--ink)]">
-								{edu.school}
-							</h3>
-							<p class="font-body text-[var(--text-body)] text-[var(--ink-muted)]">
-								{edu.degree}
-							</p>
-							<p class="font-body text-sm text-[var(--ink-muted)] opacity-80">
-								{edu.location}
-							</p>
-						</div>
-					))
+					hero?.summary ||
+						"I am a frontend developer passionate about building digital products that matter. With a focus on clean design and robust engineering, I create experiences that are both beautiful and functional."
 				}
+			</p>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-12 text-sm">
+				<div>
+					<h3
+						class="font-mono text-[var(--text-tertiary)] uppercase tracking-widest mb-6 text-xs"
+					>
+						Contact
+					</h3>
+					<div class="flex flex-col gap-4">
+						{
+							hero?.contact?.email && (
+								<a
+									href={`mailto:${hero.contact.email}`}
+									class="hover:text-[var(--accent-color)] transition-colors"
+								>
+									{hero.contact.email}
+								</a>
+							)
+						}
+					</div>
+				</div>
+				<div>
+					<h3
+						class="font-mono text-[var(--text-tertiary)] uppercase tracking-widest mb-6 text-xs"
+					>
+						Socials
+					</h3>
+					<div class="flex flex-col gap-4">
+						{
+							hero?.contact?.linkedin && (
+								<a
+									href={hero.contact.linkedin}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="hover:text-[var(--accent-color)] transition-colors"
+								>
+									LinkedIn
+								</a>
+							)
+						}
+						{
+							hero?.contact?.github && (
+								<a
+									href={hero.contact.github}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="hover:text-[var(--accent-color)] transition-colors"
+								>
+									GitHub
+								</a>
+							)
+						}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,64 +1,55 @@
 ---
-import type { Hero, SocialLink } from "../lib/api";
+import type { Hero } from "../lib/api";
+import HeroAnimation from "./hero-animation.astro";
 
 interface Props {
-  hero: Hero;
-  socialLinks: SocialLink[];
+  hero?: Hero;
 }
 
-const { hero, socialLinks } = Astro.props;
+const { hero } = Astro.props;
+
+const tagline =
+  hero?.tagline || "Building digital experiences with code and creativity.";
 ---
 
 <section
-    class="relative min-h-screen flex flex-col justify-center max-w-[var(--container-width)] mx-auto px-6 pt-20"
+    class="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
 >
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-        <div class="lg:col-span-9 space-y-6">
-            <div class="space-y-2">
-                <p
-                    class="font-mono text-sm text-[var(--ink-muted)] uppercase tracking-wider"
-                    data-animate="hero"
-                >
-                    {hero.location} — Available for work
-                </p>
-                <h1
-                    class="font-display text-[var(--text-display-2xl)] leading-[0.9] tracking-tighter text-[var(--ink)] -ml-[0.05em]"
-                    data-animate="hero"
-                >
-                    {hero.name}
-                </h1>
-                <h2
-                    class="font-display text-[var(--text-display-l)] leading-[1] tracking-tight text-[var(--ink-muted)]"
-                    data-animate="hero"
-                >
-                    {hero.tagline}
-                </h2>
-            </div>
-        </div>
+    <HeroAnimation />
 
-        <div class="lg:col-span-3 lg:pb-4 space-y-8">
-            <p
-                class="font-body text-[var(--text-body)] text-[var(--ink-muted)] leading-relaxed"
-                data-animate="hero"
+    <div
+        class="relative z-10 container mx-auto px-6 pt-20 flex flex-col items-center justify-center text-center h-full"
+    >
+        <div class="max-w-5xl">
+            <h1
+                class="text-6xl md:text-9xl font-bold tracking-tighter mb-12 leading-none fade-in"
             >
-                {hero.summary}
-            </p>
+                <span class="text-[var(--accent-color)]">MEHANISIK</span>
+            </h1>
 
-            <div class="flex flex-col gap-3" data-animate="hero">
-                {
-                    socialLinks.map((link) => (
-                        <a
-                            href={link.href}
-                            class="group flex items-center justify-between font-mono text-sm text-[var(--ink)] border-b border-[var(--line)] pb-2 hover:border-[var(--ink)] transition-colors"
-                        >
-                            <span class="capitalize">{link.label}</span>
-                            <span class="opacity-50 group-hover:opacity-100 transition-opacity">
-                                ↗
-                            </span>
-                        </a>
-                    ))
-                }
-            </div>
+            <p
+                class="text-xl md:text-2xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed fade-in"
+            >
+                {tagline}
+            </p>
         </div>
     </div>
 </section>
+
+<style>
+    .fade-in {
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

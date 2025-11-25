@@ -1,168 +1,259 @@
 ---
 import AboutSection from "../components/about-section.astro";
-import BlogSection from "../components/blog-section.astro";
-import ExperienceSection from "../components/experience-section.astro";
-import Footer from "../components/footer.astro";
 import HeroSection from "../components/hero-section.astro";
-import Navigation from "../components/navigation.astro";
-import ProjectsSection from "../components/project-section.astro";
-import PublicationSection from "../components/publication-section.astro";
+import ProjectSection from "../components/project-section.astro";
+import WritingSection from "../components/writing-section.astro";
 import Layout from "../layouts/layout.astro";
-import {
-  getBlogs,
-  getEducation,
-  getExperience,
-  getHero,
-  getProjects,
-  getPublications,
-  getSkills,
-  getSocialLinks,
-} from "../lib/api";
+import { getHero, getProjects, getWritings } from "../lib/api";
 
+import "lenis/dist/lenis.css";
+
+const hero = await getHero();
 const projects = await getProjects();
-const experience = await getExperience();
-const education = await getEducation();
-const skills = await getSkills();
-const heroData = await getHero();
-const socialLinks = await getSocialLinks();
-const blogs = await getBlogs();
-const publications = await getPublications();
-
-// Fallback for hero if DB is empty (optional, but good for safety)
-const hero = heroData || {
-  name: "Portfolio User",
-  tagline: "Full Stack Developer",
-  role: "Developer",
-  location: "Earth",
-  summary: "Welcome to my portfolio.",
-  contact: {},
-};
+const writings = await getWritings();
 ---
 
-<Layout title={`${hero.name} – ${hero.role}`} description={hero.summary || ""}>
-    <Navigation hero={hero} />
-    <main class="min-h-screen bg-[var(--bg)] pt-24">
-        <div class="space-y-32 pb-32">
-            <HeroSection hero={hero} socialLinks={socialLinks} />
-            <ProjectsSection projects={projects} />
-            <ExperienceSection experience={experience} />
-            <AboutSection education={education} skills={skills} />
-            {blogs.length > 0 && <BlogSection blogs={blogs} />}
-            {
-                publications.length > 0 && (
-                    <PublicationSection publications={publications} />
-                )
-            }
+<Layout title="Mehanisik | Frontend Developer">
+    <main class="min-h-screen">
+        <nav
+            class="fixed top-0 left-0 right-0 z-50 mix-blend-difference text-white"
+        >
+            <div
+                class="container mx-auto max-w-[1400px] px-8 py-8 flex justify-between items-center"
+            >
+                <a
+                    href="/"
+                    class="text-sm font-bold tracking-widest hover:opacity-70 transition-opacity uppercase"
+                    >MEHANISIK</a
+                >
+
+                <div class="hidden md:flex gap-16">
+                    <a
+                        href="#work"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+                        >Work</a
+                    >
+                    <a
+                        href="#writings"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+                        >Writings</a
+                    >
+                    <a
+                        href="#contact"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+                        >Contact</a
+                    >
+                </div>
+
+                <button
+                    id="mobile-menu-btn"
+                    class="md:hidden text-white focus:outline-none z-50"
+                >
+                    <span class="sr-only">Open menu</span>
+                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
+                    </div>
+                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
+                    </div>
+                </button>
+            </div>
+
+            <div
+                id="mobile-menu"
+                class="fixed inset-0 bg-[var(--bg-color)] z-40 transform translate-x-full transition-transform duration-300 flex items-center justify-center"
+            >
+                <div class="flex flex-col gap-8 text-center">
+                    <a
+                        href="#work"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
+                        >WORK</a
+                    >
+                    <a
+                        href="#writings"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
+                        >WRITINGS</a
+                    >
+                    <a
+                        href="#contact"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
+                        >CONTACT</a
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mx-auto max-w-[1400px] px-6 pt-24 pb-24">
+            <section class="fade-in">
+                <HeroSection hero={hero} />
+            </section>
+
+            <section id="about" class="mb-32 fade-in">
+                <AboutSection hero={hero} />
+            </section>
+
+            <section id="work" class="mb-32 fade-in">
+                <h2
+                    class="text-xs font-mono text-[var(--text-tertiary)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
+                >
+                    Selected Work
+                </h2>
+                <ProjectSection projects={projects} />
+            </section>
+
+            <section id="writings" class="mb-32 fade-in">
+                <h2
+                    class="text-xs font-mono text-[var(--text-tertiary)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
+                >
+                    Writings & Thoughts
+                </h2>
+                <WritingSection writings={writings} />
+            </section>
+
+            <footer
+                id="contact"
+                class="pt-24 mt-32 border-t border-[var(--border-color)]"
+            >
+                <div
+                    class="flex flex-col md:flex-row justify-between items-start gap-12 mb-24"
+                >
+                    <div class="max-w-xl">
+                        <h3
+                            class="text-4xl md:text-6xl font-bold mb-8 leading-tight"
+                        >
+                            LET'S WORK <br />
+                            <span class="text-[var(--text-tertiary)]"
+                                >TOGETHER</span
+                            >
+                        </h3>
+                        {
+                            hero?.contact?.email && (
+                                <a
+                                    href={`mailto:${hero.contact.email}`}
+                                    class="inline-block text-xl hover:text-[var(--accent-color)] transition-colors border-b border-current pb-1"
+                                >
+                                    {hero.contact.email}
+                                </a>
+                            )
+                        }
+                    </div>
+
+                    <div class="flex gap-16 text-sm">
+                        <div class="flex flex-col gap-4">
+                            <span
+                                class="text-[var(--text-tertiary)] uppercase tracking-wider font-mono text-xs"
+                                >Socials</span
+                            >
+                            <a
+                                href="https://github.com/mehanisik"
+                                target="_blank"
+                                class="hover:text-[var(--accent-color)] transition-colors"
+                                >GITHUB</a
+                            >
+                            <a
+                                href="https://linkedin.com/in/mehanisik"
+                                target="_blank"
+                                class="hover:text-[var(--accent-color)] transition-colors"
+                                >LINKEDIN</a
+                            >
+                            <a
+                                href="https://twitter.com/mehanisik"
+                                target="_blank"
+                                class="hover:text-[var(--accent-color)] transition-colors"
+                                >TWITTER</a
+                            >
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <span
+                                class="text-[var(--text-tertiary)] uppercase tracking-wider font-mono text-xs"
+                                >Location</span
+                            >
+                            <span>Warsaw, PL</span>
+                            <span class="text-[var(--text-tertiary)]"
+                                >UTC+1</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="flex justify-between items-center text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider"
+                >
+                    <p>
+                        &copy; {new Date().getFullYear()} Mehanisik
+                    </p>
+                    <p>Scroll to top</p>
+                </div>
+            </footer>
         </div>
-        <Footer hero={hero} socialLinks={socialLinks} />
     </main>
-    <script>
-        import gsap from "gsap";
-        import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-        type LenisWindow = Window & {
-            lenis?: {
-                on?: (event: string, callback: () => void) => void;
-            };
-        };
-
-        const prefersReducedMotion = window.matchMedia(
-            "(prefers-reduced-motion: reduce)",
-        ).matches;
-
-        if (!prefersReducedMotion) {
-            gsap.registerPlugin(ScrollTrigger);
-            const lenisWindow = window as LenisWindow;
-            const lenis = lenisWindow.lenis;
-
-            if (lenis?.on) {
-                lenis.on("scroll", ScrollTrigger.update);
-            }
-
-            // Hero Animation
-            const heroElements = document.querySelectorAll(
-                "[data-animate='hero']",
-            );
-            if (heroElements.length) {
-                gsap.fromTo(
-                    heroElements,
-                    { y: 20, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 1.2,
-                        stagger: 0.1,
-                        ease: "power3.out",
-                        delay: 0.2,
-                    },
-                );
-            }
-
-            // Section Headers & General Fade In
-            const sections = document.querySelectorAll(
-                "[data-animate='section']",
-            );
-            sections.forEach((section) => {
-                gsap.fromTo(
-                    section,
-                    { opacity: 0, y: 30 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 85%",
-                            toggleActions: "play none none reverse",
-                        },
-                    },
-                );
-            });
-
-            // Experience Items
-            const experienceItems = document.querySelectorAll(
-                "[data-animate='experience-item']",
-            );
-            if (experienceItems.length) {
-                gsap.fromTo(
-                    experienceItems,
-                    { opacity: 0, y: 20 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        stagger: 0.1,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: "#experience",
-                            start: "top 75%",
-                        },
-                    },
-                );
-            }
-
-            // Project Cards
-            const projectCards = document.querySelectorAll(
-                "[data-animate='project-card']",
-            );
-            if (projectCards.length) {
-                gsap.fromTo(
-                    projectCards,
-                    { opacity: 0, y: 20 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        stagger: 0.1,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: "#projects",
-                            start: "top 75%",
-                        },
-                    },
-                );
-            }
-        }
-    </script>
 </Layout>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import Lenis from "lenis";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+    });
+
+    function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    const menuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileLinks = document.querySelectorAll(".mobile-link");
+    let isMenuOpen = false;
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener("click", () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove("translate-x-full");
+                document.body.style.overflow = "hidden";
+            } else {
+                mobileMenu.classList.add("translate-x-full");
+                document.body.style.overflow = "";
+            }
+        });
+
+        mobileLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+                isMenuOpen = false;
+                mobileMenu.classList.add("translate-x-full");
+                document.body.style.overflow = "";
+            });
+        });
+    }
+
+    const fadeElements = document.querySelectorAll(".fade-in");
+    fadeElements.forEach((element) => {
+        gsap.fromTo(
+            element,
+            { opacity: 0, y: 30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 90%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse",
+                },
+            },
+        );
+    });
+</script>

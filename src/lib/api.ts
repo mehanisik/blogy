@@ -1,49 +1,44 @@
-import {
-  education,
-  experience,
-  hero,
-  skills,
-  socialLinks,
-} from "../data/portfolio";
 import type { Database } from "./database.types";
 import { supabase } from "./supabase";
 
-export type Project = Database["public"]["Tables"]["projects"]["Row"];
-export type Blog = Database["public"]["Tables"]["blogs"]["Row"];
-export type Publication = Database["public"]["Tables"]["publications"]["Row"];
-
-export interface Experience {
-  id?: number;
-  role: string;
-  company: string;
-  location: string;
-  period: string;
-  achievements: string[];
+export interface Project {
+  id: number;
+  title: string;
+  description: string;
+  link?: string;
+  demo?: string;
+  github?: string;
+  technologies?: string[];
+  date?: string;
+  start_date?: string;
+  image_url?: string;
 }
 
-export interface Education {
-  id?: number;
-  school: string;
-  location: string;
-  degree: string;
-  date: string;
-}
+export type Writing = Database["public"]["Tables"]["writings"]["Row"];
 
-export interface Skill {
-  id?: number;
-  category: string;
-  items: string[];
+export interface WritingMetadata {
+  doi?: string;
+  pdf?: string;
+  authors?: string;
+  journal?: string[];
+  citation?: string;
+  publisher?: string;
+  page_count?: number;
+  institution?: string;
+  read_time?: number;
+  view_count?: number;
+  published?: boolean;
 }
 
 export interface Hero {
-  id?: number;
+  id: number;
   name: string;
   tagline: string;
   role: string;
   location: string;
   summary: string;
   avatar_url?: string | null;
-  contact?: {
+  contact: {
     email?: string;
     linkedin?: string;
     github?: string;
@@ -64,48 +59,44 @@ export async function getProjects() {
     .from("projects")
     .select("*")
     .order("id", { ascending: true });
-  return (data as Project[]) || [];
+
+  return (data as unknown as Project[]) || [];
 }
 
-export async function getBlogs() {
+export async function getWritings() {
   const { data } = await supabase
-    .from("blogs")
-    .select("*")
-    .eq("published", true)
-    .order("date", { ascending: false });
-  return (data as Blog[]) || [];
-}
-
-export async function getPublications() {
-  const { data } = await supabase
-    .from("publications")
+    .from("writings")
     .select("*")
     .order("date", { ascending: false });
-  return (data as Publication[]) || [];
-}
 
-export async function getExperience() {
-  return experience as Experience[];
-}
-
-export async function getEducation() {
-  return education as Education[];
-}
-
-export async function getSkills() {
-  // Transform portfolio.ts skills object to array format expected by components
-  const transformedSkills: Skill[] = [
-    { category: "languages", items: skills.languages },
-    { category: "frameworks", items: skills.frameworks },
-    { category: "tools", items: skills.tools },
-  ];
-  return transformedSkills;
+  return (data as Writing[]) || [];
 }
 
 export async function getHero() {
-  return hero as unknown as Hero;
+  const { data } = await supabase.from("hero").select("*").limit(1).single();
+
+  return (data as unknown as Hero) || null;
 }
 
 export async function getSocialLinks() {
-  return socialLinks as SocialLink[];
+  const hero = await getHero();
+  if (!hero || !hero.contact) return [];
+
+  const links: SocialLink[] = [];
+  if (hero.contact.linkedin)
+    links.push({
+      label: "LinkedIn",
+      href: hero.contact.linkedin,
+      icon: "linkedin",
+    });
+  if (hero.contact.github)
+    links.push({ label: "GitHub", href: hero.contact.github, icon: "github" });
+  if (hero.contact.email)
+    links.push({
+      label: "Email",
+      href: `mailto:${hero.contact.email}`,
+      icon: "email",
+    });
+
+  return links;
 }

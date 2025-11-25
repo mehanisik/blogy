@@ -4,66 +4,56 @@ import type { Project } from "../lib/api";
 interface Props {
   projects: Project[];
 }
-
 const { projects } = Astro.props;
 ---
 
-<section
-	id="projects"
-	class="max-w-[var(--container-width)] mx-auto px-6 py-32"
->
-	<div class="mb-20 flex items-end justify-between">
-		<h2
-			class="font-display text-[var(--text-h1)] leading-none text-[var(--ink)] tracking-tight"
-			data-animate="section"
-		>
-			Selected<br />Works
-		</h2>
-		<span
-			class="font-mono text-sm text-[var(--ink-muted)] hidden md:block mb-2"
-		>
-			(2021 — Present)
-		</span>
-	</div>
+<div class="flex flex-col gap-24">
+    {
+        projects.map((project, index) => (
+            <a
+                href={project.demo || project.github || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group block"
+            >
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                    <div class="md:col-span-4 flex flex-col justify-between h-full py-2">
+                        <div>
+                            <span class="text-xs font-mono text-[var(--accent-color)] mb-4 block">
+                                0{index + 1}
+                            </span>
+                            <h3 class="text-3xl font-bold mb-4 group-hover:text-[var(--accent-color)] transition-colors duration-300">
+                                {project.title}
+                            </h3>
+                            <p class="text-[var(--text-secondary)] leading-relaxed mb-6 text-sm max-w-xs">
+                                {project.description}
+                            </p>
+                        </div>
 
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-		{
-			projects.map((project, index) => (
-				<a
-					href={project.demo || project.github || "#"}
-					target="_blank"
-					rel="noopener noreferrer"
-					class={`group relative flex flex-col justify-between p-8 rounded-2xl bg-[var(--surface)] hover:bg-[var(--line)] transition-colors duration-500 ${index === 0 ? "md:col-span-2 md:min-h-[400px]" : "min-h-[300px]"}`}
-					data-animate="project-card"
-				>
-					<div class="flex justify-between items-start w-full">
-						<span class="font-mono text-xs text-[var(--ink-muted)] border border-[var(--line)] px-2 py-1 rounded-full bg-[var(--bg)]">
-							0{index + 1}
-						</span>
-						<span class="font-mono text-2xl text-[var(--ink)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
-							↗
-						</span>
-					</div>
+                        {project.technologies && (
+                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider">
+                                {project.technologies
+                                    .slice(0, 4)
+                                    .map((tech) => (
+                                        <span>{tech}</span>
+                                    ))}
+                            </div>
+                        )}
+                    </div>
 
-					<div class="space-y-4 max-w-xl">
-						<h3 class="font-display text-[var(--text-h2)] text-[var(--ink)] leading-tight">
-							{project.title}
-						</h3>
-						<p class="font-body text-[var(--text-body)] text-[var(--ink-muted)] leading-relaxed line-clamp-3">
-							{project.description}
-						</p>
-						{project.technologies && (
-							<div class="flex flex-wrap gap-2 pt-2">
-								{project.technologies.map((tech) => (
-									<span class="font-mono text-xs text-[var(--ink-muted)] bg-[var(--bg)] px-2 py-1 rounded border border-[var(--line)]">
-										{tech}
-									</span>
-								))}
-							</div>
-						)}
-					</div>
-				</a>
-			))
-		}
-	</div>
-</section>
+                    <div class="md:col-span-8 overflow-hidden">
+                        <div class="aspect-[16/9] bg-[var(--bg-secondary)] relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ease-out">
+                            <div class="absolute inset-0 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--border-color)] opacity-50" />
+
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="font-mono text-[var(--text-tertiary)] text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    View Project
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        ))
+    }
+</div>

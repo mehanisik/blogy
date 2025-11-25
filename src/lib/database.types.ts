@@ -4,325 +4,296 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)";
-  };
+    PostgrestVersion: "12.2.12 (cd3cf9e)"
+  }
   public: {
     Tables: {
       app_config: {
         Row: {
-          admin_id: string;
-        };
+          admin_id: string
+        }
         Insert: {
-          admin_id: string;
-        };
+          admin_id: string
+        }
         Update: {
-          admin_id?: string;
-        };
-        Relationships: [];
-      };
-      blogs: {
+          admin_id?: string
+        }
+        Relationships: []
+      }
+      hero: {
         Row: {
-          content: string;
-          cover_image: string | null;
-          date: string;
-          id: number;
-          published: boolean;
-          read_time: number | null;
-          slug: string | null;
-          subtitle: string | null;
-          tags: string[] | null;
-          title: string;
-          updated_at: string | null;
-          user_id: string | null;
-          view_count: number | null;
-        };
+          avatar_url: string | null
+          contact: Json
+          created_at: string | null
+          id: number
+          location: string
+          name: string
+          role: string
+          summary: string
+          tagline: string
+        }
         Insert: {
-          content: string;
-          cover_image?: string | null;
-          date: string;
-          id?: number;
-          published?: boolean;
-          read_time?: number | null;
-          slug?: string | null;
-          subtitle?: string | null;
-          tags?: string[] | null;
-          title: string;
-          updated_at?: string | null;
-          user_id?: string | null;
-          view_count?: number | null;
-        };
+          avatar_url?: string | null
+          contact: Json
+          created_at?: string | null
+          id?: number
+          location: string
+          name: string
+          role: string
+          summary: string
+          tagline: string
+        }
         Update: {
-          content?: string;
-          cover_image?: string | null;
-          date?: string;
-          id?: number;
-          published?: boolean;
-          read_time?: number | null;
-          slug?: string | null;
-          subtitle?: string | null;
-          tags?: string[] | null;
-          title?: string;
-          updated_at?: string | null;
-          user_id?: string | null;
-          view_count?: number | null;
-        };
-        Relationships: [];
-      };
+          avatar_url?: string | null
+          contact?: Json
+          created_at?: string | null
+          id?: number
+          location?: string
+          name?: string
+          role?: string
+          summary?: string
+          tagline?: string
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
-          content: string | null;
-          cover_image: string | null;
-          demo: string | null;
-          description: string;
-          end_date: string | null;
-          github: string | null;
-          id: number;
-          image_url: string | null;
-          slug: string | null;
-          start_date: string | null;
-          status: Database["public"]["Enums"]["project_status"] | null;
-          tags: string[] | null;
-          technologies: string[];
-          title: string;
-        };
+          content: string | null
+          cover_image: string | null
+          demo: string | null
+          description: string
+          end_date: string | null
+          featured: boolean
+          github: string | null
+          id: number
+          image_url: string | null
+          slug: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["project_status"] | null
+          tags: string[] | null
+          technologies: string[]
+          title: string
+        }
         Insert: {
-          content?: string | null;
-          cover_image?: string | null;
-          demo?: string | null;
-          description: string;
-          end_date?: string | null;
-          github?: string | null;
-          id?: never;
-          image_url?: string | null;
-          slug?: string | null;
-          start_date?: string | null;
-          status?: Database["public"]["Enums"]["project_status"] | null;
-          tags?: string[] | null;
-          technologies: string[];
-          title: string;
-        };
+          content?: string | null
+          cover_image?: string | null
+          demo?: string | null
+          description: string
+          end_date?: string | null
+          featured?: boolean
+          github?: string | null
+          id?: number
+          image_url?: string | null
+          slug?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
+          tags?: string[] | null
+          technologies: string[]
+          title: string
+        }
         Update: {
-          content?: string | null;
-          cover_image?: string | null;
-          demo?: string | null;
-          description?: string;
-          end_date?: string | null;
-          github?: string | null;
-          id?: never;
-          image_url?: string | null;
-          slug?: string | null;
-          start_date?: string | null;
-          status?: Database["public"]["Enums"]["project_status"] | null;
-          tags?: string[] | null;
-          technologies?: string[];
-          title?: string;
-        };
-        Relationships: [];
-      };
-      publications: {
+          content?: string | null
+          cover_image?: string | null
+          demo?: string | null
+          description?: string
+          end_date?: string | null
+          featured?: boolean
+          github?: string | null
+          id?: number
+          image_url?: string | null
+          slug?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
+          tags?: string[] | null
+          technologies?: string[]
+          title?: string
+        }
+        Relationships: []
+      }
+      social_links: {
         Row: {
-          authors: string;
-          citation: string | null;
-          content: string | null;
-          cover_image: string | null;
-          date: string;
-          description: string;
-          doi: string | null;
-          id: number;
-          institution: string | null;
-          journal: string[] | null;
-          keywords: string[] | null;
-          page_count: number | null;
-          pdf: string | null;
-          slug: string | null;
-          title: string;
-        };
+          created_at: string | null
+          icon: string
+          id: number
+          platform: string
+          url: string
+        }
         Insert: {
-          authors: string;
-          citation?: string | null;
-          content?: string | null;
-          cover_image?: string | null;
-          date: string;
-          description: string;
-          doi?: string | null;
-          id?: never;
-          institution?: string | null;
-          journal?: string[] | null;
-          keywords?: string[] | null;
-          page_count?: number | null;
-          pdf?: string | null;
-          slug?: string | null;
-          title: string;
-        };
+          created_at?: string | null
+          icon: string
+          id?: number
+          platform: string
+          url: string
+        }
         Update: {
-          authors?: string;
-          citation?: string | null;
-          content?: string | null;
-          cover_image?: string | null;
-          date?: string;
-          description?: string;
-          doi?: string | null;
-          id?: never;
-          institution?: string | null;
-          journal?: string[] | null;
-          keywords?: string[] | null;
-          page_count?: number | null;
-          pdf?: string | null;
-          slug?: string | null;
-          title?: string;
-        };
-        Relationships: [];
-      };
-    };
+          created_at?: string | null
+          icon?: string
+          id?: number
+          platform?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      writings: {
+        Row: {
+          content: string | null
+          cover_image: string | null
+          created_at: string | null
+          date: string
+          description: string | null
+          id: number
+          metadata: Json | null
+          slug: string | null
+          tags: string[] | null
+          title: string
+          type: string
+          url: string | null
+        }
+        Insert: {
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          date: string
+          description?: string | null
+          id?: number
+          metadata?: Json | null
+          slug?: string | null
+          tags?: string[] | null
+          title: string
+          type: string
+          url?: string | null
+        }
+        Update: {
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          date?: string
+          description?: string | null
+          id?: number
+          metadata?: Json | null
+          slug?: string | null
+          tags?: string[] | null
+          title?: string
+          type?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      increment_blog_view: { Args: { blog_slug: string }; Returns: undefined };
-    };
+      [_ in never]: never
+    }
     Enums: {
-      goal_category: "goal" | "aim" | "note";
-      project_status: "draft" | "published" | "archived";
-      publication_type: "article" | "paper" | "conference" | "book";
-    };
+      goal_category: "goal" | "aim" | "note"
+      project_status: "draft" | "published" | "archived"
+      publication_type: "article" | "paper" | "conference" | "book"
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
-
-type DefaultSchema = DatabaseWithoutInternals[Extract<
-  keyof Database,
-  "public"
->];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
-  }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R;
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I;
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U;
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never;
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof Database
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never;
-
-export const Constants = {
-  public: {
-    Enums: {
-      goal_category: ["goal", "aim", "note"],
-      project_status: ["draft", "published", "archived"],
-      publication_type: ["article", "paper", "conference", "book"],
-    },
-  },
-} as const;
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never

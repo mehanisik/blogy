@@ -1,74 +1,163 @@
 @import "tailwindcss";
-@import "lenis/dist/lenis.css";
 
 :root {
-  /* Minimalist Palette - High Contrast & Clean */
-  --bg: #ffffff;
-  --surface: #f4f4f5;
-  --ink: #09090b;
-  --ink-muted: #71717a;
-  --line: #e4e4e7;
+  /* Izum.study Inspired Theme */
+  --bg-color: #050505;
+  --bg-secondary: #0a0a0a;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #525252;
+  --accent-color: #ff4d00;
+  --border-color: #1f1f1f;
+  --border-color-strong: #333333;
 
-  /* Accent - Subtle & Professional */
-  --accent: #18181b;
-  --accent-dim: #27272a;
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
 
-  /* Typography */
-  --font-display: "Geist Sans", system-ui, sans-serif;
-  --font-body: "Geist Sans", system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Source Code Pro", monospace;
-
-  /* Spacing & Layout */
-  --unit: 4px;
   --container-width: 1400px;
-  /* Wider container for impact */
-  --header-height: 80px;
-
-  /* Fluid Typography - Massive for Awwwards Style */
-  --text-display-2xl: clamp(4.5rem, 8vw, 8rem);
-  --text-display-xl: clamp(3.5rem, 6vw, 6rem);
-  --text-display-l: clamp(2.5rem, 5vw, 4rem);
-  --text-h1: clamp(2rem, 4vw, 3rem);
-  --text-h2: clamp(1.5rem, 3vw, 2.25rem);
-  --text-body-l: 1.25rem;
-  --text-body: 1.125rem;
-  --text-small: 0.875rem;
-
-  /* Animation Defaults */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --spacing-section: 120px;
+  --border-radius: 0px;
+  /* Sharper edges for this style */
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #09090b;
-    --surface: #18181b;
-    --ink: #fafafa;
-    --ink-muted: #a1a1aa;
-    --line: #27272a;
-    --accent: #fafafa;
+/* Removed Light Mode Override to enforce consistency */
+
+html {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  line-height: 1.6;
+  position: relative;
+}
+
+/* Typography Defaults */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+/* Card Styles - Bento Grid */
+.card {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--border-color-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+/* Utilities */
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.border-top {
+  border-top: 1px solid var(--border-color);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .bento-span-6 {
+    grid-column: span 6;
+  }
+
+  .bento-span-4 {
+    grid-column: span 4;
+  }
+
+  .bento-span-8 {
+    grid-column: span 8;
+  }
+
+  .bento-span-3 {
+    grid-column: span 3;
+  }
+
+  .bento-span-9 {
+    grid-column: span 9;
   }
 }
 
-@theme {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-ink: var(--ink);
-  --color-ink-muted: var(--ink-muted);
-  --color-line: var(--line);
-  --color-accent: var(--accent);
-
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
+/* Lenis Smooth Scroll */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -90,49 +179,9 @@ html.lenis body {
   pointer-events: none;
 }
 
-body {
-  min-height: 100vh;
-  margin: 0;
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--ink);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.2;
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-a:hover {
-  opacity: 0.7;
-}
-
-::selection {
-  background: var(--ink);
-  color: var(--bg);
-}
-
-/* Custom Scrollbar - Minimal */
+/* Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -140,10 +189,6 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--ink-muted);
+  background: var(--accent-color);
+  border-radius: 3px;
 }

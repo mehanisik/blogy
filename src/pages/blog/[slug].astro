@@ -1,0 +1,213 @@
+---
+import hljs from "highlight.js";
+import { marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import Layout from "../../layouts/layout.astro";
+import { getWritings, type Writing } from "../../lib/api";
+import "highlight.js/styles/github-dark.css";
+
+export async function getStaticPaths() {
+  const writings = await getWritings();
+  const blogs = writings.filter((w) => w.type === "blog" && w.slug);
+
+  return blogs.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: Writing;
+}
+
+const { post } = Astro.props;
+
+marked.use(
+  markedHighlight({
+    langPrefix: "hljs language-",
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      return hljs.highlight(code, { language }).value;
+    },
+  }),
+);
+
+const content = post.content ? marked.parse(post.content) : "";
+---
+
+<Layout
+    title={`${post.title} | Mehanisik`}
+    description={post.description || ""}
+>
+    <main class="min-h-screen pt-32 pb-24 px-6">
+        <article class="container mx-auto max-w-3xl fade-in">
+            <header class="mb-12">
+                <a
+                    href="/#writings"
+                    class="inline-flex items-center gap-2 text-sm font-mono text-[var(--text-tertiary)] hover:text-[var(--accent-color)] transition-colors mb-8 uppercase tracking-wider"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="transform rotate-180"
+                    >
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                    Back to Writings
+                </a>
+
+                <div
+                    class="flex items-center gap-4 text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-6"
+                >
+                    <time datetime={post.date}>
+                        {
+                            new Date(post.date).toLocaleDateString("en-US", {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                            })
+                        }
+                    </time>
+                    {
+                        post.metadata && (post.metadata as any).read_time && (
+                            <>
+                                <span>•</span>
+                                <span>
+                                    {(post.metadata as any).read_time} min read
+                                </span>
+                            </>
+                        )
+                    }
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                    {post.title}
+                </h1>
+
+                {
+                    post.description && (
+                        <p class="text-xl text-[var(--text-secondary)] leading-relaxed">
+                            {post.description}
+                        </p>
+                    )
+                }
+            </header>
+
+            {
+                post.cover_image && (
+                    <div class="mb-12 rounded-lg overflow-hidden border border-[var(--border-color)]">
+                        <img
+                            src={post.cover_image}
+                            alt={post.title}
+                            class="w-full h-auto object-cover"
+                        />
+                    </div>
+                )
+            }
+
+            <div class="prose prose-invert prose-lg max-w-none">
+                <div set:html={content} />
+            </div>
+        </article>
+    </main>
+</Layout>
+
+<style is:global>
+    /* Custom Prose Styles for Dark Theme */
+    .prose {
+        --tw-prose-body: var(--text-secondary);
+        --tw-prose-headings: var(--text-primary);
+        --tw-prose-lead: var(--text-secondary);
+        --tw-prose-links: var(--accent-color);
+        --tw-prose-bold: var(--text-primary);
+        --tw-prose-counters: var(--text-tertiary);
+        --tw-prose-bullets: var(--text-tertiary);
+        --tw-prose-hr: var(--border-color);
+        --tw-prose-quotes: var(--text-secondary);
+        --tw-prose-quote-borders: var(--accent-color);
+        --tw-prose-captions: var(--text-tertiary);
+        --tw-prose-code: var(--accent-color);
+        --tw-prose-pre-code: var(--text-secondary);
+        --tw-prose-pre-bg: var(--bg-secondary);
+        --tw-prose-th-borders: var(--border-color);
+        --tw-prose-td-borders: var(--border-color);
+    }
+
+    .prose h1,
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+    }
+
+    .prose p {
+        margin-bottom: 1.5em;
+        line-height: 1.75;
+    }
+
+    .prose a {
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+    }
+
+    .prose a:hover {
+        border-bottom-color: var(--accent-color);
+    }
+
+    .prose code {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.9em;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25em;
+        background-color: var(--bg-secondary);
+    }
+
+    /* Override highlight.js background for consistency */
+    .prose pre {
+        background-color: var(--bg-secondary) !important;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 1.5em;
+        overflow-x: auto;
+    }
+
+    .prose pre code {
+        background-color: transparent;
+        padding: 0;
+        color: inherit;
+        font-size: 0.875em;
+        font-family: "Geist Mono", monospace;
+    }
+
+    .prose blockquote {
+        border-left-width: 2px;
+        padding-left: 1.5em;
+        font-style: italic;
+    }
+
+    .prose ul,
+    .prose ol {
+        padding-left: 1.5em;
+    }
+
+    .prose li {
+        margin-bottom: 0.5em;
+    }
+
+    .prose img {
+        border-radius: 0.5rem;
+        border: 1px solid var(--border-color);
+    }
+</style>
