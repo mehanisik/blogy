@@ -54,7 +54,7 @@ cp .env.example .env
 
 Configure your environment variables:
 ```env
-SUPABASE_URL=your_supabase_url
+PUBLIC_SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
 ```
 
