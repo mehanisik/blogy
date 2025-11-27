@@ -56,9 +56,6 @@ Configure your environment variables:
 ```env
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-WAKATIME_API_KEY=your_wakatime_key
-POSTHOG_KEY=your_posthog_key
 ```
 
 ```bash
@@ -66,10 +63,7 @@ POSTHOG_KEY=your_posthog_key
 bun run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the site.
-
----
-
+Visit [http://localhost:4321](http://localhost:4321) to see the site.
 
 
 ---
@@ -83,18 +77,6 @@ Visit [http://localhost:3000](http://localhost:3000) to see the site.
 | `bun run preview` | Preview production build |
 | `bun run check` | Run type and code checks |
 | `bun run check:fix` | Fix linting issues |
-| `bun run clean:comments` | Remove comments from code |
-
-### Database Commands
-| Command | Description |
-|---------|-------------|
-| `bun run db:types` | Generate TypeScript types |
-| `bun run db:push` | Push database migrations |
-| `bun run db:migrate` | Create new migration |
-| `bun run db:link` | Link to Supabase project |
-
-
-
 
 ---
 
