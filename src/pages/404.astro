@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/layout.astro";
+---
+
+<Layout title="404 - Not Found" description="Page not found">
+    <main
+        class="flex flex-col items-center justify-center flex-grow text-center px-6"
+    >
+        <h1 class="text-9xl font-bold text-[var(--accent-color)] mb-4">404</h1>
+        <p class="text-2xl text-[var(--text-secondary)] mb-8">Page not found</p>
+        <a
+            href="/"
+            class="text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors border-b border-transparent hover:border-[var(--accent-color)]"
+        >
+            Go back home
+        </a>
+    </main>
+</Layout>

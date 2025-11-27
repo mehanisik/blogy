@@ -1,4 +1,10 @@
 ---
+import {
+  GithubIcon,
+  Linkedin01Icon,
+  Mail01Icon,
+  NewTwitterIcon,
+} from "hugeicons-react";
 import type { Hero } from "../lib/api";
 
 interface Props {
@@ -12,7 +18,7 @@ const { hero } = Astro.props;
 	<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
 		<div class="md:col-span-3">
 			<h2
-				class="text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-widest sticky top-32"
+				class="text-xs font-mono text-[var(--accent-color)] uppercase tracking-widest"
 			>
 				About Me
 			</h2>
@@ -37,8 +43,12 @@ const { hero } = Astro.props;
 							hero?.contact?.email && (
 								<a
 									href={`mailto:${hero.contact.email}`}
-									class="hover:text-[var(--accent-color)] transition-colors"
+									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
 								>
+									<Mail01Icon
+										aria-hidden="true"
+										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+									/>
 									{hero.contact.email}
 								</a>
 							)
@@ -58,8 +68,12 @@ const { hero } = Astro.props;
 									href={hero.contact.linkedin}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="hover:text-[var(--accent-color)] transition-colors"
+									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
 								>
+									<Linkedin01Icon
+										aria-hidden="true"
+										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+									/>
 									LinkedIn
 								</a>
 							)
@@ -70,12 +84,28 @@ const { hero } = Astro.props;
 									href={hero.contact.github}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="hover:text-[var(--accent-color)] transition-colors"
+									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
 								>
+									<GithubIcon
+										aria-hidden="true"
+										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+									/>
 									GitHub
 								</a>
 							)
 						}
+						<a
+							href="https://twitter.com/mehanisik"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
+						>
+							<NewTwitterIcon
+								aria-hidden="true"
+								className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+							/>
+							Twitter
+						</a>
 					</div>
 				</div>
 			</div>

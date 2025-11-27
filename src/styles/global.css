@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  /* Izum.study Inspired Theme */
   --bg-color: #050505;
   --bg-secondary: #0a0a0a;
   --text-primary: #ffffff;
@@ -19,11 +18,13 @@
   --container-width: 1400px;
   --spacing-section: 120px;
   --border-radius: 0px;
-  /* Sharper edges for this style */
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Removed Light Mode Override to enforce consistency */
+::selection {
+  background-color: var(--accent-color);
+  color: var(--text-primary);
+}
 
 html {
   background-color: var(--bg-color);
@@ -43,7 +44,6 @@ body {
   position: relative;
 }
 
-/* Typography Defaults */
 h1,
 h2,
 h3,
@@ -80,7 +80,6 @@ a:hover {
   opacity: 0.7;
 }
 
-/* Card Styles - Bento Grid */
 .card {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
@@ -101,7 +100,6 @@ a:hover {
   cursor: pointer;
 }
 
-/* Utilities */
 .container {
   max-width: var(--container-width);
   margin: 0 auto;
@@ -124,7 +122,6 @@ a:hover {
   border-bottom: 1px solid var(--border-color);
 }
 
-/* Bento Grid */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -157,13 +154,13 @@ a:hover {
   }
 }
 
-/* Lenis Smooth Scroll */
 html.lenis,
 html.lenis body {
   height: auto;
 }
 
 .lenis.lenis-smooth {
+  
   scroll-behavior: auto !important;
 }
 
@@ -179,16 +176,15 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Minimal Scrollbar */
-::-webkit-scrollbar {
+.thin-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 
-::-webkit-scrollbar-track {
+.thin-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.thin-scrollbar::-webkit-scrollbar-thumb {
   background: var(--accent-color);
   border-radius: 3px;
 }

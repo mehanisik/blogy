@@ -7,6 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
+
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
@@ -60,14 +61,34 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          role: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          role?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          role?: string | null
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           content: string | null
           cover_image: string | null
           demo: string | null
-          description: string
+          description: string | null
           end_date: string | null
-          featured: boolean
           github: string | null
           id: number
           image_url: string | null
@@ -75,16 +96,15 @@ export type Database = {
           start_date: string | null
           status: Database["public"]["Enums"]["project_status"] | null
           tags: string[] | null
-          technologies: string[]
-          title: string
+          technologies: string[] | null
+          title: string | null
         }
         Insert: {
           content?: string | null
           cover_image?: string | null
           demo?: string | null
-          description: string
+          description?: string | null
           end_date?: string | null
-          featured?: boolean
           github?: string | null
           id?: number
           image_url?: string | null
@@ -92,16 +112,15 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"] | null
           tags?: string[] | null
-          technologies: string[]
-          title: string
+          technologies?: string[] | null
+          title?: string | null
         }
         Update: {
           content?: string | null
           cover_image?: string | null
           demo?: string | null
-          description?: string
+          description?: string | null
           end_date?: string | null
-          featured?: boolean
           github?: string | null
           id?: number
           image_url?: string | null
@@ -109,8 +128,8 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"] | null
           tags?: string[] | null
-          technologies?: string[]
-          title?: string
+          technologies?: string[] | null
+          title?: string | null
         }
         Relationships: []
       }

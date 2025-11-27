@@ -1,0 +1,21 @@
+---
+import EditPostForm from "../../components/admin/edit-post-form";
+import AdminLayout from "../../layouts/admin-layout.astro";
+---
+
+<AdminLayout title="Edit Post" description="Edit an existing blog post">
+    <main class="container mx-auto max-w-4xl px-6 py-12 min-h-screen">
+        <div class="mb-8">
+            <a
+                href="/admin"
+                class="text-sm font-mono text-[var(--text-tertiary)] hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+            >
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <h1 class="text-4xl font-bold mb-12 tracking-tight">Edit Post</h1>
+
+        <EditPostForm client:only="react" />
+    </main>
+</AdminLayout>

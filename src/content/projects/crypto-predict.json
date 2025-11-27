@@ -1,7 +1,0 @@
-{
-  "title": "Crypto-Predict: Thesis Project",
-  "description": "Developed an interactive web application for forecasting and visualizing cryptocurrency prices using deep learning models such as CNN, LSTM, and hybrid models.",
-  "link": "",
-  "technologies": ["Python", "Deep Learning", "CNN", "LSTM"],
-  "date": "2021"
-}

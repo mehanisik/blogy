@@ -1,0 +1,132 @@
+---
+import AdminLayout from "../../layouts/admin-layout.astro";
+---
+
+<AdminLayout title="Admin Dashboard" description="Manage your blog posts">
+    <main class="container mx-auto max-w-4xl px-6 py-12 min-h-screen">
+        <div
+            class="flex justify-between items-end mb-16 border-b border-[var(--border-color)] pb-8"
+        >
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
+                    Dashboard
+                </h1>
+                <p class="text-[var(--text-secondary)]">
+                    Manage your content and writings.
+                </p>
+            </div>
+            <div class="flex gap-4">
+                <a
+                    href="/admin/create"
+                    class="px-6 py-3 bg-[var(--accent-color)] text-white text-sm font-mono uppercase tracking-wider hover:opacity-90 transition-opacity"
+                >
+                    New Post
+                </a>
+                <button
+                    id="logout-btn"
+                    class="px-6 py-3 border border-[var(--border-color)] text-[var(--text-secondary)] text-sm font-mono uppercase tracking-wider hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all"
+                >
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <div id="posts-container" class="space-y-4"></div>
+    </main>
+</AdminLayout>
+
+<script>
+    import { supabase } from "../../lib/supabase";
+
+    const logoutBtn = document.getElementById("logout-btn");
+    logoutBtn?.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "/admin/login";
+    });
+
+    const postsContainer = document.getElementById("posts-container");
+
+    async function fetchPosts() {
+        if (!postsContainer) return;
+
+        postsContainer.innerHTML =
+            '<p class="text-[var(--text-tertiary)]">Loading posts...</p>';
+
+        const { data: posts, error } = await supabase
+            .from("writings")
+            .select("*")
+            .order("date", { ascending: false });
+
+        if (error) {
+            postsContainer.innerHTML = `<p class="text-red-500">Error loading posts: ${error.message}</p>`;
+            return;
+        }
+
+        if (!posts || posts.length === 0) {
+            postsContainer.innerHTML =
+                '<p class="text-[var(--text-tertiary)]">No posts found. Create one!</p>';
+            return;
+        }
+
+        postsContainer.innerHTML = posts
+            .map(
+                (post) => `
+            <div class="group bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-none p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-[var(--accent-color)] transition-colors duration-300">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-xs font-mono text-[var(--accent-color)] uppercase tracking-wider">
+                            ${post.type}
+                        </span>
+                        <span class="text-xs font-mono text-[var(--text-tertiary)]">
+                            ${new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 group-hover:text-[var(--text-primary)] transition-colors">
+                        ${post.title}
+                    </h3>
+                    <p class="text-sm text-[var(--text-secondary)] line-clamp-2 max-w-2xl leading-relaxed">
+                        ${post.description || "No description provided."}
+                    </p>
+                </div>
+                <div class="flex gap-4 shrink-0 self-start md:self-center">
+                    <a 
+                        href="/admin/edit?id=${post.id}" 
+                        class="px-4 py-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-color)] hover:bg-[var(--accent-color)] hover:text-white hover:border-[var(--accent-color)] transition-all duration-300"
+                    >
+                        Edit
+                    </a>
+                    <button 
+                        data-id="${post.id}"
+                        class="delete-btn px-4 py-2 text-xs font-mono uppercase tracking-wider text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300"
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+        `,
+            )
+            .join("");
+
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                const id = (e.target as HTMLElement).dataset.id;
+                if (!id) return;
+
+                if (confirm("Are you sure you want to delete this post?")) {
+                    const { error } = await supabase
+                        .from("writings")
+                        .delete()
+                        .eq("id", parseInt(id));
+
+                    if (error) {
+                        alert(`Error deleting post: ${error.message}`);
+                    } else {
+                        fetchPosts();
+                    }
+                }
+            });
+        });
+    }
+
+    fetchPosts();
+</script>

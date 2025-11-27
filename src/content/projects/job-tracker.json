@@ -1,7 +1,0 @@
-{
-  "title": "Job-Tracker",
-  "description": "Built a full-stack web platform for people to track their job searching progress using React.js and Supabase.",
-  "link": "",
-  "technologies": ["React.js", "Supabase", "Full-Stack"],
-  "date": "2023"
-}

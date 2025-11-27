@@ -1,12 +1,22 @@
 ---
 import "../styles/global.css";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
+import { SITE_DESCRIPTION, SITE_TITLE, siteConfig } from "../config";
 import "@fontsource/geist-sans";
 import "@fontsource/geist-sans/500.css";
 import "@fontsource/geist-sans/600.css";
+import "@fontsource/geist-sans/600.css";
 import "@fontsource/geist-mono";
+import Footer from "../components/footer.astro";
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  image = "/og-image.jpg",
+  type = "website",
+  scrollbar = "default",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -16,15 +26,59 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<title>{title}</title>
 
+		<link rel="canonical" href={canonicalURL} />
+
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta
+			name="google-site-verification"
+			content="your-google-verification-code"
+		/>
+
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+		<meta name="twitter:creator" content="@siralcntra" />
 		<slot name="head" />
+
+		<script
+			is:inline
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "Person",
+				name: siteConfig.name,
+				url: siteConfig.url,
+				image: new URL(image, Astro.url),
+				sameAs: [
+					siteConfig.links.github,
+					siteConfig.links.linkedin,
+					siteConfig.links.x,
+				],
+				jobTitle: "Software Developer",
+				worksFor: {
+					"@type": "Organization",
+					name: "Self-Employed",
+				},
+			})}
+		/>
 	</head>
 	<body
-		class="antialiased bg-[var(--bg)] text-[var(--ink)] selection:bg-[var(--ink)] selection:text-[var(--bg)]"
+		class={`antialiased bg-[var(--bg)] text-[var(--ink)] selection:bg-[var(--ink)] selection:text-[var(--bg)] flex flex-col min-h-screen ${scrollbar === "thin" ? "thin-scrollbar" : ""}`}
 	>
 		<slot />
+		<Footer />
 	</body>
 </html>
 

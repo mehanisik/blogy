@@ -1,13 +1,13 @@
-export const SITE_TITLE = "MEHANISIK";
-export const SITE_DESCRIPTION = "Welcome to my website!";
+export const SITE_TITLE = "MEHANISIK – Software Developer";
+export const SITE_DESCRIPTION =
+  "Mehmet isik is a software developer who is passionate about building software that is easy to use and efficient.";
 
 export const siteConfig = {
   url: "https://mehanisik.is-a.dev/",
   name: "MEHANISIK",
-  title: "MEHANISIK – Software Developer",
-  description:
-    "Mehmet isik is a software developer who is passionate about building software that is easy to use and efficient.",
-  ogImage: "https://mehanisik.is-a.dev/static/banner.jpg",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  ogImage: "/og-image.jpg",
   links: {
     github: "https://github.com/mehanisik",
     x: "https://x.com/siralcntra",

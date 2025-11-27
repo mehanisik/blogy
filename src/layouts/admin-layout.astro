@@ -1,0 +1,67 @@
+---
+import Layout from "./layout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+    <div
+        id="admin-auth-loading"
+        class="flex flex-col items-center justify-center min-h-screen"
+    >
+        <div
+            class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--accent-color)] mb-4"
+        >
+        </div>
+        <p class="text-[var(--text-tertiary)] font-mono">Verifying access...</p>
+    </div>
+
+    <div id="admin-content" class="hidden">
+        <slot />
+    </div>
+</Layout>
+
+<script>
+    import { supabase } from "../lib/supabase";
+
+    const loading = document.getElementById("admin-auth-loading");
+    const content = document.getElementById("admin-content");
+
+    async function checkAuth() {
+        try {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
+
+            if (!session) {
+                window.location.href = "/admin/login";
+                return;
+            }
+
+            const { data: profile, error: profileError } = await supabase
+                .from("profiles")
+                .select("role")
+                .eq("id", session.user.id)
+                .single();
+
+            if (profileError || !profile || profile.role !== "admin") {
+                await supabase.auth.signOut();
+                window.location.href = "/admin/login";
+                return;
+            }
+
+            if (loading) loading.classList.add("hidden");
+            if (content) content.classList.remove("hidden");
+        } catch (error) {
+            console.error("Auth check failed:", error);
+            window.location.href = "/admin/login";
+        }
+    }
+
+    checkAuth();
+</script>

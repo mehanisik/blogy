@@ -1,0 +1,36 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="py-12 px-6 mt-auto border-t border-[var(--border-color)]">
+    <div class="container mx-auto max-w-4xl flex flex-col items-center gap-6">
+        <nav
+            class="flex flex-wrap justify-center gap-8 text-base font-medium text-[var(--text-secondary)]"
+        >
+            <a
+                href="/"
+                class="hover:text-[var(--accent-color)] transition-colors"
+                >Home</a
+            >
+            <a
+                href="/#writings"
+                class="hover:text-[var(--accent-color)] transition-colors"
+                >Writings</a
+            >
+            <a
+                href="/#work"
+                class="hover:text-[var(--accent-color)] transition-colors"
+                >Work</a
+            >
+            <a
+                href="/rss.xml"
+                class="hover:text-[var(--accent-color)] transition-colors"
+                >RSS</a
+            >
+        </nav>
+
+        <div class="text-sm text-[var(--text-secondary)]">
+            &copy; {currentYear} Mehanisik
+        </div>
+    </div>
+</footer>

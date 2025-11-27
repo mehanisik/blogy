@@ -1,4 +1,5 @@
 ---
+import { ArrowRight01Icon } from "hugeicons-react";
 import type { Writing, WritingMetadata } from "../lib/api";
 
 interface Props {
@@ -8,7 +9,8 @@ interface Props {
 const { writings } = Astro.props;
 
 const getLink = (item: Writing) => {
-  if (item.type === "blog") return `/blog/${item.slug}`;
+  if (item.type === "blog" || item.type === "paper")
+    return `/blog/${item.slug}`;
   const meta = item.metadata as unknown as WritingMetadata;
   return item.url || meta?.doi || "#";
 };
@@ -21,13 +23,18 @@ const getLink = (item: Writing) => {
 				writings.map((item) => (
 					<a
 						href={getLink(item)}
-						target={item.type !== "blog" ? "_blank" : undefined}
+						target={
+							item.type !== "blog" && item.type !== "paper"
+								? "_blank"
+								: undefined
+						}
 						rel={
-							item.type !== "blog"
+							item.type !== "blog" && item.type !== "paper"
 								? "noopener noreferrer"
 								: undefined
 						}
 						class="group block border-t border-[var(--border-color)] py-8 hover:bg-[var(--bg-secondary)] transition-colors -mx-6 px-6"
+						aria-label={`Read ${item.type === "blog" ? "article" : "paper"}: ${item.title}`}
 					>
 						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
 							<div class="md:col-span-2">
@@ -54,18 +61,13 @@ const getLink = (item: Writing) => {
 							</div>
 
 							<div class="md:col-span-2 flex justify-end items-center gap-4">
-								<span class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] border border-[var(--border-color)] px-2 py-1 rounded-full">
+								<span class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] border border-[var(--border-color)] px-2 py-1 rounded-full group-hover:border-[var(--accent-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">
 									{item.type === "blog" ? "Article" : "Paper"}
 								</span>
-								<svg
-									class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[var(--accent-color)] opacity-0 group-hover:opacity-100"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path d="M5 12h14M12 5l7 7-7 7" />
-								</svg>
+								<ArrowRight01Icon
+									aria-hidden="true"
+									className="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[var(--accent-color)] opacity-0 group-hover:opacity-100"
+								/>
 							</div>
 						</div>
 					</a>
