@@ -1,46 +1,129 @@
-# Astro Starter Kit: Basics
+# Personal Website
 
-```sh
-bun create astro@latest -- --template basics
+![Blogy Landing Page](./public/landing-page.png)
+
+A personal blog and portfolio platform I built with Astro 5, React 19, and Tailwind CSS 4. This is my personal corner of the internet where I share:
+- **Blog posts** about software development, technology, and my experiences
+- **Portfolio projects** I've worked on
+- **Academic publications** and research
+- **Coding activity** tracked through WakaTime
+- **Thoughts and insights** from my journey as a developer
+
+The platform features a clean admin interface for content management, built with modern web technologies for optimal performance and developer experience.
+
+---
+
+## Tech Stack 
+
+- **Astro 5** - Web Framework
+- **React 19** - UI Library
+- **TypeScript** - Type Safety
+- **Tailwind CSS 4** - Styling
+- **GSAP** - Animations
+- **Three.js** - 3D Graphics
+- **Supabase** - Backend-as-a-Service
+- **Biome** - Linter and Formatter
+
+---
+
+### Lighthouse
+
+![Lighthouse](./public/lighthouse-score.png)
+
+
+
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Bun runtime
+- Supabase account
+- GitHub and WakaTime API keys
+
+### Setup
+```bash
+# Clone and install
+git clone https://github.com/mehanisik/blogy.git
+cd blogy
+bun install
+
+# Environment configuration
+cp .env.example .env
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+Configure your environment variables:
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+WAKATIME_API_KEY=your_wakatime_key
+POSTHOG_KEY=your_posthog_key
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+```bash
+# Start development
+bun run dev
+```
 
-## 🧞 Commands
+Visit [http://localhost:3000](http://localhost:3000) to see the site.
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+
+## Development Commands
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start development server |
+| `bun run build` | Build for production |
+| `bun run preview` | Preview production build |
+| `bun run check` | Run type and code checks |
+| `bun run check:fix` | Fix linting issues |
+| `bun run clean:comments` | Remove comments from code |
+
+### Database Commands
+| Command | Description |
+|---------|-------------|
+| `bun run db:types` | Generate TypeScript types |
+| `bun run db:push` | Push database migrations |
+| `bun run db:migrate` | Create new migration |
+| `bun run db:link` | Link to Supabase project |
+
+
+
+
+---
+
+## Deployment
+
+I deploy this site on Vercel for its excellent Astro support and edge performance.
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
+```
+
+Make sure to set all environment variables in your Vercel project settings.
+
+
+
+
+## Contributing
+
+While this is my personal project, I welcome contributions from the community. If you find bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
+
+---
+
+
+
+
+
+
+

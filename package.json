@@ -8,19 +8,17 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check && biome check",
-    "check:fix": "astro check && biome check --write",
-    "clean:comments": "bun scripts/clean-comments.ts"
+    "check:fix": "astro check && biome check --write"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/vercel": "^9.0.2",
     "@fontsource/geist-sans": "^5.2.5",
     "@supabase/supabase-js": "^2.84.0",
     "@tailwindcss/vite": "^4.1.17",
-    "@tiptap/react": "^3.11.0",
-    "@tiptap/starter-kit": "^3.11.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.181.0",
@@ -34,11 +32,9 @@
     "marked-highlight": "^2.2.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-icons": "^5.5.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "three": "^0.181.2",
-    "tiptap-markdown": "^0.9.0",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

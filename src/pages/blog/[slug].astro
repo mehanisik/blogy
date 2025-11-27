@@ -1,6 +1,6 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import RichTextEditor from "../../components/admin/rich-text-editor";
 import Layout from "../../layouts/layout.astro";
 
 export async function getStaticPaths() {
@@ -12,8 +12,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  
-  post: any;
+  post: CollectionEntry<"writings">;
 }
 
 const { post } = Astro.props;
@@ -123,10 +122,9 @@ const { data } = post;
                             />
                         </div>
                     ) : (
-                        <RichTextEditor
-                            client:only="react"
-                            content={data.content || ""}
-                            editable={false}
+                        <div
+                            class="prose prose-invert max-w-none"
+                            set:html={post.rendered?.html}
                         />
                     )
                 }

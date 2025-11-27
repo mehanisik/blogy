@@ -41,6 +41,8 @@ const writings = defineCollection({
     content: z.string().nullable().optional(),
     cover_image: z.string().nullable().optional(),
     metadata: z.any().optional(),
+    type: z.string(),
+    url: z.string().nullable().optional(),
   }),
 });
 
