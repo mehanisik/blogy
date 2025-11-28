@@ -4,15 +4,15 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/layout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writings");
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+    const posts = await getCollection("writings");
+    return posts.map((post) => ({
+        params: { slug: post.id },
+        props: { post },
+    }));
 }
 
 interface Props {
-  post: CollectionEntry<"writings">;
+    post: CollectionEntry<"writings">;
 }
 
 const { post } = Astro.props;
@@ -114,7 +114,7 @@ const { data } = post;
             <div class="max-w-none">
                 {
                     data.type === "paper" ? (
-                        <div class="w-full h-[800px] border border-[var(--border-color)] rounded-lg overflow-hidden">
+                        <div class="w-full h-[500px] md:h-[800px] border border-[var(--border-color)] rounded-lg overflow-hidden">
                             <iframe
                                 src={data.url || (data.metadata as any)?.pdf}
                                 class="w-full h-full"
@@ -224,5 +224,7 @@ const { data } = post;
     .prose img {
         border-radius: 0.5rem;
         border: 1px solid var(--border-color);
+        max-width: 100%;
+        height: auto;
     }
 </style>

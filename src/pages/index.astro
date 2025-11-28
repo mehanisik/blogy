@@ -13,14 +13,12 @@ const writings = await getWritings();
 ---
 
 <Layout title="Mehanisik | Frontend Developer" scrollbar="thin">
-    <main class="min-h-screen">
+    <main id="main-content" class="min-h-screen">
         <nav
-            class="fixed top-0 left-0 right-0 z-50
-mix-blend-difference text-white"
+            class="fixed top-0 left-0 right-0 z-50 mix-blend-difference text-white"
         >
             <div
-                class="container mx-auto max-w-[1400px]
-px-8 py-12 flex justify-between items-center"
+                class="container mx-auto px-6 py-8 flex justify-between items-center max-w-[1400px]"
             >
                 <a
                     href="/"
@@ -30,74 +28,64 @@ px-8 py-12 flex justify-between items-center"
                 <div class="hidden md:flex gap-16">
                     <a
                         href="#work"
-                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors
-uppercase tracking-wider"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
                         >Work</a
                     >
                     <a
                         href="#writings"
-                        class="text-sm
-font-medium hover:text-[var(--accent-color)] transition-colors uppercase
-tracking-wider"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
                         >Writings</a
                     >
                     <a
                         href="#contact"
-                        class="text-sm font-medium
-hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
                         >Contact</a
                     >
                 </div>
                 <button
                     id="mobile-menu-btn"
-                    class="md:hidden text-white
-focus:outline-none z-50"
+                    class="md:hidden text-white focus:outline-none z-50"
                 >
                     <span class="sr-only">Open menu</span>
                     <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
                     </div>
-                    <div class="w-6 h-0.5
-bg-current mb-1.5 transition-all">
+                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
                     </div>
                 </button>
             </div>
             <div
                 id="mobile-menu"
-                class="fixed inset-0 bg-[var(--bg-color)] z-40 transform translate-x-full
-transition-transform duration-300 flex items-center justify-center"
+                class="fixed inset-0 bg-[var(--bg-color)] z-40 transform translate-x-full transition-transform duration-300 ease-in-out flex items-center justify-center"
             >
                 <div class="flex flex-col gap-8 text-center">
                     <a
                         href="#work"
-                        class="mobile-link
-text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
                         >WORK</a
                     >
                     <a
                         href="#writings"
-                        class="mobile-link text-4xl font-bold
-hover:text-[var(--accent-color)] transition-colors"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
                         >WRITINGS</a
                     >
                     <a
                         href="#contact"
-                        class="mobile-link text-4xl font-bold
-hover:text-[var(--accent-color)] transition-colors"
+                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
                         >CONTACT</a
                     >
                 </div>
             </div>
         </nav>
-        <div class="container mx-auto max-w-[1400px] px-6 pt-24 pb-24">
-            <section class="fade-in"><HeroSection hero={hero} /></section>
+
+        <section class="fade-in"><HeroSection hero={hero} /></section>
+
+        <div class="container mx-auto px-6 pb-24 max-w-[1400px]">
             <section id="about" class="mb-32 fade-in">
                 <AboutSection hero={hero} />
             </section>
             <section id="work" class="mb-32 fade-in">
                 <h2
-                    class="text-xs font-mono
-text-[var(--accent-color)] mb-12 uppercase tracking-widest border-b
-border-[var(--border-color)] pb-4"
+                    class="text-xs font-mono text-[var(--accent-color)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
                 >
                     Selected Work
                 </h2>
@@ -105,8 +93,7 @@ border-[var(--border-color)] pb-4"
             </section>
             <section id="writings" class="mb-32 fade-in">
                 <h2
-                    class="text-xs font-mono text-[var(--accent-color)] mb-12 uppercase
-tracking-widest border-b border-[var(--border-color)] pb-4"
+                    class="text-xs font-mono text-[var(--accent-color)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
                 >
                     Writings & Thoughts
                 </h2>
@@ -115,6 +102,7 @@ tracking-widest border-b border-[var(--border-color)] pb-4"
         </div>
     </main>
 </Layout>
+
 <script>
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -129,8 +117,10 @@ tracking-widest border-b border-[var(--border-color)] pb-4"
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
                 mobileMenu.classList.remove("translate-x-full");
+                mobileMenu.classList.add("translate-x-0");
                 document.body.style.overflow = "hidden";
             } else {
+                mobileMenu.classList.remove("translate-x-0");
                 mobileMenu.classList.add("translate-x-full");
                 document.body.style.overflow = "";
             }
@@ -138,6 +128,7 @@ tracking-widest border-b border-[var(--border-color)] pb-4"
         mobileLinks.forEach((link) => {
             link.addEventListener("click", () => {
                 isMenuOpen = false;
+                mobileMenu.classList.remove("translate-x-0");
                 mobileMenu.classList.add("translate-x-full");
                 document.body.style.overflow = "";
             });

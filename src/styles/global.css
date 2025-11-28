@@ -80,80 +80,7 @@ a:hover {
   opacity: 0.7;
 }
 
-.card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 2rem;
-  transition: all var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.card:hover {
-  border-color: var(--border-color-strong);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.card-interactive {
-  cursor: pointer;
-}
-
-.container {
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.text-tertiary {
-  color: var(--text-tertiary);
-}
-
-.border-top {
-  border-top: 1px solid var(--border-color);
-}
-
-.border-bottom {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .bento-grid {
-    grid-template-columns: repeat(12, 1fr);
-  }
-
-  .bento-span-6 {
-    grid-column: span 6;
-  }
-
-  .bento-span-4 {
-    grid-column: span 4;
-  }
-
-  .bento-span-8 {
-    grid-column: span 8;
-  }
-
-  .bento-span-3 {
-    grid-column: span 3;
-  }
-
-  .bento-span-9 {
-    grid-column: span 9;
-  }
-}
-
+/* Lenis Smooth Scroll */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -175,6 +102,7 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Custom Scrollbar */
 .thin-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
