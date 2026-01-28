@@ -1,5 +1,6 @@
 ---
-import { ArrowRight01Icon } from "hugeicons-react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { Writing, WritingMetadata } from "../lib/api";
 
 interface Props {
@@ -14,6 +15,14 @@ const getLink = (item: Writing) => {
   const meta = item.metadata as unknown as WritingMetadata;
   return item.url || meta?.doi || "#";
 };
+
+const isExternal = (item: Writing) =>
+  item.type !== "blog" && item.type !== "paper";
+
+const getAriaLabel = (item: Writing) => {
+  const base = `Read ${item.type === "blog" ? "article" : "paper"}: ${item.title}`;
+  return isExternal(item) ? `${base} (opens in new tab)` : base;
+};
 ---
 
 <section id="writings" class="w-full">
@@ -23,18 +32,10 @@ const getLink = (item: Writing) => {
 				writings.map((item) => (
 					<a
 						href={getLink(item)}
-						target={
-							item.type !== "blog" && item.type !== "paper"
-								? "_blank"
-								: undefined
-						}
-						rel={
-							item.type !== "blog" && item.type !== "paper"
-								? "noopener noreferrer"
-								: undefined
-						}
+						target={isExternal(item) ? "_blank" : undefined}
+						rel={isExternal(item) ? "noopener noreferrer" : undefined}
 						class="group block border-t border-[var(--border-color)] py-8 hover:bg-[var(--bg-secondary)] transition-colors -mx-6 px-6"
-						aria-label={`Read ${item.type === "blog" ? "article" : "paper"}: ${item.title}`}
+						aria-label={getAriaLabel(item)}
 					>
 						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
 							<div class="md:col-span-2">
@@ -64,7 +65,8 @@ const getLink = (item: Writing) => {
 								<span class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] border border-[var(--border-color)] px-2 py-1 rounded-full group-hover:border-[var(--accent-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">
 									{item.type === "blog" ? "Article" : "Paper"}
 								</span>
-								<ArrowRight01Icon
+								<HugeiconsIcon
+									icon={ArrowRight01Icon}
 									aria-hidden="true"
 									className="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[var(--accent-color)] opacity-0 group-hover:opacity-100"
 								/>

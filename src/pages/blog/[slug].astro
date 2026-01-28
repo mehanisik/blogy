@@ -4,19 +4,27 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/layout.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("writings");
-    return posts.map((post) => ({
-        params: { slug: post.id },
-        props: { post },
-    }));
+  const posts = await getCollection("writings");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
 }
 
-interface Props {
-    post: CollectionEntry<"writings">;
+interface PostMetadata {
+  read_time?: number;
+  pdf?: string;
+  tags?: string[];
+  updated_at?: string;
 }
 
-const { post } = Astro.props;
+const { post } = Astro.props as { post: CollectionEntry<"writings"> };
 const { data } = post;
+
+const metadata: PostMetadata = (data.metadata as PostMetadata) || {};
+const wordCount = post.rendered?.html
+  ? post.rendered.html.replace(/<[^>]*>/g, "").split(/\s+/).length
+  : undefined;
 ---
 
 <Layout
@@ -34,10 +42,16 @@ const { data } = post;
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: data.title,
+            description: data.description || undefined,
             image: data.cover_image
                 ? [new URL(data.cover_image, Astro.site)]
                 : [],
             datePublished: new Date(data.date).toISOString(),
+            dateModified: metadata.updated_at
+                ? new Date(metadata.updated_at).toISOString()
+                : new Date(data.date).toISOString(),
+            wordCount: wordCount,
+            keywords: metadata.tags?.join(", ") || undefined,
             author: [
                 {
                     "@type": "Person",
@@ -56,7 +70,7 @@ const { data } = post;
                         href="/#writings"
                         class="inline-flex items-center gap-2 text-sm font-mono text-[var(--text-tertiary)] hover:text-[var(--accent-color)] transition-colors no-underline"
                     >
-                        ← Back
+                        ← Back to writings
                     </a>
                 </div>
 
@@ -73,12 +87,10 @@ const { data } = post;
                         }
                     </time>
                     {
-                        data.metadata && (data.metadata as any).read_time && (
+                        metadata.read_time && (
                             <>
                                 <span>•</span>
-                                <span>
-                                    {(data.metadata as any).read_time} min read
-                                </span>
+                                <span>{metadata.read_time} min read</span>
                             </>
                         )
                     }
@@ -116,7 +128,7 @@ const { data } = post;
                     data.type === "paper" ? (
                         <div class="w-full h-[500px] md:h-[800px] border border-[var(--border-color)] rounded-lg overflow-hidden">
                             <iframe
-                                src={data.url || (data.metadata as any)?.pdf}
+                                src={data.url || metadata.pdf}
                                 class="w-full h-full"
                                 title={data.title}
                             />

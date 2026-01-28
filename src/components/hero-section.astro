@@ -1,5 +1,6 @@
 ---
 import type { Hero } from "../lib/api";
+import AnimatedText from "./animated-text.astro";
 import HeroAnimation from "./hero-animation.astro";
 
 interface Props {
@@ -22,34 +23,21 @@ const tagline =
     >
         <div class="max-w-5xl">
             <h1
-                class="text-6xl md:text-9xl font-bold tracking-tighter mb-12 leading-none fade-in"
+                class="text-6xl md:text-9xl font-bold tracking-tighter mb-12 leading-none"
             >
-                <span class="text-[var(--accent-color)]">MEHANISIK</span>
+                <AnimatedText
+                    text="MEHANISIK"
+                    tag="span"
+                    class="text-(--accent-color)"
+                />
             </h1>
 
             <p
-                class="text-xl md:text-2xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed fade-in"
+                class="text-xl md:text-2xl text-(--text-secondary) max-w-2xl mx-auto leading-relaxed"
             >
-                {tagline}
+                <AnimatedText text={tagline} delay={300} />
             </p>
         </div>
     </div>
 </section>
 
-<style>
-    .fade-in {
-        opacity: 0;
-        animation: fadeIn 1s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>

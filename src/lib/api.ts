@@ -55,25 +55,44 @@ export interface SocialLink {
 }
 
 export async function getProjects() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("projects")
     .select("*")
     .order("id", { ascending: true });
+
+  if (error) {
+    console.error("Failed to fetch projects:", error.message);
+    return [];
+  }
 
   return (data as unknown as Project[]) || [];
 }
 
 export async function getWritings() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("writings")
     .select("*")
     .order("date", { ascending: false });
+
+  if (error) {
+    console.error("Failed to fetch writings:", error.message);
+    return [];
+  }
 
   return (data as Writing[]) || [];
 }
 
 export async function getHero() {
-  const { data } = await supabase.from("hero").select("*").limit(1).single();
+  const { data, error } = await supabase
+    .from("hero")
+    .select("*")
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error("Failed to fetch hero:", error.message);
+    return null;
+  }
 
   return (data as unknown as Hero) || null;
 }

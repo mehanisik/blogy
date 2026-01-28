@@ -2,7 +2,7 @@
 import type { Project } from "../lib/api";
 
 interface Props {
-    projects: Project[];
+  projects: Project[];
 }
 const { projects } = Astro.props;
 ---
@@ -15,7 +15,7 @@ const { projects } = Astro.props;
                 target="_blank"
                 rel="noopener noreferrer"
                 class="group block"
-                aria-label={`View project: ${project.title}`}
+                aria-label={`View project: ${project.title} (opens in new tab)`}
             >
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
                     <div class="md:col-span-4 flex flex-col justify-between h-full py-2">
@@ -49,6 +49,11 @@ const { projects } = Astro.props;
                                     project.image_url || "/default-project.png"
                                 }
                                 alt={project.title}
+                                width={800}
+                                height={450}
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                loading="lazy"
+                                decoding="async"
                                 class="absolute inset-0 w-full h-full object-cover"
                             />
 

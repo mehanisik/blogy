@@ -1,21 +1,21 @@
-import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
+import { getWritings } from "../lib/api";
 
 export async function GET(context) {
-  const posts = await getCollection("writings");
+  const writings = await getWritings();
 
-  const blogPosts = posts.filter((post) => post.data.type === "blog");
+  const blogPosts = writings.filter((post) => post.type === "blog");
 
   return rss({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: context.site,
     items: blogPosts.map((post) => ({
-      title: post.data.title,
-      pubDate: new Date(post.data.date),
-      description: post.data.description,
-      link: `/blog/${post.id}/`,
+      title: post.title,
+      pubDate: new Date(post.date),
+      description: post.description || "",
+      link: `/blog/${post.slug}/`,
     })),
   });
 }

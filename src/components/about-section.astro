@@ -4,7 +4,9 @@ import {
   Linkedin01Icon,
   Mail01Icon,
   NewTwitterIcon,
-} from "hugeicons-react";
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { siteConfig } from "../config";
 import type { Hero } from "../lib/api";
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
 const { hero } = Astro.props;
 ---
 
-<section id="about" class="w-full border-t border-[var(--border-color)] pt-12">
+<section id="contact" class="w-full border-t border-[var(--border-color)] pt-12">
 	<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
 		<div class="md:col-span-3">
 			<h2
@@ -44,8 +46,10 @@ const { hero } = Astro.props;
 								<a
 									href={`mailto:${hero.contact.email}`}
 									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
+									aria-label={`Send email to ${hero.contact.email}`}
 								>
-									<Mail01Icon
+									<HugeiconsIcon
+										icon={Mail01Icon}
 										aria-hidden="true"
 										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
 									/>
@@ -69,8 +73,10 @@ const { hero } = Astro.props;
 									target="_blank"
 									rel="noopener noreferrer"
 									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
+									aria-label="LinkedIn (opens in new tab)"
 								>
-									<Linkedin01Icon
+									<HugeiconsIcon
+										icon={Linkedin01Icon}
 										aria-hidden="true"
 										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
 									/>
@@ -85,8 +91,10 @@ const { hero } = Astro.props;
 									target="_blank"
 									rel="noopener noreferrer"
 									class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
+									aria-label="GitHub (opens in new tab)"
 								>
-									<GithubIcon
+									<HugeiconsIcon
+										icon={GithubIcon}
 										aria-hidden="true"
 										className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
 									/>
@@ -95,12 +103,14 @@ const { hero } = Astro.props;
 							)
 						}
 						<a
-							href="https://twitter.com/mehanisik"
+							href={siteConfig.links.x}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors group"
+							aria-label="Twitter/X (opens in new tab)"
 						>
-							<NewTwitterIcon
+							<HugeiconsIcon
+								icon={NewTwitterIcon}
 								aria-hidden="true"
 								className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
 							/>

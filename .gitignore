@@ -26,5 +26,23 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# vercel
 .vercel
+
+# environment
 .env*.local
+
+# lighthouse reports
+*.lighthouse.json
+lighthouse-*.json
+lighhouse-*.json
+
+# playwright
+.playwright-mcp/
+
+# windows artifacts
+nul
+
+# claude code
+.claude/

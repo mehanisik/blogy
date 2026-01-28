@@ -1,42 +1,48 @@
-import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
+import type { APIRoute } from "astro";
+import { supabase } from "../../../lib/supabase";
 
-export const GET: APIRoute = async () => {
+export const prerender = false;
+
+export const GET: APIRoute = async ({ request }) => {
+  const authHeader = request.headers.get("authorization");
+  const cronSecret = import.meta.env.CRON_SECRET;
+
+  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   try {
-    console.log('Ping API called');
-    // Check if supabase client is working
     if (!supabase) {
-      console.error('Supabase client is undefined');
-      throw new Error('Supabase client is undefined');
+      throw new Error("Supabase client is undefined");
     }
 
-    console.log('Querying Supabase...');
-    const { data, error } = await supabase.from('writings').select('*').limit(1);
+    const { error } = await supabase.from("writings").select("id").limit(1);
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error("[Cron Ping] Supabase error:", error.message);
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
-    console.log('Supabase success:', data);
-    return new Response(JSON.stringify({ message: 'Pong', data }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
+    console.log("[Cron Ping] Success at", new Date().toISOString());
+    return new Response(
+      JSON.stringify({ message: "Pong", timestamp: new Date().toISOString() }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
       },
-    });
-  } catch (err: any) {
-    console.error('Unexpected error in Ping API:', err);
-    return new Response(JSON.stringify({ error: err.message || 'Unknown error' }), {
+    );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("[Cron Ping] Error:", message);
+    return new Response(JSON.stringify({ error: message }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { "Content-Type": "application/json" },
     });
   }
 };

@@ -2,8 +2,11 @@
 
 <script>
     const container = document.getElementById("hero-animation");
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    if (container) {
+    if (container && !prefersReducedMotion) {
         const initThree = async () => {
             const THREE = await import("three");
 
@@ -28,8 +31,13 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            const rows = 100;
-            const cols = 100;
+            const isMobile = window.innerWidth < 768;
+            const isLowEnd = navigator.hardwareConcurrency
+                ? navigator.hardwareConcurrency <= 4
+                : false;
+            const gridSize = isMobile || isLowEnd ? 50 : 100;
+            const rows = gridSize;
+            const cols = gridSize;
             const particleCount = rows * cols;
 
             const geometry = new THREE.BufferGeometry();
@@ -143,10 +151,26 @@
             animate();
         };
 
-        if (window.requestIdleCallback) {
-            window.requestIdleCallback(() => initThree());
+        const startHero = () => {
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(() => initThree());
+            } else {
+                setTimeout(initThree, 100);
+            }
+        };
+
+        const preloader = document.getElementById("preloader");
+        if (preloader) {
+            let started = false;
+            const start = () => {
+                if (started) return;
+                started = true;
+                startHero();
+            };
+            window.addEventListener("preloader-done", start, { once: true });
+            setTimeout(start, 3000);
         } else {
-            setTimeout(initThree, 100);
+            startHero();
         }
     }
 </script>

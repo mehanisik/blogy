@@ -4,16 +4,16 @@ import { SITE_DESCRIPTION, SITE_TITLE, siteConfig } from "../config";
 import "@fontsource/geist-sans";
 import "@fontsource/geist-sans/500.css";
 import "@fontsource/geist-sans/600.css";
-import "@fontsource/geist-sans/600.css";
 import "@fontsource/geist-mono";
 import Footer from "../components/footer.astro";
+import Preloader from "../components/preloader.astro";
 
 const {
-	title = SITE_TITLE,
-	description = SITE_DESCRIPTION,
-	image = "/og-image.jpg",
-	type = "website",
-	scrollbar = "default",
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  image = "/og-image.jpg",
+  type = "website",
+  scrollbar = "default",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -77,25 +77,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	<body
 		class={`antialiased bg-[var(--bg-color)] text-[var(--text-primary)] selection:bg-[var(--accent-color)] selection:text-white flex flex-col min-h-screen ${scrollbar === "thin" ? "thin-scrollbar" : ""}`}
 	>
+		<Preloader />
 		<a
 			href="#main-content"
 			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] bg-[var(--accent-color)] text-white px-4 py-2 rounded"
-		>
-			Skip to content
-		</a>
+		>Skip to content</a>
 		<slot />
 		<Footer />
 	</body>
 </html>
 
 <script>
-	import Lenis from "lenis";
+	const initLenis = async () => {
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
 
-	const prefersReducedMotion = window.matchMedia(
-		"(prefers-reduced-motion: reduce)",
-	).matches;
+		if (prefersReducedMotion) return;
 
-	if (!prefersReducedMotion) {
+		const { default: Lenis } = await import("lenis");
+
 		const lenis = new Lenis({
 			autoRaf: true,
 			anchors: true,
@@ -107,7 +108,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			wheelMultiplier: 0.9,
 		});
 
-		const lenisWindow = window as Window & { lenis?: Lenis };
+		const lenisWindow = window as Window & { lenis?: typeof lenis };
 		lenisWindow.lenis = lenis;
 
 		function raf(time: number) {
@@ -116,5 +117,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		}
 
 		requestAnimationFrame(raf);
+	};
+
+	if ("requestIdleCallback" in window) {
+		requestIdleCallback(() => initLenis());
+	} else {
+		setTimeout(initLenis, 200);
 	}
 </script>

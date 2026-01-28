@@ -3,6 +3,7 @@
 ![Blogy Landing Page](./public/landing-page.png)
 
 A personal blog and portfolio platform I built with Astro 5, React 19, and Tailwind CSS 4. This is my personal corner of the internet where I share:
+
 - **Blog posts** about software development, technology, and my experiences
 - **Portfolio projects** I've worked on
 - **Academic publications** and research
@@ -13,7 +14,7 @@ The platform features a clean admin interface for content management, built with
 
 ---
 
-## Tech Stack 
+## Tech Stack
 
 - **Astro 5** - Web Framework
 - **React 19** - UI Library
@@ -30,18 +31,17 @@ The platform features a clean admin interface for content management, built with
 
 ![Lighthouse](./public/lighthouse-score.png)
 
-
-
-
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - Bun runtime
 - Supabase account
 - GitHub and WakaTime API keys
 
 ### Setup
+
 ```bash
 # Clone and install
 git clone https://github.com/mehanisik/blogy.git
@@ -53,6 +53,7 @@ cp .env.example .env
 ```
 
 Configure your environment variables:
+
 ```env
 PUBLIC_SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
@@ -65,18 +66,17 @@ bun run dev
 
 Visit [http://localhost:4321](http://localhost:4321) to see the site.
 
-
 ---
 
 ## Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start development server |
-| `bun run build` | Build for production |
-| `bun run preview` | Preview production build |
-| `bun run check` | Run type and code checks |
-| `bun run check:fix` | Fix linting issues |
+| Command             | Description              |
+| ------------------- | ------------------------ |
+| `bun run dev`       | Start development server |
+| `bun run build`     | Build for production     |
+| `bun run preview`   | Preview production build |
+| `bun run check`     | Run type and code checks |
+| `bun run check:fix` | Fix linting issues       |
 
 ---
 
@@ -94,18 +94,8 @@ vercel --prod
 
 Make sure to set all environment variables in your Vercel project settings.
 
-
-
-
 ## Contributing
 
 While this is my personal project, I welcome contributions from the community. If you find bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
 ---
-
-
-
-
-
-
-

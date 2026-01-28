@@ -1,0 +1,83 @@
+---
+interface Props {
+  text: string;
+  tag?: "h1" | "h2" | "h3" | "span" | "p";
+  class?: string;
+  delay?: number;
+}
+
+const { text, tag = "span", class: className, delay = 0 } = Astro.props;
+const Tag = tag;
+
+const chars = text.split("");
+---
+
+<Tag class:list={["animated-text", className]} data-delay={delay}>
+  {chars.map((char, i) => (
+    <span
+      class="animated-char"
+      data-char={char === " " ? "space" : undefined}
+      style={`--char-index: ${i}`}
+    >
+      {char === " " ? "\u00A0" : char}
+    </span>
+  ))}
+</Tag>
+
+<style>
+  .animated-text {
+    display: inline-block;
+  }
+
+  .animated-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: none;
+  }
+
+  .animated-text.is-visible .animated-char {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--char-index) * 0.03s);
+  }
+
+  .animated-char[data-char="space"] {
+    width: 0.3em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-char {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const animatedTexts = document.querySelectorAll(".animated-text");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const delay = parseInt(el.dataset.delay || "0", 10);
+
+          setTimeout(() => {
+            el.classList.add("is-visible");
+          }, delay);
+
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  animatedTexts.forEach((text) => observer.observe(text));
+</script>

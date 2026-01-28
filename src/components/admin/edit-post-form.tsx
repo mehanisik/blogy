@@ -81,7 +81,7 @@ export default function EditPostForm() {
     setFormData((prev) => ({ ...prev, content }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
     setSuccess(false);

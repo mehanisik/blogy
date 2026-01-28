@@ -1,15 +1,26 @@
 ---
+import "lenis/dist/lenis.css";
+
 import AboutSection from "../components/about-section.astro";
 import HeroSection from "../components/hero-section.astro";
 import ProjectSection from "../components/project-section.astro";
 import WritingSection from "../components/writing-section.astro";
 import Layout from "../layouts/layout.astro";
 import { getHero, getProjects, getWritings } from "../lib/api";
-import "lenis/dist/lenis.css";
 
 const hero = await getHero();
 const projects = await getProjects();
 const writings = await getWritings();
+
+const navLinks = [
+  { href: "#work", label: "Work", ariaLabel: "View my projects" },
+  {
+    href: "#writings",
+    label: "Writings",
+    ariaLabel: "Read my articles and papers",
+  },
+  { href: "#contact", label: "Contact", ariaLabel: "Get in touch with me" },
+];
 ---
 
 <Layout title="Mehanisik | Frontend Developer" scrollbar="thin">
@@ -26,25 +37,19 @@ const writings = await getWritings();
                     aria-label="Mehanisik Homepage">MEHANISIK</a
                 >
                 <div class="hidden md:flex gap-16">
-                    <a
-                        href="#work"
-                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
-                        >Work</a
-                    >
-                    <a
-                        href="#writings"
-                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
-                        >Writings</a
-                    >
-                    <a
-                        href="#contact"
-                        class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
-                        >Contact</a
-                    >
+                    {navLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
+                            aria-label={link.ariaLabel}
+                        >{link.label}</a>
+                    ))}
                 </div>
                 <button
                     id="mobile-menu-btn"
                     class="md:hidden text-white focus:outline-none z-50"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu"
                 >
                     <span class="sr-only">Open menu</span>
                     <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
@@ -56,32 +61,25 @@ const writings = await getWritings();
             <div
                 id="mobile-menu"
                 class="fixed inset-0 bg-[var(--bg-color)] z-40 transform translate-x-full transition-transform duration-300 ease-in-out flex items-center justify-center"
+                aria-hidden="true"
             >
                 <div class="flex flex-col gap-8 text-center">
-                    <a
-                        href="#work"
-                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
-                        >WORK</a
-                    >
-                    <a
-                        href="#writings"
-                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
-                        >WRITINGS</a
-                    >
-                    <a
-                        href="#contact"
-                        class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
-                        >CONTACT</a
-                    >
+                    {navLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
+                            aria-label={link.ariaLabel}
+                        >{link.label.toUpperCase()}</a>
+                    ))}
                 </div>
             </div>
         </nav>
 
-        <section class="fade-in"><HeroSection hero={hero} /></section>
+        <section class="fade-in"><HeroSection hero={hero ?? undefined} /></section>
 
         <div class="container mx-auto px-6 pb-24 max-w-[1400px]">
             <section id="about" class="mb-32 fade-in">
-                <AboutSection hero={hero} />
+                <AboutSection hero={hero ?? undefined} />
             </section>
             <section id="work" class="mb-32 fade-in">
                 <h2
@@ -104,53 +102,84 @@ const writings = await getWritings();
 </Layout>
 
 <script>
-    import gsap from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
     const menuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
     const mobileLinks = document.querySelectorAll(".mobile-link");
     let isMenuOpen = false;
+
+    const closeMenu = () => {
+        isMenuOpen = false;
+        if (menuBtn && mobileMenu) {
+            menuBtn.setAttribute("aria-expanded", "false");
+            mobileMenu.setAttribute("aria-hidden", "true");
+            mobileMenu.classList.remove("translate-x-0");
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+        }
+    };
+
+    const openMenu = () => {
+        isMenuOpen = true;
+        if (menuBtn && mobileMenu) {
+            menuBtn.setAttribute("aria-expanded", "true");
+            mobileMenu.setAttribute("aria-hidden", "false");
+            mobileMenu.classList.remove("translate-x-full");
+            mobileMenu.classList.add("translate-x-0");
+            document.body.style.overflow = "hidden";
+        }
+    };
+
     if (menuBtn && mobileMenu) {
         menuBtn.addEventListener("click", () => {
-            isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
-                mobileMenu.classList.remove("translate-x-full");
-                mobileMenu.classList.add("translate-x-0");
-                document.body.style.overflow = "hidden";
+                closeMenu();
             } else {
-                mobileMenu.classList.remove("translate-x-0");
-                mobileMenu.classList.add("translate-x-full");
-                document.body.style.overflow = "";
+                openMenu();
             }
         });
         mobileLinks.forEach((link) => {
-            link.addEventListener("click", () => {
-                isMenuOpen = false;
-                mobileMenu.classList.remove("translate-x-0");
-                mobileMenu.classList.add("translate-x-full");
-                document.body.style.overflow = "";
-            });
+            link.addEventListener("click", closeMenu);
         });
     }
-    const fadeElements = document.querySelectorAll(".fade-in");
-    fadeElements.forEach((element) => {
-        gsap.fromTo(
-            element,
-            { opacity: 0, y: 30 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: element,
-                    start: "top 90%",
-                    end: "bottom 20%",
-                    toggleActions: "play none none reverse",
+
+    const initScrollAnimations = async () => {
+        const { default: gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        const fadeElements = document.querySelectorAll(".fade-in");
+        fadeElements.forEach((element) => {
+            gsap.fromTo(
+                element,
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 90%",
+                        end: "bottom 20%",
+                        toggleActions: "play none none reverse",
+                    },
                 },
-            },
-        );
-    });
+            );
+        });
+    };
+
+    const startScrollAnimations = () => {
+        if ("requestIdleCallback" in window) {
+            requestIdleCallback(() => initScrollAnimations());
+        } else {
+            setTimeout(initScrollAnimations, 100);
+        }
+    };
+
+    if (document.readyState === "complete") {
+        startScrollAnimations();
+    } else {
+        window.addEventListener("load", startScrollAnimations);
+    }
 </script>

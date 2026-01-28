@@ -1,19 +1,30 @@
 @import "tailwindcss";
 
+/* Ensure font-display: swap for performance */
+@font-face {
+  font-family: "Geist Sans";
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  font-display: swap;
+}
+
 :root {
   --bg-color: #050505;
   --bg-secondary: #0a0a0a;
   --text-primary: #ffffff;
   --text-secondary: #a3a3a3;
-  --text-tertiary: #525252;
+  --text-tertiary: #8a8a8a;
   --accent-color: #ff4d00;
   --border-color: #1f1f1f;
   --border-color-strong: #333333;
 
   --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  --font-mono: "JetBrains Mono", "Courier New", monospace;
+    "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", "Courier New", monospace;
 
   --container-width: 1400px;
   --spacing-section: 120px;
@@ -102,6 +113,13 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Focus indicators for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
 /* Custom Scrollbar */
 .thin-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -114,4 +132,39 @@ html.lenis body {
 .thin-scrollbar::-webkit-scrollbar-thumb {
   background: var(--accent-color);
   border-radius: 3px;
+}
+
+/* Section Reveal Animation */
+.reveal-clip {
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-clip.is-revealed {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* SVG Line Draw Animation */
+.draw-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.draw-line.is-drawn {
+  stroke-dashoffset: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-clip {
+    clip-path: none;
+    transition: none;
+  }
+
+  .draw-line {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transition: none;
+  }
 }
