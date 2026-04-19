@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/layout.astro";
 
 export async function getStaticPaths() {
@@ -22,221 +22,92 @@ const { post } = Astro.props as { post: CollectionEntry<"writings"> };
 const { data } = post;
 
 const metadata: PostMetadata = (data.metadata as PostMetadata) || {};
-const wordCount = post.rendered?.html
-  ? post.rendered.html.replace(/<[^>]*>/g, "").split(/\s+/).length
-  : undefined;
+const { Content } = await render(post);
+
+const dateLabel = new Date(data.date).toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
 ---
 
 <Layout
-    title={`${data.title} | Mehanisik`}
-    description={data.description || ""}
-    image={data.cover_image || "/og-image.jpg"}
-    type="article"
-    publishDate={data.date}
+	title={`${data.title} | mehmet isik`}
+	description={data.description || ""}
+	image={data.cover_image || "/og-image.jpg"}
+	type="article"
+	scrollbar="thin"
 >
-    <script
-        is:inline
-        type="application/ld+json"
-        slot="head"
-        set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: data.title,
-            description: data.description || undefined,
-            image: data.cover_image
-                ? [new URL(data.cover_image, Astro.site)]
-                : [],
-            datePublished: new Date(data.date).toISOString(),
-            dateModified: metadata.updated_at
-                ? new Date(metadata.updated_at).toISOString()
-                : new Date(data.date).toISOString(),
-            wordCount: wordCount,
-            keywords: metadata.tags?.join(", ") || undefined,
-            author: [
-                {
-                    "@type": "Person",
-                    name: "Mehanisik",
-                    url: "https://mehanisik.is-a.dev",
-                },
-            ],
-        })}
-    />
+	<script
+		is:inline
+		type="application/ld+json"
+		slot="head"
+		set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "BlogPosting",
+			headline: data.title,
+			description: data.description || undefined,
+			image: data.cover_image
+				? [new URL(data.cover_image, Astro.site)]
+				: [],
+			datePublished: new Date(data.date).toISOString(),
+			dateModified: metadata.updated_at
+				? new Date(metadata.updated_at).toISOString()
+				: new Date(data.date).toISOString(),
+			keywords: data.tags?.join(", ") || undefined,
+			author: [
+				{
+					"@type": "Person",
+					name: "Mehmet Isik",
+					url: "https://mehanisik.is-a.dev",
+				},
+			],
+		})}
+	/>
 
-    <main class="min-h-screen pt-24 pb-24 px-6">
-        <article class="mx-auto max-w-3xl fade-in">
-            <header class="mb-12 flex flex-col items-center text-center">
-                <div class="w-full flex justify-start mb-8">
-                    <a
-                        href="/#writings"
-                        class="inline-flex items-center gap-2 text-sm font-mono text-[var(--text-tertiary)] hover:text-[var(--accent-color)] transition-colors no-underline"
-                    >
-                        ← Back to writings
-                    </a>
-                </div>
+	<main id="main-content" class="article-wrap">
+		<a href="/#writing" class="article-back">← back to writing</a>
 
-                <div
-                    class="flex items-center gap-4 text-xs font-mono text-[var(--accent-color)] uppercase tracking-wider mb-6"
-                >
-                    <time datetime={data.date}>
-                        {
-                            new Date(data.date).toLocaleDateString("en-US", {
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                            })
-                        }
-                    </time>
-                    {
-                        metadata.read_time && (
-                            <>
-                                <span>•</span>
-                                <span>{metadata.read_time} min read</span>
-                            </>
-                        )
-                    }
-                </div>
+		<div class="article-meta">
+			<time datetime={new Date(data.date).toISOString()}>{dateLabel}</time>
+			{
+				metadata.read_time && (
+					<>
+						<span aria-hidden="true">·</span>
+						<span>{metadata.read_time} min read</span>
+					</>
+				)
+			}
+		</div>
 
-                <h1
-                    class="text-4xl md:text-6xl font-bold mb-8 leading-tight text-[var(--text-primary)] max-w-4xl"
-                >
-                    {data.title}
-                </h1>
+		<h1 class="article-title">{data.title}</h1>
 
-                {
-                    data.description && (
-                        <p class="text-xl text-[var(--text-secondary)] leading-relaxed max-w-2xl mb-12">
-                            {data.description}
-                        </p>
-                    )
-                }
+		{
+			data.description && (
+				<p class="article-desc">{data.description}</p>
+			)
+		}
 
-                {
-                    data.cover_image && data.type !== "paper" && (
-                        <div class="w-full rounded-lg overflow-hidden border border-[var(--border-color)]">
-                            <img
-                                src={data.cover_image}
-                                alt={data.title}
-                                class="w-full h-auto object-cover"
-                            />
-                        </div>
-                    )
-                }
-            </header>
+		{
+			data.cover_image && data.type !== "paper" && (
+				<div class="article-cover">
+					<img src={data.cover_image} alt={data.title} loading="eager" />
+				</div>
+			)
+		}
 
-            <div class="max-w-none">
-                {
-                    data.type === "paper" ? (
-                        <div class="w-full h-[500px] md:h-[800px] border border-[var(--border-color)] rounded-lg overflow-hidden">
-                            <iframe
-                                src={data.url || metadata.pdf}
-                                class="w-full h-full"
-                                title={data.title}
-                            />
-                        </div>
-                    ) : (
-                        <div
-                            class="prose prose-invert max-w-none"
-                            set:html={post.rendered?.html}
-                        />
-                    )
-                }
-            </div>
-        </article>
-    </main>
+		{
+			data.type === "paper" ? (
+				<iframe
+					class="article-pdf"
+					src={data.url || metadata.pdf}
+					title={data.title}
+				/>
+			) : (
+				<article class="prose">
+					<Content />
+				</article>
+			)
+		}
+	</main>
 </Layout>
-
-<style is:global>
-    body {
-        background-color: #171717;
-    }
-
-    .prose {
-        --tw-prose-body: #d4d4d4;
-        --tw-prose-headings: var(--text-primary);
-        --tw-prose-lead: #d4d4d4;
-        --tw-prose-links: var(--accent-color);
-        --tw-prose-bold: var(--text-primary);
-        --tw-prose-counters: var(--text-tertiary);
-        --tw-prose-bullets: var(--text-tertiary);
-        --tw-prose-hr: var(--border-color);
-        --tw-prose-quotes: #d4d4d4;
-        --tw-prose-quote-borders: var(--accent-color);
-        --tw-prose-captions: var(--text-tertiary);
-        --tw-prose-code: var(--accent-color);
-        --tw-prose-pre-code: #d4d4d4;
-        --tw-prose-pre-bg: var(--bg-secondary);
-        --tw-prose-th-borders: var(--border-color);
-        --tw-prose-td-borders: var(--border-color);
-    }
-
-    .prose h1,
-    .prose h2,
-    .prose h3,
-    .prose h4 {
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        margin-top: 2em;
-        margin-bottom: 0.75em;
-    }
-
-    .prose p {
-        margin-bottom: 1.5em;
-        line-height: 1.75;
-    }
-
-    .prose a {
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.2s;
-    }
-
-    .prose a:hover {
-        border-bottom-color: var(--accent-color);
-    }
-
-    .prose code {
-        font-family: "Geist Mono", monospace;
-        font-size: 0.9em;
-        padding: 0.2em 0.4em;
-        border-radius: 0.25em;
-        background-color: var(--bg-secondary);
-    }
-
-    .prose pre {
-        background-color: var(--bg-secondary) !important;
-        border: 1px solid var(--border-color);
-        border-radius: 0.5rem;
-        padding: 1.5em;
-        overflow-x: auto;
-    }
-
-    .prose pre code {
-        background-color: transparent;
-        padding: 0;
-        color: inherit;
-        font-size: 0.875em;
-        font-family: "Geist Mono", monospace;
-    }
-
-    .prose blockquote {
-        border-left-width: 2px;
-        padding-left: 1.5em;
-        font-style: italic;
-    }
-
-    .prose ul,
-    .prose ol {
-        padding-left: 1.5em;
-    }
-
-    .prose li {
-        margin-bottom: 0.5em;
-    }
-
-    .prose img {
-        border-radius: 0.5rem;
-        border: 1px solid var(--border-color);
-        max-width: 100%;
-        height: auto;
-    }
-</style>

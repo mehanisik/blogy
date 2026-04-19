@@ -1,73 +1,146 @@
 ---
-import type { Project } from "../lib/api";
+import { Image } from "astro:assets";
+import type { ProjectFallback } from "../data/portfolio";
 
 interface Props {
-  projects: Project[];
+  projects: ProjectFallback[];
 }
 const { projects } = Astro.props;
+
+const VARIANTS = [
+  "terminal",
+  "grid",
+  "sunrise",
+  "paper",
+  "stripes",
+  "mono",
+] as const;
+
+const yearOf = (p: ProjectFallback) => {
+  if (!p.date) return "";
+  const y = new Date(p.date).getFullYear();
+  return Number.isFinite(y) ? String(y) : "";
+};
+
+const HUES = [80, 320, 140, 50, 220, 10];
 ---
 
-<div class="flex flex-col gap-24">
-    {
-        projects.map((project, index) => (
-            <a
-                href={project.demo || project.github || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group block"
-                aria-label={`View project: ${project.title} (opens in new tab)`}
-            >
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                    <div class="md:col-span-4 flex flex-col justify-between h-full py-2">
-                        <div>
-                            <span class="text-xs font-mono text-[var(--accent-color)] mb-4 block">
-                                0{index + 1}
-                            </span>
-                            <h3 class="text-3xl font-bold mb-4 group-hover:text-[var(--accent-color)] transition-colors duration-300">
-                                {project.title}
-                            </h3>
-                            <p class="text-[var(--text-secondary)] leading-relaxed mb-6 text-sm max-w-xs">
-                                {project.description}
-                            </p>
-                        </div>
-
-                        {project.technologies && (
-                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider">
-                                {project.technologies
-                                    .slice(0, 4)
-                                    .map((tech) => (
-                                        <span>{tech}</span>
-                                    ))}
-                            </div>
-                        )}
-                    </div>
-
-                    <div class="md:col-span-8 overflow-hidden">
-                        <div class="aspect-[16/9] bg-[var(--bg-secondary)] relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ease-out border border-[var(--border-color)] rounded-none">
-                            <img
-                                src={
-                                    project.image_url || "/default-project.png"
-                                }
-                                alt={project.title}
-                                width={800}
-                                height={450}
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                loading="lazy"
-                                decoding="async"
-                                class="absolute inset-0 w-full h-full object-cover"
-                            />
-
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
-
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="font-mono text-[var(--text-tertiary)] text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 group-hover:text-[var(--accent-color)] transition-all duration-300">
-                                    View Project
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        ))
-    }
+<div class="project-grid">
+	{
+		projects.map((project, i) => {
+			const variant = project.image
+				? "image"
+				: VARIANTS[i % VARIANTS.length];
+			const href = project.demo || project.github || project.link || "#";
+			const external = /^https?:/i.test(href);
+			const hue = HUES[i % HUES.length];
+			return (
+				<a
+					class="project lowercaseable"
+					href={href}
+					target={external ? "_blank" : undefined}
+					rel={external ? "noopener noreferrer" : undefined}
+					aria-label={`view project: ${project.title}`}
+					style={`--hue:${hue};--i:${i}`}
+				>
+					<div class="art-frame frame-flat">
+						{variant === "image" && project.image && (
+							<Image
+								src={project.image}
+								alt={project.title}
+								class="art art-image"
+								widths={[420, 640, 960, 1280]}
+								sizes="(max-width: 640px) 90vw, 420px"
+								loading="lazy"
+								decoding="async"
+							/>
+						)}
+						{variant === "sunrise" && (
+							<div class="art art-sunrise">
+								<div class="art-window-bar">
+									<span /> <span /> <span />
+								</div>
+								<div class="art-window-body">
+									<div class="art-line w70" />
+									<div class="art-line w40" />
+									<div class="art-pill" />
+								</div>
+							</div>
+						)}
+						{variant === "grid" && (
+							<div class="art art-grid">
+								<div class="art-board">
+									{Array.from({ length: 64 }).map((_, j) => (
+										<div
+											class={`art-cell ${(Math.floor(j / 8) + j) % 2 === 0 ? "l" : "d"}`}
+										/>
+									))}
+								</div>
+								<div class="art-side">
+									<div class="art-line w80" />
+									<div class="art-line w50" />
+									<div class="art-line w65" />
+								</div>
+							</div>
+						)}
+						{variant === "terminal" && (
+							<div class="art art-term">
+								<div class="art-term-top">
+									<span /> <span /> <span />
+								</div>
+								<div class="art-term-body">
+									<div class="art-code">
+										<em>$</em> run --project "{project.title.toLowerCase()}"
+									</div>
+									<div class="art-code mute">› building…</div>
+									<div class="art-code">◆ ready</div>
+								</div>
+							</div>
+						)}
+						{variant === "mono" && (
+							<div class="art art-mono">
+								<div class="art-mono-title">
+									digital products<br />
+									that <i>ship</i>.
+								</div>
+								<div class="art-dots">
+									{Array.from({ length: 30 }).map(() => <span />)}
+								</div>
+							</div>
+						)}
+						{variant === "stripes" && (
+							<div class="art art-stripes">
+								<div class="art-stripes-label">{project.title}</div>
+							</div>
+						)}
+						{variant === "paper" && (
+							<div class="art art-paper">
+								<div class="art-paper-head" />
+								<div class="art-line w80" />
+								<div class="art-line w60" />
+								<div class="art-line w70" />
+								<div class="art-line w30" />
+							</div>
+						)}
+					</div>
+					<div class="project-meta">
+						<div class="project-title-row">
+							<span class="project-title">{project.title}</span>
+							{yearOf(project) && (
+								<span class="project-year">{yearOf(project)}</span>
+							)}
+						</div>
+						<p class="project-desc">{project.description}</p>
+						{project.technologies && project.technologies.length > 0 && (
+							<div class="project-tags">
+								{project.technologies.slice(0, 4).map((m) => (
+									<span class="tag">{m}</span>
+								))}
+							</div>
+						)}
+					</div>
+				</a>
+			);
+		})
+	}
 </div>

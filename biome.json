@@ -6,12 +6,8 @@
       "!**/build",
       "!**/dist",
       "!**/node_modules",
-      "!**/playwright-report",
       "!**/.vercel",
-      "!**/.netlify",
-      "!**/.vscode",
-      "!**/.astro",
-      "!src/lib/database.types.ts"
+      "!**/.astro"
     ]
   },
   "formatter": {
@@ -56,8 +52,7 @@
   "css": {
     "parser": {
       "cssModules": true,
-      "allowWrongLineComments": true,
-      "tailwindDirectives": true
+      "allowWrongLineComments": true
     },
     "formatter": {
       "enabled": true

@@ -14,5 +14,3 @@ export const siteConfig = {
     linkedin: "https://www.linkedin.com/in/mehanisik",
   },
 };
-
-export type SiteConfig = typeof siteConfig;

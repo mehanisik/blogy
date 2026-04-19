@@ -1,71 +1,84 @@
+import type { ImageMetadata } from "astro";
+import atikexp from "../assets/projects/atikexp.webp";
+import blogy from "../assets/projects/blogy.webp";
+import cryptoPredict from "../assets/projects/crypto-predict.webp";
+import wooah from "../assets/projects/wooah.webp";
+
 export const hero = {
   name: "Mehmet Isik",
-  tagline: "Software Engineer — Full-Stack Development",
-  role: "Software Engineer — Full-Stack Development",
+  tagline: "Software Engineer, Full-Stack and DevOps",
+  role: "software engineer",
   location: "Warsaw, Poland",
   contact: {
-    phone: "+48 780 612 852",
     email: "mehanisik@outlook.com",
     linkedin: "https://www.linkedin.com/in/mehanisik",
     github: "https://github.com/mehanisik",
   },
   summary:
-    "Recent Master’s graduate with 2+ years of experience in full-stack development and front-end technologies. Passionate about building scalable, user-focused applications with clean, maintainable code.",
+    "i am mehmet. i am a {{role}} who builds, ships, and runs software across the web and the cloud.",
+  highlight: "stack",
 };
-
-export const skills = {
-  languages: ["Python", "JavaScript", "TypeScript", "SQL", "HTML5", "CSS"],
-  frameworks: [
-    "React.js",
-    "Next.js",
-    "Tailwind",
-    "Material UI",
-    "WebSocket",
-    "Flask",
-    "Node.js",
-  ],
-  tools: [
-    "Arch Linux",
-    "Docker",
-    "Git",
-    "Grafana",
-    "Jira",
-    "Postman",
-    "Prometheus",
-    "Storybook",
-    "Jest",
-    "CI/CD",
-  ],
-};
-
-export const socialLinks = [
-  {
-    label: "LinkedIn",
-    href: hero.contact.linkedin,
-    icon: "linkedin",
-  },
-  {
-    label: "GitHub",
-    href: hero.contact.github,
-    icon: "github",
-  },
-  {
-    label: "Email",
-    href: `mailto:${hero.contact.email}`,
-    icon: "email",
-  },
-];
 
 export const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
+  { label: "work", href: "#work" },
+  { label: "notes", href: "#writing" },
 ];
 
-export const writings: {
+export interface ProjectFallback {
+  id: number;
   title: string;
-  year: string;
-  icon: string;
-  link: string;
-}[] = [];
+  description: string;
+  link?: string;
+  demo?: string;
+  github?: string;
+  technologies?: string[];
+  date?: string;
+  image?: ImageMetadata;
+}
+
+export const projectsFallback: ProjectFallback[] = [
+  {
+    id: 1,
+    title: "crypto-predict",
+    description:
+      "deep learning pipeline for crypto price forecasting with cnn, lstm, and hybrid models. my thesis, still alive as a playground.",
+    github: "https://github.com/mehanisik/crypto-predict",
+    demo: "https://crypto-prediction-mhanifiisiks-projects.vercel.app",
+    technologies: ["python", "pytorch", "next.js"],
+    date: "2025-01-01",
+    image: cryptoPredict,
+  },
+  {
+    id: 2,
+    title: "wooah",
+    description:
+      "hypertrophy tracker with progressive overload, volume targets, and mesocycle planning.",
+    github: "https://github.com/mehanisik/wooah",
+    demo: "https://wooah.vercel.app",
+    technologies: ["typescript", "next.js"],
+    date: "2026-01-01",
+    image: wooah,
+  },
+  {
+    id: 3,
+    title: "atik express",
+    description:
+      "production site for a logistics firm running on a custom domain. client work shipped end to end.",
+    github: "https://github.com/mehanisik/logistic-firm",
+    demo: "https://www.atikexp.com",
+    technologies: ["typescript", "next.js"],
+    date: "2025-11-01",
+    image: atikexp,
+  },
+  {
+    id: 4,
+    title: "blogy",
+    description:
+      "this site. astro, ink background, grain overlay, almost no client js.",
+    github: "https://github.com/mehanisik/blogy",
+    demo: "https://mehanisik.is-a.dev",
+    technologies: ["astro", "typescript"],
+    date: "2026-01-01",
+    image: blogy,
+  },
+];

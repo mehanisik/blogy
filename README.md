@@ -1,101 +1,40 @@
-# Personal Website
+# blogy
 
-![Blogy Landing Page](./public/landing-page.png)
+Personal site and blog. Astro 5, static, zero runtime JS bundles.
 
-A personal blog and portfolio platform I built with Astro 5, React 19, and Tailwind CSS 4. This is my personal corner of the internet where I share:
+## Stack
 
-- **Blog posts** about software development, technology, and my experiences
-- **Portfolio projects** I've worked on
-- **Academic publications** and research
-- **Coding activity** tracked through WakaTime
-- **Thoughts and insights** from my journey as a developer
+- Astro 5, TypeScript
+- Markdown content collections (glob loader)
+- Instrument Serif + JetBrains Mono (self-hosted via fontsource)
+- Biome for lint + format
 
-The platform features a clean admin interface for content management, built with modern web technologies for optimal performance and developer experience.
+## Dev
 
----
-
-## Tech Stack
-
-- **Astro 5** - Web Framework
-- **React 19** - UI Library
-- **TypeScript** - Type Safety
-- **Tailwind CSS 4** - Styling
-- **GSAP** - Animations
-- **Three.js** - 3D Graphics
-- **Supabase** - Backend-as-a-Service
-- **Biome** - Linter and Formatter
-
----
-
-### Lighthouse
-
-![Lighthouse](./public/lighthouse-score.png)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- Bun runtime
-- Supabase account
-- GitHub and WakaTime API keys
-
-### Setup
-
-```bash
-# Clone and install
-git clone https://github.com/mehanisik/blogy.git
-cd blogy
+```
 bun install
-
-# Environment configuration
-cp .env.example .env
-```
-
-Configure your environment variables:
-
-```env
-PUBLIC_SUPABASE_URL=your_supabase_url
-SUPABASE_ANON_KEY=your_anon_key
-```
-
-```bash
-# Start development
 bun run dev
+bun run build
 ```
 
-Visit [http://localhost:4321](http://localhost:4321) to see the site.
+## Structure
 
+- `src/pages/` — routes (home, blog post, rss, 404)
+- `src/content/writings/` — blog posts (markdown + frontmatter)
+- `src/components/` — hero, projects, writing list, footer
+- `src/data/portfolio.ts` — static content (hero, projects)
+- `src/styles/global.css` — design tokens + all styling
+
+## Content
+
+Add a new post by dropping a `.md` file into `src/content/writings/` with this frontmatter:
+
+```yaml
 ---
-
-## Development Commands
-
-| Command             | Description              |
-| ------------------- | ------------------------ |
-| `bun run dev`       | Start development server |
-| `bun run build`     | Build for production     |
-| `bun run preview`   | Preview production build |
-| `bun run check`     | Run type and code checks |
-| `bun run check:fix` | Fix linting issues       |
-
+title: post title
+date: 2026-01-01
+type: blog
+description: optional one-liner
+tags: [optional, list]
 ---
-
-## Deployment
-
-I deploy this site on Vercel for its excellent Astro support and edge performance.
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
 ```
-
-Make sure to set all environment variables in your Vercel project settings.
-
-## Contributing
-
-While this is my personal project, I welcome contributions from the community. If you find bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
-
----

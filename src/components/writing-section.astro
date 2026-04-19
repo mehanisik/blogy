@@ -1,85 +1,59 @@
 ---
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import type { Writing, WritingMetadata } from "../lib/api";
-
-interface Props {
-  writings: Writing[];
+export interface WritingItem {
+  title: string;
+  date: Date | string;
+  type: string;
+  slug?: string | null;
+  url?: string | null;
+  metadata?: unknown;
+}
+interface WritingMetadata {
+  doi?: string;
 }
 
+interface Props {
+  writings: WritingItem[];
+}
 const { writings } = Astro.props;
 
-const getLink = (item: Writing) => {
-  if (item.type === "blog" || item.type === "paper")
+const getLink = (item: WritingItem) => {
+  if ((item.type === "blog" || item.type === "paper") && item.slug)
     return `/blog/${item.slug}`;
-  const meta = item.metadata as unknown as WritingMetadata;
+  const meta = item.metadata as WritingMetadata | undefined;
   return item.url || meta?.doi || "#";
 };
 
-const isExternal = (item: Writing) =>
+const isExternal = (item: WritingItem) =>
   item.type !== "blog" && item.type !== "paper";
 
-const getAriaLabel = (item: Writing) => {
-  const base = `Read ${item.type === "blog" ? "article" : "paper"}: ${item.title}`;
-  return isExternal(item) ? `${base} (opens in new tab)` : base;
-};
+const formatDate = (d: Date | string) =>
+  new Date(d)
+    .toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toLowerCase();
 ---
 
-<section id="writings" class="w-full">
-	<div class="flex flex-col">
-		{
-			writings.length > 0 ? (
-				writings.map((item) => (
+{
+	writings.length === 0 ? (
+		<p class="mono" style="color:var(--ink-mute);font-size:13px">no writings yet.</p>
+	) : (
+		<ul class="notes lowercaseable">
+			{writings.map((w, i) => (
+				<li style={`--i:${i}`}>
 					<a
-						href={getLink(item)}
-						target={isExternal(item) ? "_blank" : undefined}
-						rel={isExternal(item) ? "noopener noreferrer" : undefined}
-						class="group block border-t border-[var(--border-color)] py-8 hover:bg-[var(--bg-secondary)] transition-colors -mx-6 px-6"
-						aria-label={getAriaLabel(item)}
+						href={getLink(w)}
+						target={isExternal(w) ? "_blank" : undefined}
+						rel={isExternal(w) ? "noopener noreferrer" : undefined}
 					>
-						<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-							<div class="md:col-span-2">
-								<span class="text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider">
-									{new Date(item.date).toLocaleDateString(
-										"en-US",
-										{
-											month: "short",
-											year: "numeric",
-										},
-									)}
-								</span>
-							</div>
-
-							<div class="md:col-span-8">
-								<h3 class="text-xl font-medium group-hover:text-[var(--accent-color)] transition-colors">
-									{item.title}
-								</h3>
-								{item.type === "blog" && item.description && (
-									<p class="text-sm text-[var(--text-secondary)] mt-2 line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-										{item.description}
-									</p>
-								)}
-							</div>
-
-							<div class="md:col-span-2 flex justify-end items-center gap-4">
-								<span class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] border border-[var(--border-color)] px-2 py-1 rounded-full group-hover:border-[var(--accent-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">
-									{item.type === "blog" ? "Article" : "Paper"}
-								</span>
-								<HugeiconsIcon
-									icon={ArrowRight01Icon}
-									aria-hidden="true"
-									className="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-[var(--accent-color)] opacity-0 group-hover:opacity-100"
-								/>
-							</div>
-						</div>
+						<span class="note-title">{w.title}</span>
+						<span class="note-dots" aria-hidden="true" />
+						<span class="note-date">{formatDate(w.date)}</span>
 					</a>
-				))
-			) : (
-				<p class="text-sm text-[var(--text-secondary)] italic py-8 border-t border-[var(--border-color)]">
-					No writings found.
-				</p>
-			)
-		}
-		<div class="border-t border-[var(--border-color)]"></div>
-	</div>
-</section>
+				</li>
+			))}
+		</ul>
+	)
+}

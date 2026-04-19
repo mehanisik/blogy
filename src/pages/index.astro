@@ -1,185 +1,41 @@
 ---
-import "lenis/dist/lenis.css";
-
-import AboutSection from "../components/about-section.astro";
+import { getCollection } from "astro:content";
 import HeroSection from "../components/hero-section.astro";
 import ProjectSection from "../components/project-section.astro";
 import WritingSection from "../components/writing-section.astro";
+import { projectsFallback } from "../data/portfolio";
 import Layout from "../layouts/layout.astro";
-import { getHero, getProjects, getWritings } from "../lib/api";
 
-const hero = await getHero();
-const projects = await getProjects();
-const writings = await getWritings();
-
-const navLinks = [
-  { href: "#work", label: "Work", ariaLabel: "View my projects" },
-  {
-    href: "#writings",
-    label: "Writings",
-    ariaLabel: "Read my articles and papers",
-  },
-  { href: "#contact", label: "Contact", ariaLabel: "Get in touch with me" },
-];
+const writingEntries = await getCollection("writings");
+const writings = writingEntries
+  .map((e) => ({ ...e.data, slug: e.id }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
-<Layout title="Mehanisik | Frontend Developer" scrollbar="thin">
-    <main id="main-content" class="min-h-screen">
-        <nav
-            class="fixed top-0 left-0 right-0 z-50 mix-blend-difference text-white"
-        >
-            <div
-                class="container mx-auto px-6 py-8 flex justify-between items-center max-w-[1400px]"
-            >
-                <a
-                    href="/"
-                    class="text-sm font-bold tracking-widest hover:opacity-70 transition-opacity uppercase"
-                    aria-label="Mehanisik Homepage">MEHANISIK</a
-                >
-                <div class="hidden md:flex gap-16">
-                    {navLinks.map((link) => (
-                        <a
-                            href={link.href}
-                            class="text-sm font-medium hover:text-[var(--accent-color)] transition-colors uppercase tracking-wider"
-                            aria-label={link.ariaLabel}
-                        >{link.label}</a>
-                    ))}
-                </div>
-                <button
-                    id="mobile-menu-btn"
-                    class="md:hidden text-white focus:outline-none z-50"
-                    aria-expanded="false"
-                    aria-controls="mobile-menu"
-                >
-                    <span class="sr-only">Open menu</span>
-                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
-                    </div>
-                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all">
-                    </div>
-                </button>
-            </div>
-            <div
-                id="mobile-menu"
-                class="fixed inset-0 bg-[var(--bg-color)] z-40 transform translate-x-full transition-transform duration-300 ease-in-out flex items-center justify-center"
-                aria-hidden="true"
-            >
-                <div class="flex flex-col gap-8 text-center">
-                    {navLinks.map((link) => (
-                        <a
-                            href={link.href}
-                            class="mobile-link text-4xl font-bold hover:text-[var(--accent-color)] transition-colors"
-                            aria-label={link.ariaLabel}
-                        >{link.label.toUpperCase()}</a>
-                    ))}
-                </div>
-            </div>
-        </nav>
+<Layout title="mehmet isik, portfolio" scrollbar="thin">
+	<main id="main-content" class="page lowercaseable">
+		<HeroSection />
 
-        <section class="fade-in"><HeroSection hero={hero ?? undefined} /></section>
+		<section id="work" class="section fade-in">
+			<div class="section-head">
+				<h2>selected work</h2>
+				<a
+					href="https://github.com/mehanisik"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-arrow">more on github ↗</a
+				>
+			</div>
+			<ProjectSection projects={projectsFallback} />
+		</section>
 
-        <div class="container mx-auto px-6 pb-24 max-w-[1400px]">
-            <section id="about" class="mb-32 fade-in">
-                <AboutSection hero={hero ?? undefined} />
-            </section>
-            <section id="work" class="mb-32 fade-in">
-                <h2
-                    class="text-xs font-mono text-[var(--accent-color)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
-                >
-                    Selected Work
-                </h2>
-                <ProjectSection projects={projects} />
-            </section>
-            <section id="writings" class="mb-32 fade-in">
-                <h2
-                    class="text-xs font-mono text-[var(--accent-color)] mb-12 uppercase tracking-widest border-b border-[var(--border-color)] pb-4"
-                >
-                    Writings & Thoughts
-                </h2>
-                <WritingSection writings={writings} />
-            </section>
-        </div>
-    </main>
+		<section id="writing" class="section fade-in">
+			<div class="section-head">
+				<h2>writing</h2>
+				<a href="/rss.xml" class="link-arrow">all notes →</a>
+			</div>
+			<WritingSection writings={writings} />
+		</section>
+	</main>
 </Layout>
 
-<script>
-    const menuBtn = document.getElementById("mobile-menu-btn");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const mobileLinks = document.querySelectorAll(".mobile-link");
-    let isMenuOpen = false;
-
-    const closeMenu = () => {
-        isMenuOpen = false;
-        if (menuBtn && mobileMenu) {
-            menuBtn.setAttribute("aria-expanded", "false");
-            mobileMenu.setAttribute("aria-hidden", "true");
-            mobileMenu.classList.remove("translate-x-0");
-            mobileMenu.classList.add("translate-x-full");
-            document.body.style.overflow = "";
-        }
-    };
-
-    const openMenu = () => {
-        isMenuOpen = true;
-        if (menuBtn && mobileMenu) {
-            menuBtn.setAttribute("aria-expanded", "true");
-            mobileMenu.setAttribute("aria-hidden", "false");
-            mobileMenu.classList.remove("translate-x-full");
-            mobileMenu.classList.add("translate-x-0");
-            document.body.style.overflow = "hidden";
-        }
-    };
-
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener("click", () => {
-            if (isMenuOpen) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-        mobileLinks.forEach((link) => {
-            link.addEventListener("click", closeMenu);
-        });
-    }
-
-    const initScrollAnimations = async () => {
-        const { default: gsap } = await import("gsap");
-        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        const fadeElements = document.querySelectorAll(".fade-in");
-        fadeElements.forEach((element) => {
-            gsap.fromTo(
-                element,
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top 90%",
-                        end: "bottom 20%",
-                        toggleActions: "play none none reverse",
-                    },
-                },
-            );
-        });
-    };
-
-    const startScrollAnimations = () => {
-        if ("requestIdleCallback" in window) {
-            requestIdleCallback(() => initScrollAnimations());
-        } else {
-            setTimeout(initScrollAnimations, 100);
-        }
-    };
-
-    if (document.readyState === "complete") {
-        startScrollAnimations();
-    } else {
-        window.addEventListener("load", startScrollAnimations);
-    }
-</script>

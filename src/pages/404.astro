@@ -2,18 +2,17 @@
 import Layout from "../layouts/layout.astro";
 ---
 
-<Layout title="404 - Not Found" description="Page not found">
-    <main
-        class="flex flex-col items-center justify-center flex-grow text-center px-6"
-    >
-        <h1 class="text-9xl font-bold text-[var(--accent-color)] mb-4">404</h1>
-        <p class="text-2xl text-[var(--text-secondary)] mb-8">Page not found</p>
-        <a
-            href="/"
-            class="text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors border-b border-transparent hover:border-[var(--accent-color)]"
-            aria-label="Return to the homepage"
-        >
-            Go back home
-        </a>
-    </main>
+<Layout title="404, not found" description="page not found">
+	<main id="main-content" class="page lowercaseable" style="text-align:center">
+		<h1
+			class="display"
+			style="font-size:96px;margin-top:60px;color:var(--accent)"
+		>
+			404
+		</h1>
+		<p class="blurb" style="margin: 0 auto 28px">page not found.</p>
+		<a href="/" class="link-arrow" aria-label="return to the homepage">
+			← back home
+		</a>
+	</main>
 </Layout>

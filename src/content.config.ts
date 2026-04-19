@@ -1,51 +1,19 @@
-import { defineCollection, z } from "astro:content";
-
-import hljs from "highlight.js";
-import { marked } from "marked";
-import { markedHighlight } from "marked-highlight";
-import { getWritings } from "./lib/api";
-
-marked.use(
-  markedHighlight({
-    langPrefix: "hljs language-",
-    highlight(code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
-      return hljs.highlight(code, { language }).value;
-    },
-  }),
-);
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 const writings = defineCollection({
-  loader: {
-    name: "supabase-writings",
-    load: async ({ store }) => {
-      const posts = await getWritings();
-      for (const post of posts) {
-        if ((post.type === "blog" || post.type === "paper") && post.slug) {
-          const content = post.content || "";
-          const html = await marked.parse(content);
-
-          store.set({
-            id: post.slug,
-            data: post,
-            rendered: { html },
-          });
-        }
-      }
-    },
-  },
+  loader: glob({ pattern: "**/*.md", base: "./src/content/writings" }),
   schema: z.object({
     title: z.string(),
-    description: z.string().nullable().optional(),
-    date: z.string(),
-    content: z.string().nullable().optional(),
-    cover_image: z.string().nullable().optional(),
-    metadata: z.any().optional(),
-    type: z.string(),
-    url: z.string().nullable().optional(),
+    description: z.string().optional(),
+    date: z.coerce.date(),
+    cover_image: z.string().optional(),
+    type: z.enum(["blog", "paper"]).default("blog"),
+    url: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   }),
 });
 
-export const collections = {
-  writings,
-};
+export const collections = { writings };
