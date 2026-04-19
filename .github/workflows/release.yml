@@ -30,6 +30,12 @@ jobs:
         if: steps.release.outputs.release_created == 'true'
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        if: steps.release.outputs.release_created == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
       - name: Setup Bun
         if: steps.release.outputs.release_created == 'true'
         uses: oven-sh/setup-bun@v2
