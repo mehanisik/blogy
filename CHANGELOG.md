@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/mehanisik/blogy/compare/v2.0.0...v2.1.0) (2026-04-23)
+
+
+### Features
+
+* **content:** add velero and sonarqube community plugin posts ([805706c](https://github.com/mehanisik/blogy/commit/805706cc5747da5707d1171fcb6aa37e27e00d88))
+* **markdown:** open external links in a new tab via rehype-external-links ([a73f209](https://github.com/mehanisik/blogy/commit/a73f2097e16ee553001c69f7a4d23c8ca618391f))
+
 ## 2.0.0 (2026-04-19)
 
 
